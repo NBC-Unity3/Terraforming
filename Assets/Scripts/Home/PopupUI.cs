@@ -44,6 +44,6 @@ public class PopupUI : MonoBehaviour
 
     public void OffSelectPopup()
     {
-        popupPrefab.SetActive(false);
+        selectPopupPrefab.SetActive(false);
     }
 }
