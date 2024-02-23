@@ -10,12 +10,12 @@ public class PopupUI : MonoBehaviour
 
     public Button storeButton;
     public Button questButton;
-    public Button healthButton;
+    public Button healthButton; //누르면 플레이어 자동으로 이동시키기. +이때 강제로 이동하므로 enable = false 필요.
     public Button closeButton;
 
     public GameObject storePrefab;
     public GameObject questPrefab;
-    public GameObject HealthPrefab; //회복을 누르면 바로 회복하러 이동할지 선택
+    public GameObject[] quests;
 
     private void Start()
     {
@@ -32,7 +32,7 @@ public class PopupUI : MonoBehaviour
         closeButton.onClick.AddListener(() => OffSelectPopup());
     }
 
-    public void OnStore()
+    public void OnStore() //UIManager로 옮길 시 매개변수로 GameObject 받기.
     {
         if (storePrefab == null)
         {
