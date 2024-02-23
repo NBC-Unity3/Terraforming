@@ -9,13 +9,14 @@ public class Popup : MonoBehaviour
 
 
     //UI 프리팹을 로드
-    public GameObject OnPopupUI(GameObject selectPopUpUI) //플레이어가 콘솔이랑 상호작용하면 등장
+    public void OnPopupUI(GameObject selectPopUpUI) //플레이어가 콘솔이랑 상호작용하면 등장
     {
         if (selectPopUpUI == null)
         {
-            selectPopUpUI = Resources.Load<GameObject>("PopUp_UI/Select_Canvas");
+            GameObject canvas = Resources.Load<GameObject>("PopUp/Select_Canvas");
+            selectPopUpUI = Instantiate(canvas); //한번 생성 이후에는 SetActive(false).
         }
-        return selectPopUpUI; //Instantiate를 통해 생성 필수.
+        selectPopUpUI.SetActive(true);
     }
 
 
