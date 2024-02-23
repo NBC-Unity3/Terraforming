@@ -6,7 +6,7 @@ using UnityEngine.UI;
 //임시 스크립트, UI 연결하는 스크립트로 이동할 예정
 public class PopupUI : MonoBehaviour
 {
-    public GameObject popupPrefab;
+    public GameObject selectPopupPrefab;
 
     public Button storeButton;
     public Button questButton;
