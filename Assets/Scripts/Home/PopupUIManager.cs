@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Popup : MonoBehaviour
+public class PopupUIManager : MonoBehaviour
 { //연결되는 UI 코드 보고 거기에 UI 연결시키고 팝업 생성할 예정
 
     //매개변수로 받는거 말고는 답이 없는가에 대한 고찰 중...
@@ -21,4 +21,10 @@ public class Popup : MonoBehaviour
     //    }
     //    selectPopUpUI.SetActive(true);
     //}
+
+    public GameObject OnOpenUI<T>(string name)
+    {
+        var Obj = Resources.Load("Popup/"+name, typeof(GameObject)) as GameObject;
+        return Instantiate(Obj);
+    }
 }
