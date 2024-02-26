@@ -314,7 +314,7 @@ GameObject:
   - component: {fileID: 4478822114744800148}
   - component: {fileID: 3021108297976081918}
   m_Layer: 5
-  m_Name: QuestList_Canvas
+  m_Name: QuestListPopupUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

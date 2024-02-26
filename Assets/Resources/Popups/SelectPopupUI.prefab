@@ -574,7 +574,7 @@ GameObject:
   - component: {fileID: 6149010087603804110}
   - component: {fileID: 188783958428015720}
   m_Layer: 0
-  m_Name: Select_Canvas
+  m_Name: SelectPopupUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
