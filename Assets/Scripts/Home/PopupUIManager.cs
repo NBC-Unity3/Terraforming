@@ -32,7 +32,7 @@ public class PopupUIManager : MonoBehaviour
 
     public PopupUIBase OpenPopupUI(string name)
     {
-        var obj = Resources.Load("Popups/" + name, typeof(GameObject)) as GameObject;
+        var obj = Resources.Load("Popup/" + name, typeof(GameObject)) as GameObject;
         if(obj == null) { return null; }
         return MakePopupUI(obj);
     }

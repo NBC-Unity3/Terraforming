@@ -9,7 +9,7 @@ public class QuestListPopupUI : PopupUIBase
     public Button closeButton; //뒤로 가기 눌렀을 때 전 UI가 나오게 할지 아니면 아예 꺼버릴지.
 
     public Transform questListPosition;
-    public GameObject[] questList = new GameObject[4];
+    public QuestList[] questList = new QuestList[4];
 
     //QuestList버튼을 누르면 Quest 프리팹이 일정 갯수 생성되도록 설정. -> Quest 목록 생성
     //Quest 프리팹의 경우 바뀌면 안됨. Quest 갯수가 정해진 갯수 이하면 새로 생성 필요.
@@ -18,6 +18,11 @@ public class QuestListPopupUI : PopupUIBase
     private void Start()
     {
         StartButtonSetting();
+        for (int i = 0; i < 4; i++)
+        {
+            questList[i] = PopupUIManager.Instance.OpenPopupUI<QuestList>();
+            questList[i].transform.parent = questListPosition.transform;
+        }
     }
 
     public void StartButtonSetting()

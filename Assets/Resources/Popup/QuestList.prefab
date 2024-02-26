@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6415894106205664284}
   - component: {fileID: 2521840107074183043}
   m_Layer: 5
-  m_Name: Text (TMP) (2)
+  m_Name: clearText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Quest \uC0C1\uD0DC\n\uC218\uB77D \uBBF8\uC218\uB77D\n\uC9C4\uD589\uB3C4"
+  m_text: "\uBBF8\uC218\uB77D"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d9451c09d24026544b576b2701f88524, type: 2}
   m_sharedMaterial: {fileID: 9128139000959546685, guid: d9451c09d24026544b576b2701f88524,
@@ -172,7 +172,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1398249116489285790
 CanvasRenderer:
@@ -224,7 +224,7 @@ GameObject:
   - component: {fileID: 7680830462717877212}
   - component: {fileID: 1359256312231742762}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: numberText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -278,7 +278,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Q \n\uB610\uB294\n\uBC88\uD638"
+  m_text: 'Q.
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d9451c09d24026544b576b2701f88524, type: 2}
   m_sharedMaterial: {fileID: 9128139000959546685, guid: d9451c09d24026544b576b2701f88524,
@@ -357,8 +359,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3646724944014871461}
+  - component: {fileID: 8000109453629188558}
   m_Layer: 5
-  m_Name: Quest
+  m_Name: QuestList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -371,7 +374,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4520036533951695541}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -390,6 +393,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &8000109453629188558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4520036533951695541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 147f6c5f7bd4994478c3b5fbaea7a597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  questNumber: {fileID: 1359256312231742762}
+  questTitle: {fileID: 2174444946153693313}
+  questClear: {fileID: 2521840107074183043}
 --- !u!1 &5520047542140259503
 GameObject:
   m_ObjectHideFlags: 0
@@ -426,7 +444,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 900, y: 0}
-  m_SizeDelta: {x: 150, y: 100}
+  m_SizeDelta: {x: 150, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1687736088164560393
 CanvasRenderer:
@@ -478,7 +496,7 @@ GameObject:
   - component: {fileID: 9039917177004767682}
   - component: {fileID: 2174444946153693313}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: titleText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -532,8 +550,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Quest \uC81C\uBAA9 -> \uC120\uD0DD \uC2DC \uD018\uC2A4\uD2B8 \uB0B4\uC6A9
-    \uBC0F \uC218\uB77D"
+  m_text: "(\uC608\uC2DC) \uC2AC\uB77C\uC784 \uCC98\uCE58"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d9451c09d24026544b576b2701f88524, type: 2}
   m_sharedMaterial: {fileID: 9128139000959546685, guid: d9451c09d24026544b576b2701f88524,
@@ -640,7 +657,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 435, y: 0}
-  m_SizeDelta: {x: 700, y: 100}
+  m_SizeDelta: {x: 700, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2291652803984944712
 CanvasRenderer:
