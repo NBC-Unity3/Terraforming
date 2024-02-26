@@ -12,7 +12,7 @@ public class SelectPopupUI : PopupUIBase
     public Button closeButton;
 
 
-    //불러오는 prefab들은 GameObject가 아니라 script로 불러오기 때문에 제네릭으로 써야함.
+    //생성한 UI를 SetActive로 사용하기 위해서 GameObject로 설정해줌.
     public GameObject storePrefab;
     public GameObject questListPrefab;
 
@@ -39,7 +39,7 @@ public class SelectPopupUI : PopupUIBase
         gameObject.SetActive(false);
     }
 
-    public void OnStore() //UIManager로 옮길 시 매개변수로 GameObject 받기.-> 제네릭으로 만든 함수 그냥 사용하기
+    public void OnStore()
     {
         if (storePrefab == null)
         {
@@ -49,7 +49,7 @@ public class SelectPopupUI : PopupUIBase
         storePrefab.SetActive(true);
     }
 
-    public void OnQuestList() //UIManager로 옮길 시 매개변수로 GameObject 받기.-> 제네릭으로 만든 함수 그냥 사용하기
+    public void OnQuestList()
     {
         if (questListPrefab == null)
         {
