@@ -88,7 +88,7 @@ public class Monster : MonoBehaviour, IDamagable
         }
         else
         {
-            SetState(AIState.Wandering);
+            SetState(AIState.Idle);
         }
     }
 
