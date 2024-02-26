@@ -66,7 +66,10 @@ public class PlayerController : MonoBehaviour
 
         _rigidbody.velocity = dir;
 
-        playerAnimator.SetFloat("Move", dir.y);
+        Debug.Log(dir);
+        Debug.Log(dir.y);
+        playerAnimator.SetFloat("MoveX", curMovementInput.x);
+        playerAnimator.SetFloat("MoveY", curMovementInput.y);
     }
 
     void CameraLook()
@@ -88,10 +91,12 @@ public class PlayerController : MonoBehaviour
         if(context.phase == InputActionPhase.Performed)
         {
             curMovementInput = context.ReadValue<Vector2>();
+            playerAnimator.SetBool("Move", true);
         }
         else if(context.phase == InputActionPhase.Canceled)
         {
             curMovementInput = Vector2.zero;
+            playerAnimator.SetBool("Move", false);
         }
     }
 

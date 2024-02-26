@@ -8,7 +8,6 @@ public class Compass : MonoBehaviour
 
 	public void Update()
 	{
-		//Get a handle on the Image's uvRect
 		CompassImage.uvRect = new Rect(Player.localEulerAngles.y / 360, 0, 1, 1);
 
 		// Get a copy of your forward vector
