@@ -6,13 +6,13 @@ using UnityEngine.UI;
 //임시 스크립트, UI 연결하는 스크립트로 이동할 예정
 public class SelectPopupUI : MonoBehaviour
 {
-    public GameObject selectPopupPrefab;//임시
-
     public Button storeButton;
     public Button questButton;
     public Button healthButton; //누르면 플레이어 자동으로 이동시키기. +이때 강제로 이동하므로 enable = false 필요.
     public Button closeButton;
 
+
+    //불러오는 prefab들은 GameObject가 아니라 script로 불러오기 때문에 제네릭으로 써야함.
     public GameObject storePrefab;
     public GameObject questPrefab;
 
@@ -36,7 +36,7 @@ public class SelectPopupUI : MonoBehaviour
 
     public void OffSelectPopup()
     {
-        selectPopupPrefab.SetActive(false);
+        gameObject.SetActive(false);
     }
 
     public void OnStore() //UIManager로 옮길 시 매개변수로 GameObject 받기.-> 제네릭으로 만든 함수 그냥 사용하기
