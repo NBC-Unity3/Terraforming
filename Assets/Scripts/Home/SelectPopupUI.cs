@@ -6,8 +6,6 @@ using UnityEngine.UI;
 //임시 스크립트, UI 연결하는 스크립트로 이동할 예정
 public class SelectPopupUI : MonoBehaviour
 {
-    PopupUIManager popupUIManager = new PopupUIManager();
-
     public Button storeButton;
     public Button questButton;
     public Button healthButton; //누르면 플레이어 자동으로 이동시키기. +이때 강제로 이동하므로 enable = false 필요.
