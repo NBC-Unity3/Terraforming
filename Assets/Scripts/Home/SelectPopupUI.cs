@@ -16,7 +16,7 @@ public class SelectPopupUI : MonoBehaviour
 
     //불러오는 prefab들은 GameObject가 아니라 script로 불러오기 때문에 제네릭으로 써야함.
     public GameObject storePrefab;
-    public GameObject questListPrefab;
+    public QuestListPopupUI questListPrefab;
 
     private void Start()
     {
@@ -55,8 +55,7 @@ public class SelectPopupUI : MonoBehaviour
     {
         if (questListPrefab == null)
         {
-            questListPrefab = popupUIManager.OnOpenUI<QuestListPopupUI>("QuestList_Canvas");
+            questListPrefab = PopupUIManager.Instance.OpenPopupUI<QuestListPopupUI>();
         }
-        questListPrefab.SetActive(true);
     }
 }

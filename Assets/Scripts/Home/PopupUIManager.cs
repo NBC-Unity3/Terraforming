@@ -12,19 +12,40 @@ public class PopupUIManager : MonoBehaviour
 
     //UI 프리팹을 로드 -> 제네릭으로 바꿔서 공용으로 사용할 수 있도록 수정
 
-    //public void OnPopupUI(GameObject selectPopUpUI) //플레이어가 콘솔이랑 상호작용하면 등장
-    //{
-    //    if (selectPopUpUI == null)
-    //    {
-    //        GameObject canvas = Resources.Load<GameObject>("PopUp/Select_Canvas");
-    //        selectPopUpUI = Instantiate(canvas); //한번 생성 이후에는 SetActive(false).
-    //    }
-    //    selectPopUpUI.SetActive(true);
-    //}
-
-    public GameObject OnOpenUI<T>(string name)
+    private static PopupUIManager instance;
+    public static PopupUIManager Instance
     {
-        var Obj = Resources.Load("Popup/"+name, typeof(GameObject)) as GameObject;
-        return Instantiate(Obj);
+        get
+        {
+            if(instance == null)
+            {
+                instance = new PopupUIManager();
+            }
+            return instance;
+        }
+    }
+
+    public T OpenPopupUI<T>() where T : PopupUIBase
+    {
+        return OpenPopupUI(typeof(T).Name) as T; //script이름 == resources이름
+    }
+
+    public PopupUIBase OpenPopupUI(string name)
+    {
+        var obj = Resources.Load("Popups/" + name, typeof(GameObject)) as GameObject;
+        if(obj == null) { return null; }
+        return MakePopupUI(obj);
+    }
+
+    public PopupUIBase MakePopupUI(GameObject prefab)
+    {
+        var obj = Instantiate(prefab);
+        return GetComponentPopupUI(obj);
+    }
+
+    public PopupUIBase GetComponentPopupUI(GameObject clone)
+    {
+        var script = clone.GetComponent<PopupUIBase>();
+        return script;
     }
 }
