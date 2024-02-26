@@ -22,6 +22,7 @@ public class QuestListPopupUI : PopupUIBase
         {
             questList[i] = PopupUIManager.Instance.OpenPopupUI<QuestList>();
             questList[i].transform.parent = questListPosition.transform;
+            questTitleButton[i] = questList[i].questTitleButton;
         }
     }
 
@@ -41,7 +42,7 @@ public class QuestListPopupUI : PopupUIBase
     {
         if (questPrefab == null)
         {
-            GameObject Qprefab = Resources.Load<GameObject>("PopUp/Quest_Canvas");
+            GameObject Qprefab = PopupUIManager.Instance.OpenPopupUI<Quest>().gameObject;
             questPrefab = Instantiate(Qprefab);
         }
         questPrefab.SetActive(true);
