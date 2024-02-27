@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Quest : PopupUIBase
+public class QuestPopup : PopupUIBase
 {
     //QuestList에 잇는 title내용을 가져와야함.
     //연결부분은 QuestListpopupui.

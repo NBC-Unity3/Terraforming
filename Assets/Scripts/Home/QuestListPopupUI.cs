@@ -17,14 +17,14 @@ public class QuestListPopupUI : PopupUIBase
     //QuestList버튼을 누르면 Quest 프리팹이 일정 갯수 생성되도록 설정. -> Quest 목록 생성
     //Quest 프리팹의 경우 바뀌면 안됨. Quest 갯수가 정해진 갯수 이하면 새로 생성 필요.
     public GameObject[] questPrefab; // -> Quest 제목을 누르면 보여주는 Quest_canvas. List로 만들어서 quest 관리'
-    public Quest[] quests;
+    public QuestPopup[] quests;
 
     private void Awake()
     {
         questTitleButton = new Button[quest_count];
         questList = new QuestList[quest_count];
         questPrefab = new GameObject[quest_count];
-        quests = new Quest[quest_count];
+        quests = new QuestPopup[quest_count];
     }
 
     private void Start()
@@ -50,7 +50,7 @@ public class QuestListPopupUI : PopupUIBase
     {
         if (questPrefab[index] == null)
         {
-            quests[index] = PopupUIManager.Instance.OpenPopupUI<Quest>();
+            quests[index] = PopupUIManager.Instance.OpenPopupUI<QuestPopup>();
             quests[index].GetQuestList(questList[index]);
             quests[index].questCloseButton.onClick.AddListener(() => OnQuestListPopup());
             questPrefab[index] = quests[index].gameObject;
