@@ -122,6 +122,11 @@ public class Monster : MonoBehaviour, IDamagable
 
     private void PassiveUpdate()
     {
+        if (aiState == AIState.Idle)
+        {
+            Invoke("WanderToNewLocation", Random.Range(minWanderWaitTime, maxWanderWaitTime));
+        }
+
         if (aiState == AIState.Wandering && agent.remainingDistance < 0.1f)
         {
             SetState(AIState.Idle);
@@ -232,6 +237,7 @@ public class Monster : MonoBehaviour, IDamagable
     public void TakePhysicalDamage(int damageAmount)
     {
         health -= damageAmount;
+        detectDistance = 100f;
         if (health <= 0)
             //Die();
             StartCoroutine("Die");
@@ -241,7 +247,7 @@ public class Monster : MonoBehaviour, IDamagable
     IEnumerator Die()
     {
         animator.SetTrigger("Die");
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(1.0f);
         Destroy(gameObject);
     }
 
