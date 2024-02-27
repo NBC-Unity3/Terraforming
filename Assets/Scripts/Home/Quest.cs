@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Quest : PopupUIBase
 {
@@ -14,6 +15,8 @@ public class Quest : PopupUIBase
     public TMP_Text QuestClear;
 
     QuestList questList;
+    public Button questClearButton;
+
 
     public string[] questName = { "슬라임 처치", "총기 구매", "휴식하기", "총기 변경" };
     public string[] questDescription = { 
@@ -26,6 +29,7 @@ public class Quest : PopupUIBase
     private void Start()
     {
         SettingQuest();
+        questClearButton.onClick.AddListener(() => ChangeQuestClearText());
     }
 
     public void GetQuestList(QuestList list)
@@ -46,7 +50,7 @@ public class Quest : PopupUIBase
     {
         QuestNumber.text = questList.questListNumber.text; //안변할 것
         QuestTitle.text = questList.questListTitle.text;//안변할 것
-        QuestClear.text = questList.questListClear.text;//버튼 누르면 미수락 -> 수락, 수락상태에서 퀘스트 클리어할 때까지 버튼 못누름
+        QuestClear.text = questList.questListClear.text;//버튼 누르면 미수락 -> 수락
 
         QuestDescriptionSetting(QuestTitle.text); //안변할 것
     }
