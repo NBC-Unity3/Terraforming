@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
     public float moveSpeed;
+    public float crouchMoveSpeed;
     private Vector2 curMovementInput;
     public float jumpForce;
     public LayerMask groundLayerMask;
@@ -32,6 +33,10 @@ public class PlayerController : MonoBehaviour
     private Rigidbody _rigidbody;
     private Animator playerAnimator;
 
+    private bool isCrouch = false;
+
+    private float appliedMoveSpeed;
+
     public static PlayerController instance;
     private void Awake()
     {
@@ -42,7 +47,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         playerAnimator = GetComponent<Animator>();
-        Cursor.lockState = CursorLockMode.Locked;        
+        Cursor.lockState = CursorLockMode.Locked;
+        appliedMoveSpeed = moveSpeed;
     }
 
     private void FixedUpdate()
@@ -61,13 +67,11 @@ public class PlayerController : MonoBehaviour
     private void Move()
     {
         Vector3 dir = transform.forward * curMovementInput.y + transform.right * curMovementInput.x;
-        dir *= moveSpeed;
+        dir *= appliedMoveSpeed;
         dir.y = _rigidbody.velocity.y;
 
         _rigidbody.velocity = dir;
 
-        Debug.Log(dir);
-        Debug.Log(dir.y);
         playerAnimator.SetFloat("MoveX", curMovementInput.x);
         playerAnimator.SetFloat("MoveY", curMovementInput.y);
     }
@@ -91,12 +95,10 @@ public class PlayerController : MonoBehaviour
         if(context.phase == InputActionPhase.Performed)
         {
             curMovementInput = context.ReadValue<Vector2>();
-            playerAnimator.SetBool("Move", true);
         }
         else if(context.phase == InputActionPhase.Canceled)
         {
             curMovementInput = Vector2.zero;
-            playerAnimator.SetBool("Move", false);
         }
     }
 
@@ -104,9 +106,31 @@ public class PlayerController : MonoBehaviour
     {
         if(context.phase == InputActionPhase.Started)
         {
-            if(IsGrounded())
-                _rigidbody.AddForce(Vector2.up * jumpForce, ForceMode.Impulse);
+            if (IsGrounded())
+            {
+                _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                playerAnimator.SetBool("Jump", true);
+            }
 
+        }
+    }
+
+    public void OnCrouchInput(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            isCrouch = !isCrouch;
+            Debug.Log(isCrouch);
+            playerAnimator.SetBool("Crouch", isCrouch);
+
+            if(isCrouch)
+            {
+                appliedMoveSpeed = crouchMoveSpeed;
+            }
+            else
+            {
+                appliedMoveSpeed = moveSpeed;
+            }
         }
     }
 
@@ -135,9 +159,11 @@ public class PlayerController : MonoBehaviour
         {
             if (Physics.Raycast(rays[i], 0.1f, groundLayerMask))
             {
+                Debug.Log("true");
                 return true;
             }
         }
+        Debug.Log("false");
 
         return false;
     }

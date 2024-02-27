@@ -344,7 +344,7 @@ GameObject:
   - component: {fileID: 349809120}
   - component: {fileID: 349809119}
   - component: {fileID: 349809118}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -973,7 +973,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4126983702692336, guid: 571f03cc056043d46ae694bb0807e91d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.17
+      value: 0.39
       objectReference: {fileID: 0}
     - target: {fileID: 4126983702692336, guid: 571f03cc056043d46ae694bb0807e91d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2585,10 +2585,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  crouchMoveSpeed: 2.5
   jumpForce: 80
   groundLayerMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 8
   cameraContainer: {fileID: 412235027}
   minXLook: -85
   maxXLook: 85
@@ -2705,6 +2706,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 115fbdcd-974d-417f-8967-b54321b0afe7
     m_ActionName: Player/Look[/Mouse/delta]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2006532119}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnCrouchInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: ae54336b-0369-4a5f-bf49-49b40c9b700d
+    m_ActionName: Player/Crouch[/Keyboard/ctrl]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

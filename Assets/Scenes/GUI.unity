@@ -7717,7 +7717,7 @@ GameObject:
   - component: {fileID: 1952688686}
   - component: {fileID: 1952688689}
   - component: {fileID: 1952688688}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8069,7 +8069,7 @@ MonoBehaviour:
   jumpForce: 80
   groundLayerMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 8
   cameraContainer: {fileID: 412235027}
   minXLook: -85
   maxXLook: 85
