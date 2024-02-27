@@ -8,8 +8,31 @@ public class QuestList : PopupUIBase
 {
     public Button questTitleButton;
 
-    public TMP_Text questNumber;
-    public TMP_Text questTitle; //title Text를 저장하는 곳이 필요함. 그에 따라 Canvas 설정이 바뀜. +여기에 버튼설정해서 이동하도록 하는 것이 나을지도?
-    public TMP_Text questClear;
+    public TMP_Text questListNumber;
+    public TMP_Text questListTitle;
+    public TMP_Text questListClear;
 
+    //퀘스트 내용 만들기
+    public string[] questName = { "슬라임 처치", "총기 구매", "휴식하기", "총기 변경" };
+
+    private void Start()
+    {
+        QuestTitleChange();
+        QuestClearCheck(false);
+    }
+
+    public void QuestTitleChange()
+    {
+        int random = Random.Range(0, questName.Length);
+        questListTitle.text = questName[random];
+    }
+
+    public void QuestClearCheck(bool check)
+    {
+        if (check)
+        {
+            questListClear.text = "수락";
+        }
+        else questListClear.text = "미수락"; //클리어 시는 어떻게 할지 고민..
+    }
 }
