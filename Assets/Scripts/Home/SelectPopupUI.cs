@@ -15,6 +15,7 @@ public class SelectPopupUI : PopupUIBase
     //생성한 UI를 SetActive로 사용하기 위해서 GameObject로 설정해줌.
     public GameObject storePrefab;
     public GameObject questListPrefab;
+    QuestListPopupUI questListPopup;
 
     private void Start()
     {
@@ -39,6 +40,11 @@ public class SelectPopupUI : PopupUIBase
         gameObject.SetActive(false);
     }
 
+    public void OnSelectPopup()
+    {
+        gameObject.SetActive(true);
+    }
+
     public void OnStore()
     {
         if (storePrefab == null)
@@ -53,7 +59,9 @@ public class SelectPopupUI : PopupUIBase
     {
         if (questListPrefab == null)
         {
-            questListPrefab = PopupUIManager.Instance.OpenPopupUI<QuestListPopupUI>().gameObject;
+            questListPopup = PopupUIManager.Instance.OpenPopupUI<QuestListPopupUI>();
+            questListPopup.closeButton.onClick.AddListener(() => OnSelectPopup());
+            questListPrefab = questListPopup.gameObject;
         }
         questListPrefab.SetActive(true);
     }

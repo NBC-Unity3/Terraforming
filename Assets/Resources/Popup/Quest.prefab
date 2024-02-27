@@ -705,6 +705,7 @@ MonoBehaviour:
   QuestGold: {fileID: 3437136769826552446}
   QuestClear: {fileID: 2478562436900330786}
   questClearButton: {fileID: 5935794649559489377}
+  questCloseButton: {fileID: 6258895792626926023}
   questName:
   - "\uC2AC\uB77C\uC784 \uCC98\uCE58"
   - "\uCD1D\uAE30 \uAD6C\uB9E4"

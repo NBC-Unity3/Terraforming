@@ -16,9 +16,10 @@ public class Quest : PopupUIBase
 
     QuestList questList;
     public Button questClearButton;
+    public Button questCloseButton;
 
 
-    public string[] questName = { "슬라임 처치", "총기 구매", "휴식하기", "총기 변경" };
+    public string[] questName = { "슬라임 처치", "총기 구매", "휴식하기", "총기 변경" }; //QuestList에 있는 배열을 가져오는 것이 좋을 것 같음.
     public string[] questDescription = { 
         "슬라임을 한마리 처치", 
         "상점에서 총 구매하기", 
@@ -29,7 +30,8 @@ public class Quest : PopupUIBase
     private void Start()
     {
         SettingQuest();
-        questClearButton.onClick.AddListener(() => ChangeQuestClearText());
+        questClearButton.onClick.AddListener(() => ChangeQuestText());
+        questCloseButton.onClick.AddListener(() => CloseQuest());
     }
 
     public void GetQuestList(QuestList list)
@@ -37,12 +39,24 @@ public class Quest : PopupUIBase
         questList = list;
     }
 
-    public void ChangeQuestClearText()
+    public void ChangeQuestText()
     {
-        questList.QuestClearCheck(true);
+        questList.QuestClearText(true);
         QuestClear.text = questList.questListClear.text;
+        questClearButton.onClick.RemoveListener(() => ChangeQuestText()); //수락하면 버튼 못하도록 설정
+        //퀘스트 클리어 시 클리어 부분에 대한 if문 작성 필요
+        if(questList.clear)
+        {
+            questClearButton.onClick.AddListener(()=>SettingQuestClear());
+        }
     }
 
+    public void SettingQuestClear()
+    {
+        //퀘스트 클리어 시 활성화됨
+        //퀘스트 클리어로 보상을 누르게 되면 골드가 들어옴.
+        //버튼 비활성화 및 골드 보여주는 부분 회색표시.
+    }
 
 
     //처음 세팅
@@ -55,7 +69,7 @@ public class Quest : PopupUIBase
         QuestDescriptionSetting(QuestTitle.text); //안변할 것
     }
 
-    public void QuestDescriptionSetting(string name)
+    public void QuestDescriptionSetting(string name) //퀘스트에 맞춰 설명이랑 골드 설정
     {
         for(int i = 0; i < questName.Length; i++)
         {
@@ -66,5 +80,11 @@ public class Quest : PopupUIBase
                 break;
             }
         }
+    }
+
+    //Button
+    public void CloseQuest()
+    {
+        gameObject.SetActive(false);
     }
 }

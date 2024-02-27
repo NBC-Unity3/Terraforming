@@ -46,6 +46,18 @@ public class QuestListPopupUI : PopupUIBase
         }
     }
 
+    public void OnQuest(int index) //力格 努腐 矫 questcanvas 积己
+    {
+        if (questPrefab[index] == null)
+        {
+            quests[index] = PopupUIManager.Instance.OpenPopupUI<Quest>();
+            quests[index].GetQuestList(questList[index]);
+            quests[index].questCloseButton.onClick.AddListener(() => OnQuestListPopup());
+            questPrefab[index] = quests[index].gameObject;
+        }
+        questPrefab[index].SetActive(true);
+    }
+
     public void StartButtonSetting()
     {
         closeButton.onClick.AddListener(() => OffQuestListPopup());
@@ -56,14 +68,8 @@ public class QuestListPopupUI : PopupUIBase
         gameObject.SetActive(false);
     }
 
-    public void OnQuest(int index) //力格 努腐 矫 questcanvas 积己
+    public void OnQuestListPopup()
     {
-        if (questPrefab[index] == null)
-        {
-            quests[index] = PopupUIManager.Instance.OpenPopupUI<Quest>();
-            quests[index].GetQuestList(questList[index]);
-            questPrefab[index] = quests[index].gameObject;
-        }
-        questPrefab[index].SetActive(true);
+        gameObject.SetActive(true);
     }
 }
