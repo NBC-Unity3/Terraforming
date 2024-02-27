@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public Vector2 mouseDelta;
 
     [Header("Fire")]
-    public Gun gun; // 사용할 총
+    public PlayerShooter playerShooter; // 사용할 총
     public Transform gunPivot; // 총 배치의 기준점
     public Transform leftHandMount; // 총의 왼쪽 손잡이, 왼손이 위치할 지점
     public Transform rightHandMount; // 총의 오른쪽 손잡이, 오른손이 위치할 지점
@@ -107,12 +107,12 @@ public class PlayerController : MonoBehaviour
 
     public void OnShotInput()
     {
-        gun.Shot();
+        playerShooter.Shot();
     }
 
     public void OnReloadInput()
     {
-        gun.Reload();
+        playerShooter.Reload();
         playerAnimator.SetBool("Reload", true);
     }
 
