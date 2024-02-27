@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
-public class PopupUIManager : MonoBehaviour
+public class PopupUIManager
 { //연결되는 UI 코드 보고 거기에 UI 연결시키고 팝업 생성할 예정
 
     //매개변수로 받는거 말고는 답이 없는가에 대한 고찰 중...
@@ -39,7 +40,7 @@ public class PopupUIManager : MonoBehaviour
 
     public PopupUIBase MakePopupUI(GameObject prefab)
     {
-        var obj = Instantiate(prefab);
+        var obj = Object.Instantiate(prefab); //MonoBehaviour없더라도 생성가능하도록
         return GetComponentPopupUI(obj);
     }
 
