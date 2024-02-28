@@ -68,6 +68,7 @@ public class RangeMonster : MonoBehaviour, IDamagable
             case AIState.Wandering: PassiveUpdate(); break;
             case AIState.Attacking: AttackingUpdate(); break;
             case AIState.Fleeing: FleeingUpdate(); break;
+            case AIState.Die: break;
         }
 
     }
@@ -237,8 +238,11 @@ public class RangeMonster : MonoBehaviour, IDamagable
         health -= damageAmount;
         detectDistance = 100f;
         if (health <= 0)
+        {
             //Die();
+            SetState(AIState.Die);
             StartCoroutine("Die");
+        }
         animator.SetTrigger("Hit");
         //StartCoroutine(DamageFlash());
     }
@@ -260,6 +264,11 @@ public class RangeMonster : MonoBehaviour, IDamagable
             transform.rotation = Quaternion.Slerp(
                 transform.rotation, rotation, damping * Time.deltaTime
             );
+            //MucusSpawnPoint이 target을 조준 할수있게 회전 설정
+            MucusSpawnPoint.rotation = Quaternion.Euler(target.y,0,0);
+
+            MucusSpawnPoint.eulerAngles = new Vector3(target.y, 0, 0);
+
         }
     }
 

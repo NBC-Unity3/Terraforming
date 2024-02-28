@@ -10,7 +10,8 @@ public enum AIState
     Idle,
     Wandering,
     Attacking,
-    Fleeing
+    Fleeing,
+    Die
 }
 
 public interface IDamagable
@@ -76,6 +77,7 @@ public class Monster : MonoBehaviour, IDamagable
             case AIState.Wandering: PassiveUpdate(); break;
             case AIState.Attacking: AttackingUpdate(); break;
             case AIState.Fleeing: FleeingUpdate(); break;
+            case AIState.Die: break;
         }
 
     }
@@ -239,8 +241,11 @@ public class Monster : MonoBehaviour, IDamagable
         health -= damageAmount;
         detectDistance = 100f;
         if (health <= 0)
+        {
             //Die();
+            SetState(AIState.Die);
             StartCoroutine("Die");
+        }
         animator.SetTrigger("Hit");
         //StartCoroutine(DamageFlash());
     }
