@@ -11,5 +11,32 @@ public class QuestListUI : PopupUIBase
 
     public TMP_Text questListNumber;
     public TMP_Text questListTitle;
+    public TMP_Text questListState;
 
+    public void GetQuestNumber(int n) 
+    {
+        questListNumber.text = n.ToString();
+    }
+    public void GetquestTitle(string title)
+    {
+        questListTitle.text = title;
+    }
+    public void GetQuestState(QuestClearState clearState)
+    {
+        switch (clearState)
+        {
+            case QuestClearState.NotAccepted:
+                questListState.text = "¼ö¶ô °¡´É";
+                break;
+            case QuestClearState.Accepted:
+                questListState.text = "Äù½ºÆ® Áß";
+                break;
+            case QuestClearState.Clear:
+                questListState.text = "Å¬¸®¾î";
+                break;
+            case QuestClearState.Reward:
+                questListState.text = "º¸»ó È¹µæ";
+                break;
+        }
+    }
 }
