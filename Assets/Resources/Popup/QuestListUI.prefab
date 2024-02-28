@@ -361,7 +361,7 @@ GameObject:
   - component: {fileID: 3646724944014871461}
   - component: {fileID: 8000109453629188558}
   m_Layer: 5
-  m_Name: QuestList
+  m_Name: QuestListUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -408,6 +408,7 @@ MonoBehaviour:
   questTitleButton: {fileID: 4758996500678237411}
   questListNumber: {fileID: 1359256312231742762}
   questListTitle: {fileID: 2174444946153693313}
+  questListState: {fileID: 2521840107074183043}
 --- !u!1 &5520047542140259503
 GameObject:
   m_ObjectHideFlags: 0
