@@ -107,7 +107,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnShotInput()
     {
-        playerShooter.Shot();
+        playerShooter.Fire();
     }
 
     public void OnReloadInput()

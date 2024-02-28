@@ -5,11 +5,12 @@ using UnityEngine;
 [CreateAssetMenu]
 public class Gun : ScriptableObject
 {
-    public string name {get;}
-    public float damage {get;}       // 총의 데미지
-    public float range {get;}        // 사거리
-    public float rpm {get;}          // 연사속도
-    public float mag {get;}          // 탄창 용량
-    public float recoil {get;}       // 반동
-    public float reload {get;}       // 재장전 시간
+    public string name;
+    public float damage;        // 총의 데미지
+    public float range;         // 사거리
+    public float rpm;           // 연사속도
+    public int capacity;        // 탄창 용량
+    public int magazine;        // 장전된 탄환
+    public float recoil;        // 반동
+    public float reload;        // 재장전 시간
 }
