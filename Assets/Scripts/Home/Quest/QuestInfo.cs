@@ -1,51 +1,28 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum QuestClearState
+public class QuestInfo : MonoBehaviour
 {
-    NotAccepted, Accepted, Clear, Reward
-}
+    public string quest_ID;
+    public string quest_name;
+    public string quest_description; //QuestGoal에 넣어야하나..
+    public QuestGoal quest_goal;
+    public int quest_reward;
+    public QuestClearState questState;
+    public bool clear;
+    public int kill_count;
 
-public enum QuestType
-{
-    Kill, Act
-}
-
-public class QuestInfo
-{
-    //퀘스트에 대한 정보를 가지고 있음 == ItemSO
-
-    //기본 4개 설정
-    public List<QuestType> questTypes = new List<QuestType> 
-    { 
-        QuestType.Kill, QuestType.Act, QuestType.Act, QuestType.Act
-    };
-
-    public List<string> questNames = new List<string>
+    public QuestInfo()
     {
-        "슬라임 처치",
-        "총기 구매",
-        "휴식하기",
-        "총기 변경"
-    };
-    public List<string> questDescriptions = new List<string>
-    {
-        "슬라임을 한마리 처치",
-        "상점에서 총 구매하기",
-        "회복 버튼을 눌러서 휴식하기",
-        "구매한 총으로 변경하기"
-    };
-    public List<int> questGolds = new List<int>{ 2000, 1500, 500, 1000 };
-
-    //클리어 방법에 대한 내용 추가 필요할 듯
-
-    
-    public void MakeQuest(QuestType type, string name, string description, int gold)
-    {
-        questTypes.Add(type);
-        questNames.Add(name);
-        questDescriptions.Add(description);
-        questGolds.Add(gold);
+        quest_ID = "Kill_Monster";
+        quest_name = "몬스터 처치";
+        quest_description = "몬스터를 처치하세요.";
+        quest_goal = new QuestGoal(quest_ID);
+        quest_reward = 1000;
+        questState = QuestClearState.NotAccepted; //첫 생성이므로 항상 NotAccepted 상태
+        clear = false; //클리어 하지 않은 상태이므로 항상 false로 생성
+        kill_count = 0; //몬스터 처치 횟수를 체크함.
     }
 }

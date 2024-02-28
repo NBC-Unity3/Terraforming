@@ -408,12 +408,6 @@ MonoBehaviour:
   questTitleButton: {fileID: 4758996500678237411}
   questListNumber: {fileID: 1359256312231742762}
   questListTitle: {fileID: 2174444946153693313}
-  questListClear: {fileID: 2521840107074183043}
-  questName:
-  - "\uC2AC\uB77C\uC784 \uCC98\uCE58"
-  - "\uCD1D\uAE30 \uAD6C\uB9E4"
-  - "\uD734\uC2DD\uD558\uAE30"
-  - "\uCD1D\uAE30 \uBCC0\uACBD"
 --- !u!1 &5520047542140259503
 GameObject:
   m_ObjectHideFlags: 0
