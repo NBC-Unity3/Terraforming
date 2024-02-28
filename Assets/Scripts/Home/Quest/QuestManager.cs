@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -15,11 +16,26 @@ public class QuestManager : MonoBehaviour
     public int[] kill_count;
     public bool[] check_act;
 
+    private static QuestManager instance;
+    public static QuestManager Instance 
+    { 
+        get
+        {
+            if(instance == null)
+            {
+                GameObject obj = new GameObject();
+                obj.name = typeof(QuestManager).Name;
+                instance = obj.AddComponent<QuestManager>();
+            }
+            return instance;
+        }
+    }
+
     private void Awake()
     {
         quests = new Quest[quest_count];
-        kill_count = new int[quest_count];
-        check_act = new bool[quest_count];
+        kill_count = Enumerable.Repeat(-1, quest_count).ToArray();
+        check_act = Enumerable.Repeat(false, quest_count).ToArray();
     }
 
     private void Start()
@@ -33,9 +49,9 @@ public class QuestManager : MonoBehaviour
 
     public void MakeQuest(int index)
     {
-        int random = Random.Range(0, questInfo.questNames.Count);
-        Quest quest = new Quest(random);
-        quests[index] = quest;
+        //int random = Random.Range(0, questInfo.quest_name.Count);
+        //Quest quest = new Quest();
+        //quests[index] = quest;
     }
 
     //생성된 퀘스트에 대한 Type별 분류 필요 -> 처치 따로 행동 따로
@@ -53,17 +69,17 @@ public class QuestManager : MonoBehaviour
         }
     }
 
-
-    //kill_count랑 check_act 초기화
-    public void StartSetting()
+    public void Exam()
     {
-        for(int i = 0; i < quest_count; i++)
+        if (quests[1].questState == QuestClearState.Accepted && quests[1].questType == QuestType.Kill)
         {
-            kill_count[i] = -1;
-            check_act[i] = false;
+            //kill_count[1] =
+        }
+        if (quests[1].questState == QuestClearState.Accepted && quests[1].questType == QuestType.Act && check_act[1])
+        {
+            quests[1].questState = QuestClearState.Clear;
         }
     }
-
 
     //public string QuestState(QuestClearState clearState)
     //{
