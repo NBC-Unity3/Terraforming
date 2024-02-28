@@ -60,6 +60,9 @@ public class UIWeaponSwap : MonoBehaviour
             else
                 pieces[i].GetComponent<Piece>().piece.color = new Color(1f, 1f, 1f, 0.3f);
         }
+
+        // 클릭 시 해당 무기를 장착하는 기능 추가해야 함 //
+        ///////////////////////////////////////////////////
     }
 
     private float NormalizeAngle(float a) => (a + 360f) % 360f;

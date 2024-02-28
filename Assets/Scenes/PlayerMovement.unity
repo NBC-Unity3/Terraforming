@@ -1768,6 +1768,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 13841b6ba5ad3194891c5485265c505a, type: 3}
   - {fileID: 21300000, guid: 13841b6ba5ad3194891c5485265c505a, type: 3}
   - {fileID: 21300000, guid: 13841b6ba5ad3194891c5485265c505a, type: 3}
+  - {fileID: 21300000, guid: 13841b6ba5ad3194891c5485265c505a, type: 3}
   wheelSpriteScale: 0
   gapBetweenPiece: 1
   wheelParentGO: {fileID: 183779698}
