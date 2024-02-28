@@ -43,6 +43,7 @@ public class UIWeaponSwap : MonoBehaviour
             icon.transform.localPosition = Quaternion.AngleAxis(-i * degree, Vector3.forward) * Vector3.up * iconDist;
             icon.preserveAspect = true;
         }
+        gameObject.SetActive(false);
     }
 
     // Update is called once per frame

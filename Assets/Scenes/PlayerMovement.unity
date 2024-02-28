@@ -1769,7 +1769,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 13841b6ba5ad3194891c5485265c505a, type: 3}
   - {fileID: 21300000, guid: 13841b6ba5ad3194891c5485265c505a, type: 3}
   wheelSpriteScale: 0
-  gapBetweenPiece: 10
+  gapBetweenPiece: 1
   wheelParentGO: {fileID: 183779698}
   pieceGO: {fileID: 7188429481443320260, guid: 52c5f5c7b69a8fb40b7a4ca5ba2174f7, type: 3}
 --- !u!114 &1011499743
@@ -2762,6 +2762,7 @@ MonoBehaviour:
   leftHandMount: {fileID: 655366218}
   rightHandMount: {fileID: 541155933}
   canLook: 1
+  weaponSwapUI: {fileID: 1011499741}
 --- !u!114 &2006532120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2884,6 +2885,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: ae54336b-0369-4a5f-bf49-49b40c9b700d
     m_ActionName: Player/Crouch[/Keyboard/ctrl]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2006532119}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnWeaponSwapInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 704961ae-5c44-401b-8520-ad04bd6646f7
+    m_ActionName: Player/WeaponSwap[/Keyboard/tab]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

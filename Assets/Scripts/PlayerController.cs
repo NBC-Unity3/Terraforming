@@ -37,6 +37,8 @@ public class PlayerController : MonoBehaviour
 
     private float appliedMoveSpeed;
 
+    public GameObject weaponSwapUI;
+
     public static PlayerController instance;
     private void Awake()
     {
@@ -47,7 +49,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         playerAnimator = GetComponent<Animator>();
-        //Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Locked;
         appliedMoveSpeed = moveSpeed;
     }
 
@@ -143,6 +145,24 @@ public class PlayerController : MonoBehaviour
     {
         gun.Reload();
         playerAnimator.SetBool("Reload", true);
+    }
+
+    public void OnWeaponSwapInput(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            canLook = false;
+            // 이 부분은 UIManager.ShowUI로 대체해야 함
+            weaponSwapUI.SetActive(true);
+        }
+        else if (context.canceled)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            canLook = true;
+            // 이 부분은 UIManager.ShowUI로 대체해야 함 
+            weaponSwapUI.SetActive(false);
+        }
     }
 
     private bool IsGrounded()
