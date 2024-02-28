@@ -265,9 +265,9 @@ public class RangeMonster : MonoBehaviour, IDamagable
                 transform.rotation, rotation, damping * Time.deltaTime
             );
             //MucusSpawnPoint이 target을 조준 할수있게 회전 설정
-            MucusSpawnPoint.rotation = Quaternion.Euler(target.y,0,0);
-
-            MucusSpawnPoint.eulerAngles = new Vector3(target.y, 0, 0);
+            //MucusSpawnPoint.rotation = Quaternion.Euler(target.y,0,0);
+            //MucusSpawnPoint.eulerAngles = new Vector3(target.y, 0, 0);
+            //Mathf.Atan2(target.y, target.x);
 
         }
     }

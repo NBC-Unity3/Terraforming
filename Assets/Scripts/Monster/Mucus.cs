@@ -24,8 +24,8 @@ public class Mucus : MonoBehaviour
         {
             //플레이어 체력 감소
 
-            Destroy(gameObject);
         }
+        Destroy(gameObject);
     }
 
 }
