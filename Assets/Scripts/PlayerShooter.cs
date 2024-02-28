@@ -6,7 +6,6 @@ using UnityEngine.UIElements;
 public class PlayerShooter : MonoBehaviour {
 
     public Transform fireTransform;
-    public Transform aimTransform;
 
     private LineRenderer bulletLineRenderer;
 
@@ -14,11 +13,7 @@ public class PlayerShooter : MonoBehaviour {
     public AudioClip shotClip;
     public AudioClip reloadClip;
 
-    public float damage = 25;
-
-    public float timeBetFire = 0.12f;
-    public float reloadTime = 1.8f; // 재장전 소요 시간
-
+    public Gun gun;
 
     private void Awake() {
         gunAudioPlayer = GetComponent<AudioSource>();
@@ -32,7 +27,6 @@ public class PlayerShooter : MonoBehaviour {
         RaycastHit hit;
         Vector3 hitPosition = Vector3.zero;
 
-        Debug.DrawRay(fireTransform.position, aimTransform.forward, Color.white, 1.0f);
         if (Physics.Raycast(fireTransform.position, fireTransform.forward, out hit))
         {
             //레이가 어떤 물체와 충돌한 경우
@@ -40,14 +34,14 @@ public class PlayerShooter : MonoBehaviour {
 
             if (target != null)
             {
-                target.OnDamage(damage, hit.point, hit.normal);
+                target.OnDamage(gun.damage, hit.point, hit.normal);
             }
             hitPosition = hit.point;
         }
         else
         {   
             // 최대 사정거리를 충돌위치로 사용
-            hitPosition = fireTransform.position + fireTransform.forward;   // * attackRange
+            hitPosition = fireTransform.position + fireTransform.forward * gun.range;
         }
         StartCoroutine(ShotEffect(hitPosition));
     }
