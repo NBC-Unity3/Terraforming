@@ -16,6 +16,7 @@ public class SelectPopupUI : PopupUIBase
     public GameObject storePrefab;
     public GameObject questListPrefab;
     QuestListPopupUI questListPopup;
+    StoreUI storeUI;
 
     private void Start()
     {
@@ -49,8 +50,11 @@ public class SelectPopupUI : PopupUIBase
     {
         if (storePrefab == null)
         {
-            GameObject Sprefab = Resources.Load<GameObject>("PopUp/Store_Canvas"); 
-            storePrefab = Instantiate(Sprefab);
+            //GameObject Sprefab = Resources.Load<GameObject>("Popups/Store_Canvas"); 
+            //storePrefab = Instantiate(Sprefab);
+            storeUI = PopupUIManager.Instance.OpenPopupUI<StoreUI>();
+            storeUI.closeBtn.onClick.AddListener(() => OnSelectPopup());
+            storePrefab = storeUI.gameObject;
         }
         storePrefab.SetActive(true);
     }
