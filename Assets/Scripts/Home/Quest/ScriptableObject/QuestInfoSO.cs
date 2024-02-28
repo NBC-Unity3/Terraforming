@@ -13,7 +13,7 @@ public enum QuestType
 }
 
 [CreateAssetMenu(fileName = "QuestInfo", menuName ="QuestInfo/Default", order = 0)]
-public class QuestInfo : ScriptableObject
+public class QuestInfoSO : ScriptableObject
 {
     //퀘스트에 대한 정보를 가지고 있음 == ItemSO
     
