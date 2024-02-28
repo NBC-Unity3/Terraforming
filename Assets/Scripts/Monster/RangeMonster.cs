@@ -264,10 +264,12 @@ public class RangeMonster : MonoBehaviour, IDamagable
             transform.rotation = Quaternion.Slerp(
                 transform.rotation, rotation, damping * Time.deltaTime
             );
+            rotation = Quaternion.LookRotation(new Vector3(target.x,target.y+1,target.z));
             //MucusSpawnPoint이 target을 조준 할수있게 회전 설정
-            //MucusSpawnPoint.rotation = Quaternion.Euler(target.y,0,0);
+            MucusSpawnPoint.rotation = Quaternion.Slerp(
+                MucusSpawnPoint.rotation, rotation, damping * Time.deltaTime
+            );
             //MucusSpawnPoint.eulerAngles = new Vector3(target.y, 0, 0);
-            //Mathf.Atan2(target.y, target.x);
 
         }
     }
