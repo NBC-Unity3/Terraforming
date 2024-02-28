@@ -50,8 +50,6 @@ public class SelectPopupUI : PopupUIBase
     {
         if (storePrefab == null)
         {
-            //GameObject Sprefab = Resources.Load<GameObject>("Popups/Store_Canvas"); 
-            //storePrefab = Instantiate(Sprefab);
             storeUI = PopupUIManager.Instance.OpenPopupUI<StoreUI>();
             storeUI.closeBtn.onClick.AddListener(() => OnSelectPopup());
             storePrefab = storeUI.gameObject;

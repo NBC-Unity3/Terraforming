@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -12,10 +13,10 @@ public class QuestPopupUI : PopupUIBase
     public TMP_Text QuestTitle;
     public TMP_Text QuestDescription;
     public TMP_Text QuestGold;
-    public TMP_Text QuestClear;
+    public TMP_Text questListState;
 
     QuestListUI questList;
-    //Quest quest;
+    QuestInstant quest;
     public Button questClearButton;
     public Button questCloseButton;
 
@@ -27,18 +28,28 @@ public class QuestPopupUI : PopupUIBase
         questCloseButton.onClick.AddListener(() => CloseQuest());
     }
 
-    public void SetQuestList(QuestListUI list)
+    public void SetQuestList(QuestListUI questListUI)
     {
-        questList = list;
+        questList = questListUI;
+    }
+
+    public void SetQuestInstant(QuestInstant questInstant)
+    {
+        quest = questInstant;
     }
 
     public void ChangeQuestText()
     {
-        //questList.QuestClearChange(QuestClearState.Accepted); //퀘스트 수락
-        //QuestClear.text = questList.questListClear.text;
-        //questClearButton.onClick.RemoveListener(() => ChangeQuestText()); //수락하면 버튼 못하도록 설정
-        //퀘스트 클리어 시 클리어 부분에 대한 if문 작성 필요
+        if(quest.questState == QuestClearState.NotAccepted)
+        {
+            QuestManager.Instance.AddAcceptedQuest(int.Parse(QuestNumber.text) - 1);
+            questList.GetQuestState(quest.questState);
+            
+            questListState.text = questList.questListState.text;
+        }
         
+        //퀘스트 클리어 시 클리어 부분에 대한 if문 작성 필요
+
     }
 
     public void SettingQuestClear()
@@ -53,11 +64,11 @@ public class QuestPopupUI : PopupUIBase
     //처음 세팅
     public void SettingQuest()
     {
-        //QuestNumber.text = questList.questListNumber.text; //안변할 것
-        //QuestTitle.text = questList.questListTitle.text;//안변할 것
-        //QuestClear.text = questList.questListClear.text;//버튼 누르면 미수락 -> 수락
+        QuestNumber.text = questList.questListNumber.text; //안변할 것
+        QuestTitle.text = questList.questListTitle.text;//안변할 것
+        questListState.text = questList.questListState.text;//버튼 누르면 미수락 -> 수락
 
-        //QuestDescriptionSetting(quest.QuestDiscription(), quest.QuestGold()); //안변할 것
+        QuestDescriptionSetting(quest.quest_description, quest.quest_reward); //안변할 것
     }
 
     public void QuestDescriptionSetting(string discription, int gold) //퀘스트에 맞춰 설명이랑 골드 설정

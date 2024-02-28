@@ -23,9 +23,12 @@ public class QuestManager : MonoBehaviour
     {
         if(Instance == null) Instance = this;
         questInstants = new QuestInstant[quest_count];
-        MakeQuest();
     }
 
+    private void Start()
+    {
+        MakeQuest();
+    }
 
     //questState가 clear 상태에서 보상 획득 버튼을 누르게 되면 보상을 획득하고 questState가 Reward가 되도록 설정.
     //UI랑 연결이 되어야함.
@@ -75,15 +78,18 @@ public class QuestManager : MonoBehaviour
     //이건 UI랑 연결되어야하는 부분  
     public void AddAcceptedQuest(int index)
     {
+        Debug.Log(DacceptedQuestInstants.ContainsKey(index));
         questInstants[index].questState = QuestClearState.Accepted; //ChangeQuestState를 이용해서 변경하는 방법도 생각해봐야할 것.
         DacceptedQuestInstants.Add(index, questInstants[index]); //퀘스트는 총 4개가 있고 4개 중에서 선택한 것의 index를 key로 잡아서 저장.
+        Debug.Log(DacceptedQuestInstants.ContainsKey(index));
     }
 
     public void MakeQuest()
     {
         for (int i = 0; i < quest_count; i++)
         {
-            questInstants[i] = new QuestInstant();
+            QuestInstant instant = new QuestInstant();
+            questInstants[i] = instant;
         }
     }
 

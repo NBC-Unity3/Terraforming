@@ -58,6 +58,7 @@ public class QuestListPopupUI : PopupUIBase
         {
             quests[index] = PopupUIManager.Instance.OpenPopupUI<QuestPopupUI>();
             quests[index].SetQuestList(questList[index]);
+            quests[index].SetQuestInstant(QuestManager.Instance.questInstants[index]);
             quests[index].questCloseButton.onClick.AddListener(() => OnQuestListPopup());
             questPrefab[index] = quests[index].gameObject;
         }
