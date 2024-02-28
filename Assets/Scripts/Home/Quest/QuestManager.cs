@@ -9,31 +9,21 @@ using Random = UnityEngine.Random;
 public class QuestManager : MonoBehaviour
 {
     //퀘스트를 관리하면서 인게임이랑 연결시켜주는 역할을 함.
-    private static QuestManager instance;
-    public static QuestManager Instance 
-    { 
-        get
-        {
-            if(instance == null)
-            {
-                GameObject obj = new GameObject();
-                obj.name = typeof(QuestManager).Name;
-                instance = obj.AddComponent<QuestManager>();
-            }
-            return instance;
-        }
-    }
+    public static QuestManager Instance;
+    
     public int quest_count = 4;
 
     QuestInfo questInfo = new QuestInfo(); //생성되어있지 않아도 생성될 수 있는 퀘스트에 대한 정보를 가지고 있기
 
-    QuestInstant[] questInstants; //플레이어가 수락할 수 있는 퀘스트 목록. 퀘스트 갯수 정해져 있기 때문에 배열로 바꿈.
+    public QuestInstant[] questInstants; //플레이어가 수락할 수 있는 퀘스트 목록. 퀘스트 갯수 정해져 있기 때문에 배열로 바꿈.
     //List<QuestInstant> acceptedQuestInstants = new List<QuestInstant>(); //수락한 퀘스트 목록.
-    Dictionary<int, QuestInstant> DacceptedQuestInstants = new Dictionary<int, QuestInstant>();
+    public Dictionary<int, QuestInstant> DacceptedQuestInstants = new Dictionary<int, QuestInstant>();
 
     private void Awake()
     {
+        if(Instance == null) Instance = this;
         questInstants = new QuestInstant[quest_count];
+        MakeQuest();
     }
 
 
@@ -108,28 +98,7 @@ public class QuestManager : MonoBehaviour
             }
         }
     }
-
-    //UI로 이동할 예정
-    public string QuestState(QuestClearState clearState)
-    {
-        string stateString = "";
-        switch (clearState)
-        {
-            case QuestClearState.NotAccepted:
-                stateString = "수락 가능";
-                break;
-            case QuestClearState.Accepted:
-                stateString = "퀘스트 중";
-                break;
-            case QuestClearState.Clear:
-                stateString = "클리어";
-                break;
-            case QuestClearState.Reward:
-                stateString = "보상 획득";
-                break;
-        }
-        return stateString;
-    }
+    
 
 
 
