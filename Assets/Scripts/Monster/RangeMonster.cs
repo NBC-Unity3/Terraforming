@@ -37,8 +37,8 @@ public class RangeMonster : MonoBehaviour, IDamagable
 
     public float fieldOfView = 120f;
 
-    public GameObject Mucus;
-    public Transform MucusSpawnPoint;
+    public GameObject mucus;
+    public Transform mucusSpawnPoint;
 
     private NavMeshAgent agent;
     private Animator animator;
@@ -103,7 +103,12 @@ public class RangeMonster : MonoBehaviour, IDamagable
         else
         {
             animator.SetBool("Moving", false);
-            Vector3 directionToPlayer = PlayerController.instance.transform.position - transform.position;
+            //Vector3 directionToPlayer = PlayerController.instance.transform.position - transform.position;
+            Vector3 directionToPlayer = new Vector3
+                //캐싱하기
+            (PlayerController.instance.transform.position.x - transform.position.x,
+            PlayerController.instance.transform.position.y + 1 - transform.position.y,
+            PlayerController.instance.transform.position.z - transform.position.z);
 
             // 플레이어를 바라보도록 회전 처리.
             UpdateRotation(directionToPlayer, 3f);
@@ -111,7 +116,7 @@ public class RangeMonster : MonoBehaviour, IDamagable
             if (Time.time - lastAttackTime > attackRate)
             {
                 lastAttackTime = Time.time;
-                Instantiate(Mucus, MucusSpawnPoint);
+                Instantiate(mucus, mucusSpawnPoint.position,mucusSpawnPoint.rotation);
                 //PlayerController.instance.GetComponent<IDamagable>().TakePhysicalDamage(damage);
                 animator.speed = 1;
                 animator.SetTrigger("Attack");
@@ -264,11 +269,15 @@ public class RangeMonster : MonoBehaviour, IDamagable
             transform.rotation = Quaternion.Slerp(
                 transform.rotation, rotation, damping * Time.deltaTime
             );
-            rotation = Quaternion.LookRotation(new Vector3(target.x,target.y+1,target.z));
             //MucusSpawnPoint이 target을 조준 할수있게 회전 설정
-            MucusSpawnPoint.rotation = Quaternion.Slerp(
-                MucusSpawnPoint.rotation, rotation, damping * Time.deltaTime
+            mucusSpawnPoint.rotation = Quaternion.Slerp(
+                mucusSpawnPoint.rotation, rotation, damping * Time.deltaTime
             );
+
+            //Vector3 mucusRot = mucusSpawnPoint.eulerAngles;
+            //mucusRot.x = -Mathf.Atan2(target.y, target.x) * Mathf.Rad2Deg;
+            //mucusSpawnPoint.eulerAngles = mucusRot;
+
             //MucusSpawnPoint.eulerAngles = new Vector3(target.y, 0, 0);
 
         }

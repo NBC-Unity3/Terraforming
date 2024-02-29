@@ -229,7 +229,7 @@ GameObject:
   - component: {fileID: 3353681305505991004}
   m_Layer: 7
   m_Name: RangeSlime
-  m_TagString: Monster
+  m_TagString: RangeSlime
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
