@@ -33,6 +33,9 @@ public class SelectPopupUI : PopupUIBase
         questButton.onClick.AddListener(() => OnQuestList());
         questButton.onClick.AddListener(() => OffSelectPopup());
 
+        healthButton.onClick.AddListener(() => OffSelectPopup());
+        healthButton.onClick.AddListener(() => OnMoveForHealth());
+
         closeButton.onClick.AddListener(() => OffSelectPopup());
     }
 
@@ -66,5 +69,10 @@ public class SelectPopupUI : PopupUIBase
             questListPrefab = questListPopup.gameObject;
         }
         questListPrefab.SetActive(true);
+    }
+
+    public void OnMoveForHealth()
+    {
+
     }
 }
