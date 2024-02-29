@@ -353,7 +353,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   quest_count: 4
-  questInstants: []
+  questInfo: []
 --- !u!1 &1487361974
 GameObject:
   m_ObjectHideFlags: 0

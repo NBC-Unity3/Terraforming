@@ -16,7 +16,7 @@ public class QuestPopupUI : PopupUIBase
     public TMP_Text questListState;
 
     QuestListUI questList;
-    QuestInstant quest;
+    Quest quest;
     public Button questClearButton;
     public Button questCloseButton;
 
@@ -35,29 +35,29 @@ public class QuestPopupUI : PopupUIBase
         questList = questListUI;
     }
 
-    public void SetQuestInstant(QuestInstant questInstant)
+    public void SetQuestInstant(Quest questInstant)
     {
         quest = questInstant;
     }
 
     public void ChangeQuestText()
     {
-        switch (quest.questState)
+        switch (quest.state)
         {
             case QuestClearState.NotAccepted:
                 QuestManager.Instance.AddAcceptedQuest(int.Parse(QuestNumber.text) - 1);
-                questList.GetQuestState(quest.questState);
+                questList.GetQuestState(quest.state);
 
                 questListState.text = questList.questListState.text;
                 break;
             case QuestClearState.Accepted:
                 break;
             case QuestClearState.Clear:
-                quest.questState = QuestClearState.Reward;
-                questList.GetQuestState(quest.questState);
+                quest.state = QuestClearState.Reward;
+                questList.GetQuestState(quest.state);
                 questListState.text = questList.questListState.text;
                 SettingQuestClear();
-                QuestManager.Instance.DacceptedQuestInstants.Remove(int.Parse(QuestNumber.text) - 1); //보상까지 받았으므로 진행중인 퀘스트에서는 삭제
+                QuestManager.Instance.DicAcceptedQuests.Remove(int.Parse(QuestNumber.text) - 1); //보상까지 받았으므로 진행중인 퀘스트에서는 삭제
                 break;
         }
     }
@@ -77,7 +77,7 @@ public class QuestPopupUI : PopupUIBase
         QuestTitle.text = questList.questListTitle.text;//안변할 것
         questListState.text = questList.questListState.text;//버튼 누르면 미수락 -> 수락
 
-        QuestDescriptionSetting(quest.quest_description, quest.quest_reward); //안변할 것
+        //QuestDescriptionSetting(quest.quest_description, quest.quest_reward); //안변할 것
     }
 
     public void QuestDescriptionSetting(string discription, int gold) //퀘스트에 맞춰 설명이랑 골드 설정

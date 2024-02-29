@@ -44,8 +44,8 @@ public class QuestListPopupUI : PopupUIBase
             //☆매개변수가 길면 따로(함수명 중요), 아니면 쉼표로 같이 넘겨주기(그냥 내가 보기 힘들 때, 남들도 보기 힘들 때)
             questList[i].GetQuestNumber(i + 1);
             //오래걸리고, 가독성 떨어짐
-            questList[i].GetquestTitle(QuestManager.Instance.questInstants[i].quest_name);
-            questList[i].GetQuestState(QuestManager.Instance.questInstants[i].questState);
+            //questList[i].GetquestTitle(QuestManager.Instance.Quests[i].quest_name);
+            //questList[i].GetQuestState(QuestManager.Instance.Quests[i].questState);
 
             questTitleButton[i] = questList[i].questTitleButton;
             int n = i;
@@ -60,7 +60,7 @@ public class QuestListPopupUI : PopupUIBase
         {
             quests[index] = PopupUIManager.Instance.OpenPopupUI<QuestPopupUI>();
             quests[index].SetQuestList(questList[index]);
-            quests[index].SetQuestInstant(QuestManager.Instance.questInstants[index]);
+            //quests[index].SetQuestInstant(QuestManager.Instance.questInstants[index]);
             quests[index].questCloseButton.onClick.AddListener(() => OnQuestListPopup());
             questPrefab[index] = quests[index].gameObject;
         }
