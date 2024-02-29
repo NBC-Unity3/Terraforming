@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour
     private float appliedMoveSpeed;
 
     public GameObject weaponSwapUI;
+    public GameObject SelectPopupPrefab;
 
     public static PlayerController instance;
     private void Awake()
@@ -164,6 +165,22 @@ public class PlayerController : MonoBehaviour
             weaponSwapUI.SetActive(false);
         }
     }
+
+    public void OnInteractionInput(InputAction.CallbackContext context) //퀘스트나 회복, 상점 이용을 위한
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            if (true) //플레이어 시야에 오브젝트가 있으며, 일정거리 이하일 때 실행되어야함. popupUI 켜져있을 때 움직이면 안됨. 회복버튼 누르면 움직이면 안됨.
+            {
+                //popupUI 삭제 안할거기 때문에 prefab으로 저장이 필요함.
+                SelectPopupUI popupUI = PopupUIManager.Instance.OpenPopupUI<SelectPopupUI>();
+                SelectPopupPrefab = popupUI.gameObject;
+                //카메라 고정도 필요
+            }
+            SelectPopupPrefab.SetActive(true);
+        }
+    }
+
 
     private bool IsGrounded()
     {
