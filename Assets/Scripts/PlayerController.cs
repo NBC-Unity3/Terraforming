@@ -154,8 +154,7 @@ public class PlayerController : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.None;
             canLook = false;
-            UIWeaponSwap popupUI = PopupUIManager.Instance.OpenPopupUI<UIWeaponSwap>();
-            weaponSwapUI = popupUI.gameObject;
+            // 이 부분은 UIManager.ShowUI로 대체해야 함
             weaponSwapUI.SetActive(true);
         }
         else if (context.canceled)
