@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class QuestListPopupUI : PopupUIBase
 {
-    public int quest_count = QuestManager.Instance.quest_count;
+    public int quest_count;
     public Button[] questTitleButton; //배열로 해서 QuestPrefab에 있는 title로 연결. 누르면 인덱스에 맞는 Canvas화면 보여주기
     public Button closeButton; //뒤로 가기 눌렀을 때 전 UI가 나오게 할지 아니면 아예 꺼버릴지.
 
@@ -21,6 +21,7 @@ public class QuestListPopupUI : PopupUIBase
 
     private void Awake()
     {
+        quest_count = QuestManager.Instance.quest_count;
         questTitleButton = new Button[quest_count];
         questList = new QuestListUI[quest_count];
         questPrefab = new GameObject[quest_count];
@@ -39,6 +40,13 @@ public class QuestListPopupUI : PopupUIBase
         {
             questList[i] = PopupUIManager.Instance.OpenPopupUI<QuestListUI>();
             questList[i].transform.parent = questListPosition.transform;
+
+            //☆매개변수가 길면 따로(함수명 중요), 아니면 쉼표로 같이 넘겨주기(그냥 내가 보기 힘들 때, 남들도 보기 힘들 때)
+            questList[i].GetQuestNumber(i + 1);
+            //오래걸리고, 가독성 떨어짐
+            //questList[i].GetquestTitle(QuestManager.Instance.Quests[i].quest_name);
+            //questList[i].GetQuestState(QuestManager.Instance.Quests[i].questState);
+
             questTitleButton[i] = questList[i].questTitleButton;
             int n = i;
             questTitleButton[i].onClick.AddListener(() => OnQuest(n));
@@ -52,6 +60,7 @@ public class QuestListPopupUI : PopupUIBase
         {
             quests[index] = PopupUIManager.Instance.OpenPopupUI<QuestPopupUI>();
             quests[index].SetQuestList(questList[index]);
+            //quests[index].SetQuestInstant(QuestManager.Instance.questInstants[index]);
             quests[index].questCloseButton.onClick.AddListener(() => OnQuestListPopup());
             questPrefab[index] = quests[index].gameObject;
         }

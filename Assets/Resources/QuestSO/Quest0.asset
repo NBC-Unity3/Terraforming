@@ -9,13 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9d38aa5ab033a845b2ba12401d4f045, type: 3}
-  m_Name: ActQuestInfo
+  m_Script: {fileID: 11500000, guid: 576dca0b7f591534a9011d5f826aaea0, type: 3}
+  m_Name: Quest0
   m_EditorClassIdentifier: 
   questTypes: 0
-  quest_ID: 
-  quest_name: 
-  quest_description: 
-  quest_reward: 0
-  questState: 0
-  quest_goal: 0
+  ID: 0
+  title: "\uBAAC\uC2A4\uD130 \uCC98\uCE58"
+  description: "\uBAAC\uC2A4\uD130 1\uB9C8\uB9AC\uB97C \uCC98\uCE58\uD574\uC8FC\uC138\uC694."
+  reward: 1000
