@@ -250,7 +250,7 @@ Transform:
   - {fileID: 8991032529502519278}
   - {fileID: 9034297242282722316}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &8893700349074205855
 NavMeshAgent:
@@ -322,8 +322,8 @@ MonoBehaviour:
   attackRate: 1.5
   attackDistance: 10
   fieldOfView: 120
-  Mucus: {fileID: 6120957086494895665, guid: 39d109a4f30bceb4198597d4022e6611, type: 3}
-  MucusSpawnPoint: {fileID: 9034297242282722316}
+  mucus: {fileID: 6120957086494895665, guid: 39d109a4f30bceb4198597d4022e6611, type: 3}
+  mucusSpawnPoint: {fileID: 9034297242282722316}
 --- !u!95 &3353681305505991004
 Animator:
   serializedVersion: 5
