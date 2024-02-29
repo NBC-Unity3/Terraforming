@@ -40,16 +40,23 @@ public class QuestPopupUI : PopupUIBase
 
     public void ChangeQuestText()
     {
-        if(quest.questState == QuestClearState.NotAccepted)
+        switch (quest.questState)
         {
-            QuestManager.Instance.AddAcceptedQuest(int.Parse(QuestNumber.text) - 1);
-            questList.GetQuestState(quest.questState);
-            
-            questListState.text = questList.questListState.text;
-        }
-        
-        //퀘스트 클리어 시 클리어 부분에 대한 if문 작성 필요
+            case QuestClearState.NotAccepted:
+                QuestManager.Instance.AddAcceptedQuest(int.Parse(QuestNumber.text) - 1);
+                questList.GetQuestState(quest.questState);
 
+                questListState.text = questList.questListState.text;
+                break;
+            case QuestClearState.Accepted:
+                break;
+            case QuestClearState.Clear:
+                quest.questState = QuestClearState.Reward;
+                questList.GetQuestState(quest.questState);
+                questListState.text = questList.questListState.text;
+                SettingQuestClear();
+                break;
+        }
     }
 
     public void SettingQuestClear()
