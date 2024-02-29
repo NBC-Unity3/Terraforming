@@ -41,7 +41,9 @@ public class QuestListPopupUI : PopupUIBase
             questList[i] = PopupUIManager.Instance.OpenPopupUI<QuestListUI>();
             questList[i].transform.parent = questListPosition.transform;
 
+            //☆매개변수가 길면 따로(함수명 중요), 아니면 쉼표로 같이 넘겨주기(그냥 내가 보기 힘들 때, 남들도 보기 힘들 때)
             questList[i].GetQuestNumber(i + 1);
+            //오래걸리고, 가독성 떨어짐
             questList[i].GetquestTitle(QuestManager.Instance.questInstants[i].quest_name);
             questList[i].GetQuestState(QuestManager.Instance.questInstants[i].questState);
 

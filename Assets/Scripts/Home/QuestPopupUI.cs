@@ -64,7 +64,6 @@ public class QuestPopupUI : PopupUIBase
 
     public void SettingQuestClear()
     {
-
         //퀘스트 클리어 시 활성화됨
         //퀘스트 클리어로 보상을 누르게 되면 골드가 들어옴.
         //버튼 비활성화 및 골드 보여주는 부분 회색표시.

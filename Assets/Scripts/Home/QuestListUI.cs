@@ -17,6 +17,9 @@ public class QuestListUI : PopupUIBase
     {
         questListNumber.text = n.ToString();
     }
+    //이니셜라이즈 함수를 작성 -> 한번만 작동되도록(첫 세팅) 
+    //리프레시 함수 -> 바껴야하는 부분을 전부 작성(짧으면 ㄱㅊ, 길어지면 나눌 것)
+    //같은 데이터를 넘겨줄.. 
     public void GetquestTitle(string title)
     {
         questListTitle.text = title;
