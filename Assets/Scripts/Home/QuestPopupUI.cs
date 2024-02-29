@@ -25,7 +25,9 @@ public class QuestPopupUI : PopupUIBase
     {
         SettingQuest();
         questClearButton.onClick.AddListener(() => ChangeQuestText());
-        questCloseButton.onClick.AddListener(() => CloseQuest());
+
+        questCloseButton.onClick.AddListener(() => CloseQuestUI());
+        //questCloseButton.onClick.AddListener(() => changeQuest());
     }
 
     public void SetQuestList(QuestListUI questListUI)
@@ -55,6 +57,7 @@ public class QuestPopupUI : PopupUIBase
                 questList.GetQuestState(quest.questState);
                 questListState.text = questList.questListState.text;
                 SettingQuestClear();
+                QuestManager.Instance.DacceptedQuestInstants.Remove(int.Parse(QuestNumber.text) - 1); //보상까지 받았으므로 진행중인 퀘스트에서는 삭제
                 break;
         }
     }
@@ -85,7 +88,7 @@ public class QuestPopupUI : PopupUIBase
     }
 
     //Button
-    public void CloseQuest()
+    public void CloseQuestUI()
     {
         gameObject.SetActive(false);
     }

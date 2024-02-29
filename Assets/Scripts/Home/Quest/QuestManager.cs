@@ -93,15 +93,13 @@ public class QuestManager : MonoBehaviour
         }
     }
 
-    public void RemoveQuest()
+    //수정필요
+    public void RemoveQuest(int index)
     {
-        for(int i = 0; i < questInstants.Length; i++)
+        if (questInstants[index].questState == QuestClearState.Reward) //퀘스트의 보상을 받은 상태이면..
         {
-            if (questInstants[i].questState == QuestClearState.Reward) //퀘스트의 보상을 받은 상태이면..
-            {
-                //null 상태 유지하면 오류 발생하기 때문에 새로운 quest 생성으로 대체
-                questInstants[i] = new QuestInstant();
-            }
+            //null 상태 유지하면 오류 발생하기 때문에 새로운 quest 생성으로 대체
+            questInstants[index] = new QuestInstant();
         }
     }
     
