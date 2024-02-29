@@ -1310,9 +1310,8 @@ MonoBehaviour:
   fireTransform: {fileID: 110361159}
   shotClip: {fileID: 8300000, guid: 522ab1780826bfd46ace04399f6b1ac9, type: 3}
   reloadClip: {fileID: 8300000, guid: 69050768d13d7f341b02d90dde790a6c, type: 3}
-  damage: 25
-  timeBetFire: 0.12
-  reloadTime: 1.8
+  gun: {fileID: 0}
+  ammo: 0
 --- !u!1 &701979585
 GameObject:
   m_ObjectHideFlags: 0
@@ -2758,7 +2757,7 @@ MonoBehaviour:
   maxXLook: 85
   lookSensitivity: 0.2
   mouseDelta: {x: 0, y: 0}
-  gun: {fileID: 698193552}
+  playerShooter: {fileID: 0}
   gunPivot: {fileID: 2072219276}
   leftHandMount: {fileID: 655366218}
   rightHandMount: {fileID: 541155933}
