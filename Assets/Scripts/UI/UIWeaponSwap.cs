@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIWeaponSwap : MonoBehaviour
+public class UIWeaponSwap : PopupUIBase
 {
     [Header("Wheel")]
     public Sprite wheelSprite;
