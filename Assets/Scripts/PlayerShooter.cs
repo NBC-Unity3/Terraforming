@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -27,6 +28,8 @@ public class PlayerShooter : MonoBehaviour {
     public int ammo;    // 보유중인 탄환수
 
     private float lastFireTime;
+
+    public Action<int> onFire;
 
     private void Awake() {
         gunAudioPlayer = GetComponent<AudioSource>();
@@ -74,6 +77,7 @@ public class PlayerShooter : MonoBehaviour {
         StartCoroutine(ShotEffect(hitPosition));
 
         gun.magazine--;
+        onFire?.Invoke(gun.magazine);
         if (gun.magazine <= 0)
         {
             state = State.Empty;
@@ -120,6 +124,8 @@ public class PlayerShooter : MonoBehaviour {
 
         gun.magazine += ammoToFill;
         ammo -= ammoToFill;
+
+        onFire?.Invoke(gun.magazine);
 
         state = State.Ready;
     }

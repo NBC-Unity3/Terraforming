@@ -15,16 +15,23 @@ public class UIWeaponSwap : PopupUIBase
 
     private GameObject[] pieces;
 
+    private PlayerInventory inventory;
+
+    private void Awake()
+    {
+        inventory = PlayerController.instance.inventory;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        pieces = new GameObject[weaponSprites.Length];
+        pieces = new GameObject[inventory.playerGuns.Length];
 
-        var degree = 360f / weaponSprites.Length;
+        var degree = 360f / inventory.playerGuns.Length;
 
         var iconDist = Vector3.Distance(pieceGO.GetComponent<Piece>().icon.transform.position, pieceGO.GetComponent<Piece>().piece.transform.position);
 
-        for(int i = 0; i < weaponSprites.Length; i++)
+        for(int i = 0; i < inventory.playerGuns.Length; i++)
         {
             pieces[i] = Instantiate(pieceGO, wheelParentGO.transform);
             pieces[i].transform.localPosition = Vector3.zero;
@@ -35,7 +42,7 @@ public class UIWeaponSwap : PopupUIBase
             Image icon = pieceOfWheel.icon;
             Image piece = pieceOfWheel.piece;
 
-            piece.fillAmount = 1f / weaponSprites.Length - gapBetweenPiece / 360f;
+            piece.fillAmount = 1f / inventory.playerGuns.Length - gapBetweenPiece / 360f;
             piece.transform.localRotation = Quaternion.Euler(0, 0, degree / 2f + gapBetweenPiece / 2f - i * degree);
             piece.color = new Color(1f, 1f, 1f, 0.3f);
 
@@ -48,13 +55,13 @@ public class UIWeaponSwap : PopupUIBase
     // Update is called once per frame
     void Update()
     {
-        var stepLength = 360f / weaponSprites.Length;
+        var stepLength = 360f / inventory.playerGuns.Length;
         var mouseAngle = NormalizeAngle(Vector3.SignedAngle(Input.mousePosition - transform.position, Vector3.up, Vector3.forward) + stepLength / 2f);
         var activeElement = (int)(mouseAngle / stepLength);
 
-        for(int i = 0; i< weaponSprites.Length; i++)
+        for(int i = 0; i< inventory.playerGuns.Length; i++)
         {
-            if (i == activeElement)
+            if (i == activeElement && inventory.playerGuns[i].isUnlock)
                 pieces[i].GetComponent<Piece>().piece.color = new Color(1f, 1f, 1f, 0.7f);
             else
                 pieces[i].GetComponent<Piece>().piece.color = new Color(1f, 1f, 1f, 0.3f);
