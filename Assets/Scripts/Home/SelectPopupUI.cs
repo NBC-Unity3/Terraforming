@@ -33,6 +33,9 @@ public class SelectPopupUI : PopupUIBase
         questButton.onClick.AddListener(() => OnQuestList());
         questButton.onClick.AddListener(() => OffSelectPopup());
 
+        healthButton.onClick.AddListener(() => OffSelectPopup());
+        healthButton.onClick.AddListener(() => OnMoveForHealth());
+
         closeButton.onClick.AddListener(() => OffSelectPopup());
     }
 
@@ -50,8 +53,6 @@ public class SelectPopupUI : PopupUIBase
     {
         if (storePrefab == null)
         {
-            //GameObject Sprefab = Resources.Load<GameObject>("Popups/Store_Canvas"); 
-            //storePrefab = Instantiate(Sprefab);
             storeUI = PopupUIManager.Instance.OpenPopupUI<StoreUI>();
             storeUI.closeBtn.onClick.AddListener(() => OnSelectPopup());
             storePrefab = storeUI.gameObject;
@@ -68,5 +69,10 @@ public class SelectPopupUI : PopupUIBase
             questListPrefab = questListPopup.gameObject;
         }
         questListPrefab.SetActive(true);
+    }
+
+    public void OnMoveForHealth()
+    {
+
     }
 }

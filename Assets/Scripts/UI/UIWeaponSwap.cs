@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIWeaponSwap : MonoBehaviour
+public class UIWeaponSwap : PopupUIBase
 {
     [Header("Wheel")]
     public Sprite wheelSprite;
@@ -43,7 +43,6 @@ public class UIWeaponSwap : MonoBehaviour
             icon.transform.localPosition = Quaternion.AngleAxis(-i * degree, Vector3.forward) * Vector3.up * iconDist;
             icon.preserveAspect = true;
         }
-        gameObject.SetActive(false);
     }
 
     // Update is called once per frame
