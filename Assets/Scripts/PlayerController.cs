@@ -9,8 +9,16 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed;
     public float crouchMoveSpeed;
     private Vector2 curMovementInput;
-    public float jumpForce;
     public LayerMask groundLayerMask;
+
+    [Header("Jump")]
+    public float jumpForce;
+    public int jumpSteminaValue;
+
+    [Header("Run")]
+    public float runSpeed;
+    public int runSteminaValue;
+    private bool isRun;
 
     [Header("Look")]
     public Transform cameraContainer;
@@ -76,10 +84,32 @@ public class PlayerController : MonoBehaviour
     private void Move()
     {
         Vector3 dir = transform.forward * curMovementInput.y + transform.right * curMovementInput.x;
+        if (isRun)
+        {
+            if(!playerStat.UseStemina(runSteminaValue * Time.deltaTime))
+            {
+                isRun = false;
+            }
+            else
+            {
+                appliedMoveSpeed = runSpeed;
+            }
+        }
+        else if (isCrouch)
+        {
+            appliedMoveSpeed = crouchMoveSpeed;
+        }
+        else
+        {
+            appliedMoveSpeed = moveSpeed;
+        }
+
         dir *= appliedMoveSpeed;
         dir.y = _rigidbody.velocity.y;
 
         _rigidbody.velocity = dir;
+
+        Debug.Log(curMovementInput);
 
         playerAnimator.SetFloat("MoveX", curMovementInput.x);
         playerAnimator.SetFloat("MoveY", curMovementInput.y);
@@ -104,10 +134,34 @@ public class PlayerController : MonoBehaviour
         if(context.phase == InputActionPhase.Performed)
         {
             curMovementInput = context.ReadValue<Vector2>();
+
+            if(curMovementInput.y < 0.5)
+            {
+                isRun = false;
+            }
         }
         else if(context.phase == InputActionPhase.Canceled)
         {
+            isRun = false;
             curMovementInput = Vector2.zero;
+        }
+    }
+
+    public void OnRunInput(InputAction.CallbackContext context)
+    {
+        if(context.phase == InputActionPhase.Performed && curMovementInput.y >= 0.5)
+        {
+            isRun = true;
+            if (isCrouch)
+            {
+                isCrouch = !isCrouch;
+                playerAnimator.SetBool("Crouch", isCrouch);
+                cameraContainer.localPosition = new Vector3(cameraContainer.localPosition.x, 1.5f, cameraContainer.localPosition.z);
+            }
+        }
+        else if(context.phase == InputActionPhase.Canceled)
+        {
+            isRun = false;
         }
     }
 
@@ -115,7 +169,7 @@ public class PlayerController : MonoBehaviour
     {
         if(context.phase == InputActionPhase.Started)
         {
-            if (IsGrounded())
+            if (IsGrounded() && playerStat.UseStemina(jumpSteminaValue))
             {
                 _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
                 playerAnimator.SetBool("Jump", true);
@@ -129,17 +183,15 @@ public class PlayerController : MonoBehaviour
         if (context.performed)
         {
             isCrouch = !isCrouch;
-            Debug.Log(isCrouch);
             playerAnimator.SetBool("Crouch", isCrouch);
 
             if(isCrouch)
             {
-                appliedMoveSpeed = crouchMoveSpeed;
+                isRun = false;
                 cameraContainer.localPosition = new Vector3(cameraContainer.localPosition.x, 0.75f, cameraContainer.localPosition.z);
             }
             else
             {
-                appliedMoveSpeed = moveSpeed;
                 cameraContainer.localPosition = new Vector3(cameraContainer.localPosition.x, 1.5f, cameraContainer.localPosition.z);
             }
         }

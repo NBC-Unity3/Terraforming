@@ -33,8 +33,8 @@ public class UIPlayerGUI : MonoBehaviour
 
     private void ConnectFuncToPlayerStat()
     {
-        PlayerController.instance.playerStat.OnHpChange += SetHpBarFillAmount;
-        PlayerController.instance.playerStat.OnSteminaChange += SetSteminaBarFillAmount;
+        PlayerController.instance.playerStat.health.OnCurValueChange += SetHpBarFillAmount;
+        PlayerController.instance.playerStat.stamina.OnCurValueChange += SetSteminaBarFillAmount;
     }
 
     public void SetGunInfo(Gun gun)

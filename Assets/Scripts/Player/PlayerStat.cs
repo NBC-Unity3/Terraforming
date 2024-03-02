@@ -3,81 +3,76 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class Condition
+{
+    [HideInInspector]
+    public float curValue;
+    public float maxValue;
+    public float startValue;
+    public float regenRate;
+    public float decayRate;
+    public Action<float> OnCurValueChange;
+
+    public void Add(float amount)
+    {
+        curValue = Mathf.Min(curValue + amount, maxValue);
+        OnCurValueChange?.Invoke(GetPercentage());
+    }
+
+    public void Subtract(float amount)
+    {
+        curValue = Mathf.Max(curValue - amount, 0.0f);
+        OnCurValueChange?.Invoke(GetPercentage());
+    }
+
+    public float GetPercentage()
+    {
+        return curValue / maxValue;
+    }
+}
+
 public class PlayerStat : MonoBehaviour, IDamagable
 {
     [Header("Player Stat Fields")]
-    [SerializeField] private int maxHp;
-    private int curHp;
-    [SerializeField] private int maxStemina;
-    private int curStemina;
+    public Condition health;
+    public Condition stamina;
 
-    public Action<float> OnHpChange;
-    public Action<float> OnSteminaChange;
     public Action OnDie;
-
-    private void Awake()
-    {
-        curHp = maxHp;
-        curStemina = maxStemina;
-    }
 
     private void Start()
     {
         OnDie += Die;
+        health.curValue = health.startValue;
+        stamina.curValue = stamina.startValue;
     }
 
-    public void AddHp(int value)
+    private void Update()
     {
-        curHp += value;
-
-        if(curHp > maxHp) curHp = maxHp;
-
-        OnHpChange?.Invoke(GetHpBarFillAmount());
-    }
-
-    public void SubtractHp(int value)
-    {
-        curHp -= value;
-
-        if(curHp < 0)
+        stamina.Add(stamina.regenRate * Time.deltaTime);
+        if(health.curValue <= 0f)
         {
             OnDie?.Invoke();
         }
-
-        OnHpChange?.Invoke(GetHpBarFillAmount());
     }
 
-    public void AddStemina(int value)
+    public void AddHp(float value)
     {
-        curStemina += value;
-
-        if( curStemina > maxStemina) curStemina = maxStemina;
-
-        OnSteminaChange?.Invoke(GetSteminaBarFillAmount());
+        health.Add(value);
     }
 
-    public bool UseStemina(int value)
+    public void SubtractHp(float value)
     {
-        if(curStemina > value)
-        {
-            curStemina -= value;
-            OnSteminaChange?.Invoke(GetSteminaBarFillAmount());
-            return true;
-        }
-        else
-        {
+        health.Subtract(value);
+    }
+
+    public bool UseStemina(float value)
+    {
+        if (stamina.curValue - value < 0)
             return false;
-        }
-    }
 
-    public float GetHpBarFillAmount()
-    {
-        return (curHp / (float)maxHp);
-    }
-
-    public float GetSteminaBarFillAmount()
-    {
-        return curStemina / (float)curStemina;
+        stamina.Subtract(value);
+        return true;
     }
 
     public void TakePhysicalDamage(int damageAmount)

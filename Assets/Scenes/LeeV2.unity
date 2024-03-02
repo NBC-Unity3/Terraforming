@@ -6563,10 +6563,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   crouchMoveSpeed: 2.5
-  jumpForce: 80
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 55
+  jumpForce: 80
+  jumpSteminaValue: 20
+  runSpeed: 9
+  runSteminaValue: 10
   cameraContainer: {fileID: 628730590}
   minXLook: -60
   maxXLook: 85
@@ -6736,6 +6739,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 9aa8176d-10f9-4d4d-9214-bbe3379f29a4
     m_ActionName: Player/Interaction[/Keyboard/f]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1331778854}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnRunInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 03d4c07a-4e0f-4311-8405-e9d70b770d4a
+    m_ActionName: Player/Run[/Keyboard/leftShift]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -6808,8 +6827,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b65787f146154844baf01fd79145bf43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 100
-  maxStemina: 100
+  health:
+    curValue: 0
+    maxValue: 100
+    startValue: 100
+    regenRate: 2
+    decayRate: 0
+  stamina:
+    curValue: 0
+    maxValue: 100
+    startValue: 100
+    regenRate: 5
+    decayRate: 0
 --- !u!1 &1406645678
 GameObject:
   m_ObjectHideFlags: 0
