@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
     public bool canLook = true;
 
     private Rigidbody _rigidbody;
-    private Animator playerAnimator;
+    public Animator playerAnimator;
 
     private bool isCrouch = false;
 
@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour
 
     // 일단은 controller가 instance여서 controller에서 inventory에 접근할 수 있게 함. PlayerManager에서 관리하면 좋을 것 같음
     public PlayerInventory inventory;
+    public PlayerStat playerStat;
 
     public static PlayerController instance;
     private void Awake()
@@ -49,6 +50,7 @@ public class PlayerController : MonoBehaviour
         instance = this;
         _rigidbody = GetComponent<Rigidbody>();
         inventory = GetComponent<PlayerInventory>();
+        playerStat = GetComponent<PlayerStat>();
     }
 
     void Start()
@@ -133,10 +135,12 @@ public class PlayerController : MonoBehaviour
             if(isCrouch)
             {
                 appliedMoveSpeed = crouchMoveSpeed;
+                cameraContainer.localPosition = new Vector3(cameraContainer.localPosition.x, 0.75f, cameraContainer.localPosition.z);
             }
             else
             {
                 appliedMoveSpeed = moveSpeed;
+                cameraContainer.localPosition = new Vector3(cameraContainer.localPosition.x, 1.5f, cameraContainer.localPosition.z);
             }
         }
     }

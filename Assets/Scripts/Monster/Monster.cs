@@ -115,7 +115,7 @@ public class Monster : MonoBehaviour, IDamagable
             if (Time.time - lastAttackTime > attackRate)
             {
                 lastAttackTime = Time.time;
-                PlayerController.instance.GetComponent<IDamagable>().TakePhysicalDamage(damage);
+                PlayerController.instance.playerStat.TakePhysicalDamage(damage);
                 animator.speed = 1;
                 animator.SetTrigger("Attack");
             }

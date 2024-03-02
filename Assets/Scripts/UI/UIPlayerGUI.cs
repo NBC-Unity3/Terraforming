@@ -22,12 +22,19 @@ public class UIPlayerGUI : MonoBehaviour
         SetGunInfo(PlayerController.instance.playerShooter.gun);
         SetTotalAmmoText();
         ConncetFuncToCurrentGun();
+        ConnectFuncToPlayerStat();
     }
 
     private void ConncetFuncToCurrentGun()
     {
         PlayerController.instance.playerShooter.onFire += SetCurAmmoText;
         PlayerController.instance.playerShooter.onReload += SetTotalAmmoText;
+    }
+
+    private void ConnectFuncToPlayerStat()
+    {
+        PlayerController.instance.playerStat.OnHpChange += SetHpBarFillAmount;
+        PlayerController.instance.playerStat.OnSteminaChange += SetSteminaBarFillAmount;
     }
 
     public void SetGunInfo(Gun gun)
@@ -49,5 +56,15 @@ public class UIPlayerGUI : MonoBehaviour
     public void OnSwapGun()
     {
 
+    }
+
+    public void SetHpBarFillAmount(float value)
+    {
+        hpBar.fillAmount = value;
+    }
+
+    public void SetSteminaBarFillAmount(float value)
+    {
+        steminaBar.fillAmount = value;
     }
 }

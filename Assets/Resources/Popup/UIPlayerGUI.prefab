@@ -1248,8 +1248,8 @@ MonoBehaviour:
   curAmmoText: {fileID: 1494523098693089443}
   maxAmmoText: {fileID: 3134444917430157784}
   totalAmmoText: {fileID: 3634296596482904975}
-  hpBar: {fileID: 0}
-  steminaBar: {fileID: 0}
+  hpBar: {fileID: 625813415412007599}
+  steminaBar: {fileID: 8400955255027752193}
 --- !u!1 &5986601861430098417
 GameObject:
   m_ObjectHideFlags: 0
