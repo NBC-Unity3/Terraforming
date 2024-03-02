@@ -703,7 +703,7 @@ MonoBehaviour:
   QuestTitle: {fileID: 5974551566058217950}
   QuestDescription: {fileID: 5387198012609995812}
   QuestGold: {fileID: 3437136769826552446}
-  questListState: {fileID: 2478562436900330786}
+  questState: {fileID: 2478562436900330786}
   questClearButton: {fileID: 5935794649559489377}
   questCloseButton: {fileID: 6258895792626926023}
 --- !u!1 &5848499969353218178

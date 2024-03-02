@@ -1,21 +1,25 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using TMPro;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditorInternal.VersionControl.ListControl;
 
 public class QuestPopupUI : PopupUIBase
 {
     //QuestList에 잇는 title내용을 가져와야함.
     //연결부분은 QuestListpopupui.
+    int number;
+
     public TMP_Text QuestNumber;
     public TMP_Text QuestTitle;
     public TMP_Text QuestDescription;
     public TMP_Text QuestGold;
-    public TMP_Text questListState;
+    public TMP_Text questState;
 
-    QuestListUI questList;
     Quest quest;
     public Button questClearButton;
     public Button questCloseButton;
@@ -24,40 +28,41 @@ public class QuestPopupUI : PopupUIBase
     private void Start()
     {
         SettingQuest();
-        questClearButton.onClick.AddListener(() => ChangeQuestText());
+        questClearButton.onClick.AddListener(() => ChangeQuestState());
 
         questCloseButton.onClick.AddListener(() => CloseQuestUI());
-        //questCloseButton.onClick.AddListener(() => changeQuest());
     }
 
-    public void SetQuestList(QuestListUI questListUI)
+    private void OnEnable()
     {
-        questList = questListUI;
+        if (quest == null) return;
+        SetQuestStateText(quest.state);
+        
     }
 
-    public void SetQuestInstant(Quest questInstant)
+    public void SetQuest(int n, Quest questInfo)
     {
-        quest = questInstant;
+        number = n;
+        quest = questInfo;
     }
 
-    public void ChangeQuestText()
+    public void ChangeQuestState()
     {
         switch (quest.state)
         {
             case QuestClearState.NotAccepted:
-                QuestManager.Instance.AddAcceptedQuest(int.Parse(QuestNumber.text) - 1);
-                questList.GetQuestState(quest.state);
-
-                questListState.text = questList.questListState.text;
+                QuestManager.Instance.AddAcceptedQuest(number);
+                SetQuestStateText(quest.state);
                 break;
             case QuestClearState.Accepted:
                 break;
             case QuestClearState.Clear:
                 quest.state = QuestClearState.Reward;
-                questList.GetQuestState(quest.state);
-                questListState.text = questList.questListState.text;
+                SetQuestStateText(quest.state);
+
+                //아래부분은 QuestManager에서 진행되어야할 부분
                 SettingQuestClear();
-                QuestManager.Instance.DicAcceptedQuests.Remove(int.Parse(QuestNumber.text) - 1); //보상까지 받았으므로 진행중인 퀘스트에서는 삭제
+                //보상 받은 퀘스트는 삭제하고 새로운 퀘스트 등록 필요..
                 break;
         }
     }
@@ -73,17 +78,32 @@ public class QuestPopupUI : PopupUIBase
     //처음 세팅
     public void SettingQuest()
     {
-        QuestNumber.text = questList.questListNumber.text; //안변할 것
-        QuestTitle.text = questList.questListTitle.text;//안변할 것
-        questListState.text = questList.questListState.text;//버튼 누르면 미수락 -> 수락
+        //안 변화할 것
+        QuestNumber.text = (number + 1).ToString();
+        QuestTitle.text = quest.questInfoSO.title;
+        QuestDescription.text = quest.questInfoSO.description;
+        QuestGold.text = quest.questInfoSO.reward.ToString();
 
-        //QuestDescriptionSetting(quest.quest_description, quest.quest_reward); //안변할 것
+        SetQuestStateText(quest.state);
     }
 
-    public void QuestDescriptionSetting(string discription, int gold) //퀘스트에 맞춰 설명이랑 골드 설정
+    public void SetQuestStateText(QuestClearState clearState)
     {
-        QuestDescription.text = discription;
-        QuestGold.text = gold.ToString();
+        switch (clearState)
+        {
+            case QuestClearState.NotAccepted:
+                questState.text = "수락 가능";
+                break;
+            case QuestClearState.Accepted:
+                questState.text = "퀘스트 중";
+                break;
+            case QuestClearState.Clear:
+                questState.text = "클리어";
+                break;
+            case QuestClearState.Reward:
+                questState.text = "보상 획득";
+                break;
+        }
     }
 
     //Button
