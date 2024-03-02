@@ -40,11 +40,15 @@ public class PlayerController : MonoBehaviour
     public GameObject weaponSwapUI;
     public GameObject SelectPopupPrefab;
 
+    // 일단은 controller가 instance여서 controller에서 inventory에 접근할 수 있게 함. PlayerManager에서 관리하면 좋을 것 같음
+    public PlayerInventory inventory;
+
     public static PlayerController instance;
     private void Awake()
     {
         instance = this;
         _rigidbody = GetComponent<Rigidbody>();
+        inventory = GetComponent<PlayerInventory>();
     }
 
     void Start()
@@ -173,6 +177,8 @@ public class PlayerController : MonoBehaviour
         {
             if (true) //플레이어 시야에 오브젝트가 있으며, 일정거리 이하일 때 실행되어야함. popupUI 켜져있을 때 움직이면 안됨. 회복버튼 누르면 움직이면 안됨.
             {
+                Cursor.lockState = CursorLockMode.None;
+                canLook = false;
                 //popupUI 삭제 안할거기 때문에 prefab으로 저장이 필요함.
                 SelectPopupUI popupUI = PopupUIManager.Instance.OpenPopupUI<SelectPopupUI>();
                 SelectPopupPrefab = popupUI.gameObject;

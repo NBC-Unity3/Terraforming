@@ -6,7 +6,12 @@ public class Compass : MonoBehaviour
 	public Transform Player;
 	public Text CompassDirectionText;
 
-	public void Update()
+    public void Start()
+    {
+		Player = GameObject.Find("Player").transform;
+    }
+
+    public void Update()
 	{
 		CompassImage.uvRect = new Rect(Player.localEulerAngles.y / 360, 0, 1, 1);
 

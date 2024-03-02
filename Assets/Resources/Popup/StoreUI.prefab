@@ -876,25 +876,19 @@ MonoBehaviour:
   playerGoldText: {fileID: 2242362188990784139}
   attackValueText: {fileID: 664453176043421412}
   fireRateValueText: {fileID: 6446534251963259660}
-  knockbackValueText: {fileID: 6786001100292157429}
+  capacityValueText: {fileID: 6786001100292157429}
   previousBtn: {fileID: 2510629692515190910}
   nextBtn: {fileID: 7590000406760760214}
   buyBtn: {fileID: 1548519879784212190}
   alreadyBuyBtn: {fileID: 8619484782133248289}
   closeBtn: {fileID: 8528941886095278916}
   items:
-  - name: Pistol
+  - gun: {fileID: 11400000, guid: 4c2fa9e1d94136f4b812253396b4ded8, type: 2}
     price: 4000
-    attackValue: 20
-    fireRateValue: 1
-    knockbackValue: 2
     weaponSprite: {fileID: 21300000, guid: 3adef11c455a05c43b31bdce42523ba2, type: 3}
     isSold: 0
-  - name: Riffle
+  - gun: {fileID: 11400000, guid: 4c2fa9e1d94136f4b812253396b4ded8, type: 2}
     price: 50000
-    attackValue: 50
-    fireRateValue: 0.5
-    knockbackValue: 5
     weaponSprite: {fileID: 21300000, guid: 13841b6ba5ad3194891c5485265c505a, type: 3}
     isSold: 0
 --- !u!1 &3722866334180936948
@@ -1983,7 +1977,7 @@ GameObject:
   m_Component:
   - component: {fileID: 420208944323525251}
   m_Layer: 5
-  m_Name: Knockback
+  m_Name: capacity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2160,7 +2154,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uB109\uBC31     :"
+  m_text: "\uC7A5\uD0C4\uC218 :"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d9451c09d24026544b576b2701f88524, type: 2}
   m_sharedMaterial: {fileID: 9128139000959546685, guid: d9451c09d24026544b576b2701f88524,

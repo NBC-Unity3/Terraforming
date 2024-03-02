@@ -593,7 +593,7 @@ GameObject:
   - component: {fileID: 315076670276818495}
   - component: {fileID: 1891591679613669150}
   m_Layer: 5
-  m_Name: Image
+  m_Name: WeaponImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1137,6 +1137,7 @@ GameObject:
   - component: {fileID: 2132076071534700064}
   - component: {fileID: 1259755107611057193}
   - component: {fileID: 4458652367357924761}
+  - component: {fileID: 1781386202845093628}
   m_Layer: 5
   m_Name: UIPlayerGUI
   m_TagString: Untagged
@@ -1160,7 +1161,7 @@ RectTransform:
   - {fileID: 6679889517858076609}
   - {fileID: 5750177952563380491}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1230,6 +1231,23 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &1781386202845093628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5607486964439700856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 620d49194b442ab40bcd6de2d6e24413, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponImage: {fileID: 1891591679613669150}
+  curAmmoText: {fileID: 1494523098693089443}
+  maxAmmoText: {fileID: 3134444917430157784}
+  hpBar: {fileID: 0}
+  steminaBar: {fileID: 0}
 --- !u!1 &8531761638320156000
 GameObject:
   m_ObjectHideFlags: 0

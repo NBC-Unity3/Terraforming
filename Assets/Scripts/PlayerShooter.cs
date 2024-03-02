@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -27,6 +28,8 @@ public class PlayerShooter : MonoBehaviour {
     public int ammo;    // 보유중인 탄환수
 
     private float lastFireTime;
+
+    public Action<int> onFire;
 
     private void Awake() {
         gunAudioPlayer = GetComponent<AudioSource>();
@@ -58,11 +61,13 @@ public class PlayerShooter : MonoBehaviour {
         if (Physics.Raycast(fireTransform.position, fireTransform.forward, out hit))
         {
             //레이가 어떤 물체와 충돌한 경우
-            IDamageable target = hit.collider.GetComponent<IDamageable>();
+            IDamagable target = hit.collider.GetComponent<IDamagable>();
 
             if (target != null)
             {
-                target.OnDamage(gun.damage, hit.point, hit.normal);
+                // IDamagable, IDamageable 인터페이스가 두 개 있어서 둘 중 하나 골라서 사용해야할 것 같습니다.
+                target.TakePhysicalDamage((int)gun.damage);
+                //target.OnDamage(gun.damage, hit.point, hit.normal);
             }
             hitPosition = hit.point;
         }
@@ -74,6 +79,7 @@ public class PlayerShooter : MonoBehaviour {
         StartCoroutine(ShotEffect(hitPosition));
 
         gun.magazine--;
+        onFire?.Invoke(gun.magazine);
         if (gun.magazine <= 0)
         {
             state = State.Empty;
@@ -120,6 +126,8 @@ public class PlayerShooter : MonoBehaviour {
 
         gun.magazine += ammoToFill;
         ammo -= ammoToFill;
+
+        onFire?.Invoke(gun.magazine);
 
         state = State.Ready;
     }
