@@ -54,7 +54,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         playerAnimator = GetComponent<Animator>();
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
         appliedMoveSpeed = moveSpeed;
     }
 
@@ -77,8 +77,19 @@ public class PlayerController : MonoBehaviour
         dir *= appliedMoveSpeed;
         dir.y = _rigidbody.velocity.y;
 
-        _rigidbody.velocity = dir;
+        if (SelectPopupPrefab != null && SelectPopupPrefab.activeInHierarchy)
+        {
+            _rigidbody.velocity = Vector3.zero;
+            canLook = false;
+            return;
+        }
 
+        //if(Cursor.lockState == CursorLockMode.None)
+        //{
+        //    Cursor.lockState = CursorLockMode.Locked;
+        //}
+        _rigidbody.velocity = dir;
+        canLook = true;
         playerAnimator.SetFloat("MoveX", curMovementInput.x);
         playerAnimator.SetFloat("MoveY", curMovementInput.y);
     }
@@ -175,7 +186,7 @@ public class PlayerController : MonoBehaviour
     {
         if (context.phase == InputActionPhase.Started)
         {
-            if (true) //플레이어 시야에 오브젝트가 있으며, 일정거리 이하일 때 실행되어야함. popupUI 켜져있을 때 움직이면 안됨. 회복버튼 누르면 움직이면 안됨.
+            if (SelectPopupPrefab == null) //플레이어 시야에 오브젝트가 있으며, 일정거리 이하일 때 실행되어야함. popupUI 켜져있을 때 움직이면 안됨. 회복버튼 누르면 움직이면 안됨.
             {
                 Cursor.lockState = CursorLockMode.None;
                 canLook = false;
@@ -183,7 +194,9 @@ public class PlayerController : MonoBehaviour
                 SelectPopupUI popupUI = PopupUIManager.Instance.OpenPopupUI<SelectPopupUI>();
                 SelectPopupPrefab = popupUI.gameObject;
                 //카메라 고정도 필요
+                
             }
+            Cursor.lockState = CursorLockMode.None;
             SelectPopupPrefab.SetActive(true);
         }
     }
