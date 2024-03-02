@@ -61,11 +61,13 @@ public class PlayerShooter : MonoBehaviour {
         if (Physics.Raycast(fireTransform.position, fireTransform.forward, out hit))
         {
             //레이가 어떤 물체와 충돌한 경우
-            IDamageable target = hit.collider.GetComponent<IDamageable>();
+            IDamagable target = hit.collider.GetComponent<IDamagable>();
 
             if (target != null)
             {
-                target.OnDamage(gun.damage, hit.point, hit.normal);
+                // IDamagable, IDamageable 인터페이스가 두 개 있어서 둘 중 하나 골라서 사용해야할 것 같습니다.
+                target.TakePhysicalDamage((int)gun.damage);
+                //target.OnDamage(gun.damage, hit.point, hit.normal);
             }
             hitPosition = hit.point;
         }
