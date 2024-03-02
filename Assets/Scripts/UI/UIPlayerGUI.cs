@@ -10,6 +10,7 @@ public class UIPlayerGUI : MonoBehaviour
     public Image weaponImage;
     public TextMeshProUGUI curAmmoText;
     public TextMeshProUGUI maxAmmoText;
+    public TextMeshProUGUI totalAmmoText;
 
     [Header("Player Stat UI Components")]
     public Image hpBar;
@@ -19,12 +20,14 @@ public class UIPlayerGUI : MonoBehaviour
     void Start()
     {
         SetGunInfo(PlayerController.instance.playerShooter.gun);
+        SetTotalAmmoText();
         ConncetFuncToCurrentGun();
     }
 
     private void ConncetFuncToCurrentGun()
     {
         PlayerController.instance.playerShooter.onFire += SetCurAmmoText;
+        PlayerController.instance.playerShooter.onReload += SetTotalAmmoText;
     }
 
     public void SetGunInfo(Gun gun)
@@ -36,6 +39,11 @@ public class UIPlayerGUI : MonoBehaviour
     public void SetCurAmmoText(int curAmmo)
     {
         curAmmoText.text = curAmmo.ToString();
+    }
+
+    public void SetTotalAmmoText()
+    {
+        totalAmmoText.text = PlayerController.instance.inventory.Ammo.ToString();
     }
 
     public void OnSwapGun()

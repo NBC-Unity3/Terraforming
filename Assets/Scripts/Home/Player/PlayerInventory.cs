@@ -15,15 +15,22 @@ public class PlayerInventory : MonoBehaviour
     public int Ammo {  get;  set; }
     public int Gold { get; set; }
 
+    private void Awake()
+    {
+        Ammo = 10;
+        Gold = 100000000;
+        
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        Gold = 100000000;
     }
 
     public void AddAmmo(int amount)
     {
         Ammo += amount;
+        Debug.Log(Ammo);
     }
 
     public int UseAmmo(int amount)
@@ -37,7 +44,7 @@ public class PlayerInventory : MonoBehaviour
         {
             int remainAmmo = Ammo;
             Ammo = 0;
-            return Ammo;
+            return remainAmmo;
         }
     }
 }

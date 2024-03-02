@@ -30,6 +30,9 @@ public class PlayerShooter : MonoBehaviour {
     private float lastFireTime;
 
     public Action<int> onFire;
+    public Action onReload;
+
+    private PlayerInventory inventory;
 
     private void Awake() {
         gunAudioPlayer = GetComponent<AudioSource>();
@@ -44,6 +47,7 @@ public class PlayerShooter : MonoBehaviour {
         state = State.Ready;
         lastFireTime = 0;
         ammo = 100;
+        inventory = PlayerController.instance.inventory;
     }
 
     public void Fire() {
@@ -88,7 +92,7 @@ public class PlayerShooter : MonoBehaviour {
 
     public void Reload()
     {
-        if (state == State.Reloading || ammo <= 0 || gun.magazine >= gun.capacity)
+        if (state == State.Reloading ||  inventory.Ammo <= 0 || gun.magazine >= gun.capacity)
         {
             return;
         }
@@ -119,17 +123,13 @@ public class PlayerShooter : MonoBehaviour {
 
         // 재장전할 탄알 계산
         int ammoToFill = gun.capacity - gun.magazine;
-        if (ammo < ammoToFill)
-        {
-            ammoToFill = ammo;
-        }
+        ammoToFill = inventory.UseAmmo(ammoToFill);
 
         gun.magazine += ammoToFill;
-        ammo -= ammoToFill;
 
         onFire?.Invoke(gun.magazine);
+        onReload?.Invoke();
 
         state = State.Ready;
     }
-
 }
