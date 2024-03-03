@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -23,11 +24,12 @@ public class PlayerShooter : MonoBehaviour {
     public AudioClip shotClip;
     public AudioClip reloadClip;
 
-    public Gun gun;
+    public Gun gun;                 // 장착중인 총기정보
+    public GameObject gunPrefab;    // 장착중인 총기 모델링
 
-    public int ammo;    // 보유중인 탄환수
+    public int ammo;                // 보유중인 총 탄환수
+    private float lastFireTime;     // 연사구현을 위한 param
 
-    private float lastFireTime;
 
     public Action<int> onFire;
 
@@ -38,6 +40,22 @@ public class PlayerShooter : MonoBehaviour {
         bulletLineRenderer.positionCount = 2;
         bulletLineRenderer.enabled = false;
     }
+
+    void OnEnable()
+    {
+        GameObject Gun = Instantiate(gunPrefab);
+        Gun.name = "Gun";
+        Gun.transform.parent = transform.GetChild(0);
+        Gun.transform.localPosition = Vector3.zero;
+        Gun.transform.localEulerAngles = Vector3.zero;
+
+        transform.GetChild(1).transform.localPosition = gun.leftHandlePosition;
+        transform.GetChild(1).transform.localRotation = gun.leftHandleRotation;
+        transform.GetChild(2).transform.localPosition = gun.rightHandlePosition;
+        transform.GetChild(2).transform.localRotation = gun.rightHandleRotation;
+        transform.GetChild(3).transform.localPosition = gun.firePosition;
+    }
+
 
     private void Start() {
         // 총 상태 초기화
