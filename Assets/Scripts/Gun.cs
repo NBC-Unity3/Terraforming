@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [CreateAssetMenu]
 public class Gun : ScriptableObject
@@ -13,4 +14,10 @@ public class Gun : ScriptableObject
     public int magazine;        // 장전된 탄환
     public float recoil;        // 반동
     public float reload;        // 재장전 시간
+
+    public Vector3 leftHandlePosition;
+    public Quaternion leftHandleRotation;
+    public Vector3 rightHandlePosition;
+    public Quaternion rightHandleRotation;
+    public Vector3 firePosition;
 }
