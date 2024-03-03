@@ -18,8 +18,6 @@ public class QuestListUI : PopupUIBase
     private void OnEnable()
     {
         if (quest == null) return;
-
-        if (quest.state == QuestClearState.Accepted) quest.state = QuestClearState.Clear; //юс╫ц
         SetQuestState(quest.state);
     }
 

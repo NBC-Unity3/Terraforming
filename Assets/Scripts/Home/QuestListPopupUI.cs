@@ -63,6 +63,7 @@ public class QuestListPopupUI : PopupUIBase
     }
 
     //퀘스트 보상 획득 시 원래 퀘스트 삭제 및 새로운 퀘스트 생성
+    //미완성이므로 사용 안하는 중
     public void MakeNewQuestList(int index)
     {
         QuestManager.Instance.RemoveQuest(index);

@@ -253,6 +253,7 @@ public class RangeMonster : MonoBehaviour, IDamagable
     }
     IEnumerator Die()
     {
+        QuestManager.Instance.UpdateQuestKillCount();
         animator.SetTrigger("Die");
         yield return new WaitForSeconds(1.0f);
         Destroy(gameObject);
