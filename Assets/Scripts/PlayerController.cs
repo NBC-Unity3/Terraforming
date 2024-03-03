@@ -107,10 +107,18 @@ public class PlayerController : MonoBehaviour
         dir *= appliedMoveSpeed;
         dir.y = _rigidbody.velocity.y;
 
+        if (SelectPopupPrefab != null && SelectPopupPrefab.activeInHierarchy)
+        {
+            _rigidbody.velocity = Vector3.zero;
+            canLook = false;
+            return;
+        }
+        if (Cursor.lockState == CursorLockMode.None)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
         _rigidbody.velocity = dir;
-
-        Debug.Log(curMovementInput);
-
+        canLook = true;
         playerAnimator.SetFloat("MoveX", curMovementInput.x);
         playerAnimator.SetFloat("MoveY", curMovementInput.y);
     }
@@ -229,18 +237,23 @@ public class PlayerController : MonoBehaviour
 
     public void OnInteractionInput(InputAction.CallbackContext context) //퀘스트나 회복, 상점 이용을 위한
     {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        int layerMask = 1 << LayerMask.NameToLayer("console");
         if (context.phase == InputActionPhase.Started)
         {
-            if (true) //플레이어 시야에 오브젝트가 있으며, 일정거리 이하일 때 실행되어야함. popupUI 켜져있을 때 움직이면 안됨. 회복버튼 누르면 움직이면 안됨.
+            if (Physics.Raycast(ray, out hit, 5f, layerMask))
             {
+                if (SelectPopupPrefab == null) 
+                {
+                    Cursor.lockState = CursorLockMode.None;
+                    canLook = false;
+                    SelectPopupUI popupUI = PopupUIManager.Instance.OpenPopupUI<SelectPopupUI>();
+                    SelectPopupPrefab = popupUI.gameObject;
+                }
                 Cursor.lockState = CursorLockMode.None;
-                canLook = false;
-                //popupUI 삭제 안할거기 때문에 prefab으로 저장이 필요함.
-                SelectPopupUI popupUI = PopupUIManager.Instance.OpenPopupUI<SelectPopupUI>();
-                SelectPopupPrefab = popupUI.gameObject;
-                //카메라 고정도 필요
+                SelectPopupPrefab.SetActive(true);
             }
-            SelectPopupPrefab.SetActive(true);
         }
     }
 

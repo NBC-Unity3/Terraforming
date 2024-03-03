@@ -1,16 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [CreateAssetMenu]
 public class Gun : ScriptableObject
 {
     public string name;
-    public float damage;        // ÃÑÀÇ µ¥¹ÌÁö
-    public float range;         // »ç°Å¸®
-    public float rpm;           // ¿¬»ç¼Óµµ
-    public int capacity;        // ÅºÃ¢ ¿ë·®
-    public int magazine;        // ÀåÀüµÈ ÅºÈ¯
-    public float recoil;        // ¹İµ¿
-    public float reload;        // ÀçÀåÀü ½Ã°£
+    public float damage;        // ì´ì˜ ë°ë¯¸ì§€
+    public float range;         // ì‚¬ê±°ë¦¬
+    public float rpm;           // ì—°ì‚¬ì†ë„
+    public int capacity;        // íƒ„ì°½ ìš©ëŸ‰
+    public int magazine;        // ì¥ì „ëœ íƒ„í™˜
+    public float recoil;        // ë°˜ë™
+    public float reload;        // ì¬ì¥ì „ ì‹œê°„
+
+    public Vector3 leftHandlePosition;
+    public Quaternion leftHandleRotation;
+    public Vector3 rightHandlePosition;
+    public Quaternion rightHandleRotation;
+    public Vector3 firePosition;
 }
+

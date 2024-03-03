@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Object = UnityEngine.Object;
@@ -10,11 +11,27 @@ using Random = UnityEngine.Random;
 public class QuestManager : MonoBehaviour
 {
     //퀘스트를 관리하면서 인게임이랑 연결시켜주는 역할을 함.
-    public static QuestManager Instance;
+    private static QuestManager instance;
     
+    public static QuestManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                GameObject obj = new GameObject();
+                obj.name = typeof(QuestManager).Name;
+                instance = obj.AddComponent<QuestManager>();
+
+            }
+            return instance;
+        }
+        
+    }
+
     public int quest_count = 4;
 
-    public Object[] questInfo; //생성되어있지 않아도 생성될 수 있는 퀘스트에 대한 정보를 가지고 있기
+    public Object[] questInfoObject; //생성되어있지 않아도 생성될 수 있는 퀘스트에 대한 정보를 가지고 있기
 
     public Quest[] Quests; //플레이어가 수락할 수 있는 퀘스트 목록. 퀘스트 갯수 정해져 있기 때문에 배열로 바꿈.
     //List<QuestInstant> acceptedQuestInstants = new List<QuestInstant>(); //수락한 퀘스트 목록.
@@ -22,24 +39,19 @@ public class QuestManager : MonoBehaviour
 
     private void Awake()
     {
-        if(Instance == null) Instance = this;
         Quests = new Quest[quest_count];
-        questInfo = Resources.LoadAll("QuestSO"); //questInfo에 대한 타입은 나중에 확인.
-    }
-
-    private void Start()
-    {
-        MakeQuest();
-    }
-
-    public void MakeQuest()
-    {
+        questInfoObject = Resources.LoadAll("QuestSO");
         for (int i = 0; i < quest_count; i++)
         {
-            int index = Random.Range(0, questInfo.Length);
-            Quest quest = new Quest(index); //i 랜덤
-            Quests[i] = quest;
+            MakeQuest(i);
         }
+    }
+
+    public void MakeQuest(int index)
+    {
+        int random_index = Random.Range(0, questInfoObject.Length);
+        Quest quest = new Quest(random_index);
+        Quests[index] = quest;
     }
 
     public void AddAcceptedQuest(int index)
@@ -49,6 +61,17 @@ public class QuestManager : MonoBehaviour
         DicAcceptedQuests.Add(index, Quests[index]); //퀘스트는 총 4개가 있고 4개 중에서 선택한 것의 index를 key로 잡아서 저장.
         Debug.Log(DicAcceptedQuests.ContainsKey(index));
     }
+
+    //수정필요
+    public void RemoveQuest(int index)
+    {
+        DicAcceptedQuests.Remove(index);
+        Quests[index] = null;
+        MakeQuest(index);
+    }
+
+
+
 
     //questState가 clear 상태에서 보상 획득 버튼을 누르게 되면 보상을 획득하고 questState가 Reward가 되도록 설정.
     //UI랑 연결이 되어야함.
@@ -96,15 +119,7 @@ public class QuestManager : MonoBehaviour
     
 
 
-    //수정필요
-    public void RemoveQuest(int index)
-    {
-        if (Quests[index].state == QuestClearState.Reward) //퀘스트의 보상을 받은 상태이면..
-        {
-            //null 상태 유지하면 오류 발생하기 때문에 새로운 quest 생성으로 대체
-            Quests[index] = new Quest(index); //index 랜덤
-        }
-    }
+    
 
 
 

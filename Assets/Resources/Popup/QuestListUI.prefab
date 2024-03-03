@@ -405,10 +405,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 147f6c5f7bd4994478c3b5fbaea7a597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  questTitleButton: {fileID: 4758996500678237411}
-  questListNumber: {fileID: 1359256312231742762}
-  questListTitle: {fileID: 2174444946153693313}
-  questListState: {fileID: 2521840107074183043}
+  titleButton: {fileID: 4758996500678237411}
+  listNumber: {fileID: 1359256312231742762}
+  listTitle: {fileID: 2174444946153693313}
+  listState: {fileID: 2521840107074183043}
 --- !u!1 &5520047542140259503
 GameObject:
   m_ObjectHideFlags: 0

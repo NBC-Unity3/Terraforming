@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 576dca0b7f591534a9011d5f826aaea0, type: 3}
-  m_Name: Quest0
+  m_Name: Quest1
   m_EditorClassIdentifier: 
   questTypes: 0
-  ID: 0
-  title: "\uBAAC\uC2A4\uD130 5\uB9C8\uB9AC \uCC98\uCE58"
-  description: "\uBAAC\uC2A4\uD130 5\uB9C8\uB9AC\uB97C \uCC98\uCE58\uD574\uC8FC\uC138\uC694."
-  reward: 1000
+  ID: 1
+  title: "\uBAAC\uC2A4\uD130 3\uB9C8\uB9AC \uCC98\uCE58"
+  description: "\uBAAC\uC2A4\uD130 3\uB9C8\uB9AC\uB97C \uCC98\uCE58\uD574\uC8FC\uC138\uC694."
+  reward: 8000

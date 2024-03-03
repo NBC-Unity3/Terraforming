@@ -13,8 +13,9 @@ public class SelectPopupUI : PopupUIBase
 
 
     //생성한 UI를 SetActive로 사용하기 위해서 GameObject로 설정해줌.
-    public GameObject storePrefab;
-    public GameObject questListPrefab;
+    [HideInInspector] public GameObject storePrefab;
+    [HideInInspector] public GameObject questListPrefab;
+    public GameObject selectBackground;
     QuestListPopupUI questListPopup;
     StoreUI storeUI;
 
@@ -24,19 +25,27 @@ public class SelectPopupUI : PopupUIBase
     }
 
     //버튼 연결--------------------------UI마다 각 스크립트에 넣어주는 것
+    //AddListener은 각 한개씩
     public void StartButtonSetting()
     {
 
         storeButton.onClick.AddListener(() => OnStore());
-        storeButton.onClick.AddListener(() => OffSelectPopup());
 
         questButton.onClick.AddListener(() => OnQuestList());
-        questButton.onClick.AddListener(() => OffSelectPopup());
 
-        healthButton.onClick.AddListener(() => OffSelectPopup());
         healthButton.onClick.AddListener(() => OnMoveForHealth());
 
         closeButton.onClick.AddListener(() => OffSelectPopup());
+    }
+
+    public void OffSelectPopupchildren()
+    {
+        selectBackground.SetActive(false);
+    }
+
+    public void OnSelectPopupchildren()
+    {
+        selectBackground.SetActive(true);
     }
 
     public void OffSelectPopup()
@@ -51,10 +60,11 @@ public class SelectPopupUI : PopupUIBase
 
     public void OnStore()
     {
+        OffSelectPopupchildren();
         if (storePrefab == null)
         {
             storeUI = PopupUIManager.Instance.OpenPopupUI<StoreUI>();
-            storeUI.closeBtn.onClick.AddListener(() => OnSelectPopup());
+            storeUI.closeBtn.onClick.AddListener(() => OnSelectPopupchildren());
             storePrefab = storeUI.gameObject;
         }
         storePrefab.SetActive(true);
@@ -62,10 +72,11 @@ public class SelectPopupUI : PopupUIBase
 
     public void OnQuestList()
     {
+        OffSelectPopupchildren();
         if (questListPrefab == null)
         {
             questListPopup = PopupUIManager.Instance.OpenPopupUI<QuestListPopupUI>();
-            questListPopup.closeButton.onClick.AddListener(() => OnSelectPopup());
+            questListPopup.closeButton.onClick.AddListener(() => OnSelectPopupchildren());
             questListPrefab = questListPopup.gameObject;
         }
         questListPrefab.SetActive(true);
@@ -73,6 +84,6 @@ public class SelectPopupUI : PopupUIBase
 
     public void OnMoveForHealth()
     {
-
+        OffSelectPopup();
     }
 }

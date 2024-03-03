@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 515761cae6da58c458b6d16dd2ffc363, type: 3}
+  m_Name: MP5
+  m_EditorClassIdentifier: 
+  name: 
+  damage: 0
+  range: 0
+  rpm: 0
+  capacity: 0
+  magazine: 0
+  recoil: 0
+  reload: 0
+  leftHandlePosition: {x: 0, y: 0, z: 0}
+  leftHandleRotation: {x: 0, y: 0, z: 0, w: 0}
+  rightHandlePosition: {x: 0, y: 0, z: 0}
+  rightHandleRotation: {x: 0, y: 0, z: 0, w: 0}
+  firePosition: {x: 0, y: 0, z: 0}

@@ -2,13 +2,13 @@ using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class QuestListPopupUI : PopupUIBase
 {
     public int quest_count;
-    public Button[] questTitleButton; //배열로 해서 QuestPrefab에 있는 title로 연결. 누르면 인덱스에 맞는 Canvas화면 보여주기
     public Button closeButton; //뒤로 가기 눌렀을 때 전 UI가 나오게 할지 아니면 아예 꺼버릴지.
 
     public Transform questListPosition;
@@ -22,7 +22,6 @@ public class QuestListPopupUI : PopupUIBase
     private void Awake()
     {
         quest_count = QuestManager.Instance.quest_count;
-        questTitleButton = new Button[quest_count];
         questList = new QuestListUI[quest_count];
         questPrefab = new GameObject[quest_count];
         quests = new QuestPopupUI[quest_count];
@@ -31,42 +30,50 @@ public class QuestListPopupUI : PopupUIBase
     private void Start()
     {
         StartButtonSetting();
-        MakeQuestList(quest_count);
+        for(int i = 0; i < quest_count; i++)
+        {
+            MakeQuestList(i);
+        }
     }
 
     public void MakeQuestList(int index)
     {
-        for (int i = 0; i < index; i++)
-        {
-            questList[i] = PopupUIManager.Instance.OpenPopupUI<QuestListUI>();
-            questList[i].transform.parent = questListPosition.transform;
+        questList[index] = PopupUIManager.Instance.OpenPopupUI<QuestListUI>();
+        questList[index].transform.parent = questListPosition.transform;
 
-            //☆매개변수가 길면 따로(함수명 중요), 아니면 쉼표로 같이 넘겨주기(그냥 내가 보기 힘들 때, 남들도 보기 힘들 때)
-            questList[i].GetQuestNumber(i + 1);
-            //오래걸리고, 가독성 떨어짐
-            //questList[i].GetquestTitle(QuestManager.Instance.Quests[i].quest_name);
-            //questList[i].GetQuestState(QuestManager.Instance.Quests[i].questState);
+        //☆매개변수가 길면 따로(함수명 중요), 아니면 쉼표로 같이 넘겨주기(그냥 내가 보기 힘들 때, 남들도 보기 힘들 때)
+        questList[index].SetQuestList(index, QuestManager.Instance.Quests[index]);
 
-            questTitleButton[i] = questList[i].questTitleButton;
-            int n = i;
-            questTitleButton[i].onClick.AddListener(() => OnQuest(n));
-            questTitleButton[i].onClick.AddListener(() => OffQuestListPopup());
-        }
+        int n = index;
+        questList[index].titleButton.onClick.AddListener(() => OnQuest(n));
     }
 
     public void OnQuest(int index) //제목 클릭 시 questcanvas 생성
     {
+        OffQuestListPopup();
         if (questPrefab[index] == null)
         {
             quests[index] = PopupUIManager.Instance.OpenPopupUI<QuestPopupUI>();
-            quests[index].SetQuestList(questList[index]);
-            //quests[index].SetQuestInstant(QuestManager.Instance.questInstants[index]);
+            quests[index].SetQuest(index, QuestManager.Instance.Quests[index]);
             quests[index].questCloseButton.onClick.AddListener(() => OnQuestListPopup());
+
             questPrefab[index] = quests[index].gameObject;
         }
         questPrefab[index].SetActive(true);
     }
 
+    //퀘스트 보상 획득 시 원래 퀘스트 삭제 및 새로운 퀘스트 생성
+    public void MakeNewQuestList(int index)
+    {
+        QuestManager.Instance.RemoveQuest(index);
+        MakeQuestList(index);
+        Destroy(questPrefab[index]);
+        quests[index] = null;
+    }
+
+
+
+    //버튼---------------------
     public void StartButtonSetting()
     {
         closeButton.onClick.AddListener(() => OffQuestListPopup());
