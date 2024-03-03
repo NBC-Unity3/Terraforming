@@ -21,3 +21,4 @@ public class Gun : ScriptableObject
     public Quaternion rightHandleRotation;
     public Vector3 firePosition;
 }
+
