@@ -154,7 +154,10 @@ public class PlayerController : MonoBehaviour
 
     public void OnShotInput()
     {
-        playerShooter.Fire();
+        if (SelectPopupPrefab == null || !SelectPopupPrefab.activeInHierarchy)
+        {
+            playerShooter.Fire();
+        }
     }
 
     public void OnReloadInput()
