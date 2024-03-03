@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerGun
 {
     public Gun gun;
+    public GameObject gunPrefab;
     public bool isUnlock;
 }
 

@@ -19,7 +19,7 @@ public class UIPlayerGUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SetGunInfo(PlayerController.instance.playerShooter.gun);
+        PlayerController.instance.playerShooter.onSwap += SetGunInfo;
         SetTotalAmmoText();
         ConncetFuncToCurrentGun();
         ConnectFuncToPlayerStat();
@@ -39,6 +39,7 @@ public class UIPlayerGUI : MonoBehaviour
 
     public void SetGunInfo(Gun gun)
     {
+        // 총기 이미지 변경 아직 못함
         curAmmoText.text = gun.magazine.ToString();
         maxAmmoText.text = gun.capacity.ToString();
     }
@@ -51,11 +52,6 @@ public class UIPlayerGUI : MonoBehaviour
     public void SetTotalAmmoText()
     {
         totalAmmoText.text = PlayerController.instance.inventory.Ammo.ToString();
-    }
-
-    public void OnSwapGun()
-    {
-
     }
 
     public void SetHpBarFillAmount(float value)

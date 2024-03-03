@@ -1347,8 +1347,12 @@ MonoBehaviour:
     price: 4000
     weaponSprite: {fileID: 21300000, guid: 3adef11c455a05c43b31bdce42523ba2, type: 3}
     isSold: 0
-  - gun: {fileID: 11400000, guid: 4c2fa9e1d94136f4b812253396b4ded8, type: 2}
+  - gun: {fileID: 11400000, guid: 02f1d4efe062c00468984081eb21392f, type: 2}
     price: 50000
+    weaponSprite: {fileID: 21300000, guid: 13841b6ba5ad3194891c5485265c505a, type: 3}
+    isSold: 0
+  - gun: {fileID: 11400000, guid: c0474fea2daba4b4186d57e352672942, type: 2}
+    price: 30000
     weaponSprite: {fileID: 21300000, guid: 13841b6ba5ad3194891c5485265c505a, type: 3}
     isSold: 0
   - gun: {fileID: 0}

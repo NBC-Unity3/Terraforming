@@ -5569,6 +5569,8 @@ MonoBehaviour:
   shotClip: {fileID: 8300000, guid: 522ab1780826bfd46ace04399f6b1ac9, type: 3}
   reloadClip: {fileID: 8300000, guid: 69050768d13d7f341b02d90dde790a6c, type: 3}
   gun: {fileID: 11400000, guid: 4c2fa9e1d94136f4b812253396b4ded8, type: 2}
+  gunPrefab: {fileID: 919132149155446097, guid: b25b4fdb5ee5a8148913778daf8da591,
+    type: 3}
   ammo: 0
 --- !u!1 &354137296
 GameObject:
@@ -6581,7 +6583,7 @@ MonoBehaviour:
   rightHandMount: {fileID: 821474447}
   canLook: 1
   playerAnimator: {fileID: 0}
-  weaponSwapUI: {fileID: 0}
+  weaponSwapUIGO: {fileID: 0}
   SelectPopupPrefab: {fileID: 0}
   inventory: {fileID: 0}
   playerStat: {fileID: 0}
@@ -6812,9 +6814,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerGuns:
   - gun: {fileID: 11400000, guid: 4c2fa9e1d94136f4b812253396b4ded8, type: 2}
-    isUnlock: 0
-  - gun: {fileID: 11400000, guid: 4c2fa9e1d94136f4b812253396b4ded8, type: 2}
-    isUnlock: 0
+    gunPrefab: {fileID: 919132149155446097, guid: b25b4fdb5ee5a8148913778daf8da591,
+      type: 3}
+    isUnlock: 1
+  - gun: {fileID: 11400000, guid: 02f1d4efe062c00468984081eb21392f, type: 2}
+    gunPrefab: {fileID: 919132149155446097, guid: 33269b2b610f4c245a712795c1927939,
+      type: 3}
+    isUnlock: 1
+  - gun: {fileID: 11400000, guid: c0474fea2daba4b4186d57e352672942, type: 2}
+    gunPrefab: {fileID: 919132149155446097, guid: 2cf10fa706c7a4d42b5927d8e730f4e2,
+      type: 3}
+    isUnlock: 1
 --- !u!114 &1331778859
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -45,7 +45,8 @@ public class PlayerController : MonoBehaviour
 
     private float appliedMoveSpeed;
 
-    public GameObject weaponSwapUI;
+    public GameObject weaponSwapUIGO;
+    private UIWeaponSwap weaponSwapPopupUI;
     public GameObject SelectPopupPrefab;
 
     // 일단은 controller가 instance여서 controller에서 inventory에 접근할 수 있게 함. PlayerManager에서 관리하면 좋을 것 같음
@@ -113,12 +114,12 @@ public class PlayerController : MonoBehaviour
             canLook = false;
             return;
         }
-        if (Cursor.lockState == CursorLockMode.None)
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-        }
+        //if (Cursor.lockState == CursorLockMode.None)
+        //{
+        //    Cursor.lockState = CursorLockMode.Locked;
+        //}
         _rigidbody.velocity = dir;
-        canLook = true;
+        //canLook = true;
         playerAnimator.SetFloat("MoveX", curMovementInput.x);
         playerAnimator.SetFloat("MoveY", curMovementInput.y);
     }
@@ -222,16 +223,20 @@ public class PlayerController : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.None;
             canLook = false;
-            UIWeaponSwap popupUI = PopupUIManager.Instance.OpenPopupUI<UIWeaponSwap>();
-            weaponSwapUI = popupUI.gameObject;
-            weaponSwapUI.SetActive(true);
+            if(weaponSwapPopupUI == null)
+            {
+                weaponSwapPopupUI = PopupUIManager.Instance.OpenPopupUI<UIWeaponSwap>();
+                weaponSwapUIGO = weaponSwapPopupUI.gameObject;
+            }
+            weaponSwapUIGO.SetActive(true);
         }
         else if (context.canceled)
         {
             Cursor.lockState = CursorLockMode.Locked;
             canLook = true;
             // 이 부분은 UIManager.ShowUI로 대체해야 함 
-            weaponSwapUI.SetActive(false);
+            playerShooter.SwapWeapon(weaponSwapPopupUI.curSelectedWeapon);
+            weaponSwapUIGO.SetActive(false);
         }
     }
 
