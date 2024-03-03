@@ -43,4 +43,9 @@ public class PlayerInventory : MonoBehaviour
             return remainAmmo;
         }
     }
+
+    public void AddGold(int amount)
+    {
+        Gold += amount;
+    }
 }
