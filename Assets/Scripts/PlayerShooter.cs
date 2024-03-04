@@ -79,9 +79,12 @@ public class PlayerShooter : MonoBehaviour {
             gun.magazine = gun.capacity;
         }
 
-        onSwap?.Invoke(gun);
-
         inventory = PlayerController.instance.inventory;
+    }
+
+    public void Init()
+    {
+        onSwap?.Invoke(gun);
     }
 
     public void Fire() {

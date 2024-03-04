@@ -29,7 +29,12 @@ public class PlayerInventory : MonoBehaviour
 
     private void Start()
     {
+    }
+
+    public void Init()
+    {
         OnGoldValueChange?.Invoke(Gold);
+        OnAmmoValueChange?.Invoke(Ammo);
     }
 
     public void AddAmmo(int amount)

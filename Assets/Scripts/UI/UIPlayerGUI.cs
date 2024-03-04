@@ -22,9 +22,6 @@ public class UIPlayerGUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        PlayerController.instance.playerShooter.onSwap += SetGunInfo;
-        SetGunInfo(PlayerController.instance.playerShooter.gun);
-        SetTotalAmmoText(PlayerController.instance.inventory.Ammo);
         ConncetFuncToCurrentGun();
         ConnectFuncToPlayerStat();
         ConnectFuncToPlayerInventory();
@@ -32,7 +29,9 @@ public class UIPlayerGUI : MonoBehaviour
 
     private void ConncetFuncToCurrentGun()
     {
+        PlayerController.instance.playerShooter.onSwap += SetGunInfo;
         PlayerController.instance.playerShooter.onFire += SetCurAmmoText;
+        PlayerController.instance.playerShooter.Init();
     }
 
     private void ConnectFuncToPlayerStat()
@@ -45,6 +44,7 @@ public class UIPlayerGUI : MonoBehaviour
     {
         PlayerController.instance.inventory.OnAmmoValueChange += SetTotalAmmoText;
         PlayerController.instance.inventory.OnGoldValueChange += SetPlayerGoldText;
+        PlayerController.instance.inventory.Init();
     }
 
     public void SetGunInfo(Gun gun)
