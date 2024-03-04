@@ -169,6 +169,10 @@ public class PlayerShooter : MonoBehaviour {
             gun = inventory.playerGuns[index].gun;
             gunPrefab = inventory.playerGuns[index].gunPrefab;
             gameObject.SetActive(true);
+            if(gun.magazine > 0)
+            {
+                state = State.Ready;
+            }
         }
     }
 }
