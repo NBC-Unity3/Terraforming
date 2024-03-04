@@ -39,7 +39,9 @@ public class RangeMonster : MonoBehaviour, IDamagable
 
     public GameObject mucus;
     public Transform mucusSpawnPoint;
+    public GameObject coin;
 
+    private PlayerController playerController;
     private NavMeshAgent agent;
     private Animator animator;
     //private SkinnedMeshRenderer[] meshRenderers;
@@ -54,11 +56,12 @@ public class RangeMonster : MonoBehaviour, IDamagable
     private void Start()
     {
         SetState(AIState.Wandering);
+        playerController = PlayerController.instance;
     }
 
     private void Update()
     {
-        playerDistance = Vector3.Distance(transform.position, PlayerController.instance.transform.position);
+        playerDistance = Vector3.Distance(transform.position, playerController.transform.position);
 
         animator.SetBool("Moving", aiState != AIState.Idle);
 
@@ -91,9 +94,9 @@ public class RangeMonster : MonoBehaviour, IDamagable
         {
             agent.isStopped = false;
             NavMeshPath path = new NavMeshPath();
-            if (agent.CalculatePath(PlayerController.instance.transform.position, path))
+            if (agent.CalculatePath(playerController.transform.position, path))
             {
-                agent.SetDestination(PlayerController.instance.transform.position);
+                agent.SetDestination(playerController.transform.position);
             }
             else
             {
@@ -106,9 +109,9 @@ public class RangeMonster : MonoBehaviour, IDamagable
             //Vector3 directionToPlayer = PlayerController.instance.transform.position - transform.position;
             Vector3 directionToPlayer = new Vector3
                 //캐싱하기
-            (PlayerController.instance.transform.position.x - transform.position.x,
-            PlayerController.instance.transform.position.y + 1 - transform.position.y,
-            PlayerController.instance.transform.position.z - transform.position.z);
+            (playerController.transform.position.x - transform.position.x,
+            playerController.transform.position.y + 1 - transform.position.y,
+            playerController.transform.position.z - transform.position.z);
 
             // 플레이어를 바라보도록 회전 처리.
             UpdateRotation(directionToPlayer, 3f);
@@ -145,7 +148,7 @@ public class RangeMonster : MonoBehaviour, IDamagable
 
     bool IsPlaterInFireldOfView()
     {
-        Vector3 directionToPlayer = PlayerController.instance.transform.position - transform.position;
+        Vector3 directionToPlayer = playerController.transform.position - transform.position;
         float angle = Vector3.Angle(transform.forward, directionToPlayer);
         return angle < fieldOfView * 0.5f;
     }
@@ -235,7 +238,7 @@ public class RangeMonster : MonoBehaviour, IDamagable
 
     float GetDestinationAngle(Vector3 targetPos)
     {
-        return Vector3.Angle(transform.position - PlayerController.instance.transform.position, transform.position + targetPos);
+        return Vector3.Angle(transform.position - playerController.transform.position, transform.position + targetPos);
     }
 
     public void TakePhysicalDamage(int damageAmount)
@@ -254,6 +257,7 @@ public class RangeMonster : MonoBehaviour, IDamagable
     IEnumerator Die()
     {
         QuestManager.Instance.UpdateQuestKillCount();
+        Instantiate(coin, transform.position,Quaternion.identity);
         animator.SetTrigger("Die");
         yield return new WaitForSeconds(1.0f);
         Destroy(gameObject);

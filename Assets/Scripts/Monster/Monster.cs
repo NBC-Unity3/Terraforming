@@ -49,6 +49,8 @@ public class Monster : MonoBehaviour, IDamagable
 
     public float fieldOfView = 120f;
 
+    public GameObject coin;
+
     private NavMeshAgent agent;
     private Animator animator;
     //private SkinnedMeshRenderer[] meshRenderers;
@@ -252,6 +254,7 @@ public class Monster : MonoBehaviour, IDamagable
     IEnumerator Die()
     {
         QuestManager.Instance.UpdateQuestKillCount();
+        Instantiate(coin, transform.position, Quaternion.identity);
         animator.SetTrigger("Die");
         yield return new WaitForSeconds(1.0f);
         Destroy(gameObject);
