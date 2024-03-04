@@ -252,6 +252,7 @@ public class RangeMonster : MonoBehaviour, IDamagable
             {
                 //Die();
                 SetState(AIState.Die);
+                agent.SetDestination(transform.position);
                 StartCoroutine("Die");
                 return;
             }
