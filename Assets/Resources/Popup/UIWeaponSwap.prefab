@@ -34,7 +34,7 @@ RectTransform:
   m_Children:
   - {fileID: 3063507530801080978}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -116,17 +116,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d7751b1c94417140a627af39e5fbb37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wheelSprite: {fileID: 0}
-  weaponSprites:
-  - {fileID: 21300000, guid: 13841b6ba5ad3194891c5485265c505a, type: 3}
-  - {fileID: 21300000, guid: 13841b6ba5ad3194891c5485265c505a, type: 3}
-  - {fileID: 21300000, guid: 13841b6ba5ad3194891c5485265c505a, type: 3}
-  - {fileID: 21300000, guid: 13841b6ba5ad3194891c5485265c505a, type: 3}
-  - {fileID: 21300000, guid: 13841b6ba5ad3194891c5485265c505a, type: 3}
-  wheelSpriteScale: 0
   gapBetweenPiece: 1
   wheelParentGO: {fileID: 8139421934815461832}
   pieceGO: {fileID: 7188429481443320260, guid: 52c5f5c7b69a8fb40b7a4ca5ba2174f7, type: 3}
+  curSelectedWeapon: 0
 --- !u!1 &8139421934815461832
 GameObject:
   m_ObjectHideFlags: 0

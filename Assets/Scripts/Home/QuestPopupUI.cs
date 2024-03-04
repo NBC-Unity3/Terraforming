@@ -80,7 +80,7 @@ public class QuestPopupUI : PopupUIBase
         QuestNumber.text = (number + 1).ToString();
         QuestTitle.text = quest.questInfoSO.title;
         QuestDescription.text = quest.questInfoSO.description;
-        QuestGold.text = quest.questInfoSO.reward.ToString();
+        QuestGold.text = quest.questInfoSO.reward.ToString() + "G";
 
         SetQuestStateText(quest.state);
     }

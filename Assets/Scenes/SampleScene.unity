@@ -7233,6 +7233,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIPlayerGUI
       objectReference: {fileID: 0}
+    - target: {fileID: 5607486964439700856, guid: 7be048ccd4e3c0544add54d6a2ed4beb,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8645238121604743219, guid: 7be048ccd4e3c0544add54d6a2ed4beb,
         type: 3}
       propertyPath: m_Pivot.x
