@@ -22,6 +22,7 @@ public class Mucus : MonoBehaviour
         //}
         if(collision.gameObject.CompareTag("Player"))
         {
+            collision.gameObject.GetComponent<PlayerStat>().SubtractHp(damage);
             //플레이어 체력 감소
             Debug.Log("shoot");
         }

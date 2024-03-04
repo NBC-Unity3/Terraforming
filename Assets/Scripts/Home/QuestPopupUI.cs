@@ -37,7 +37,6 @@ public class QuestPopupUI : PopupUIBase
     {
         if (quest == null) return;
         SetQuestStateText(quest.state);
-        
     }
 
     public void SetQuest(int n, Quest questInfo)
@@ -60,7 +59,6 @@ public class QuestPopupUI : PopupUIBase
                 quest.state = QuestClearState.Reward;
                 SetQuestStateText(quest.state);
 
-                //아래부분은 QuestManager에서 진행되어야할 부분
                 SettingQuestClear();
                 //보상 받은 퀘스트는 삭제하고 새로운 퀘스트 등록 필요..
                 break;
@@ -70,7 +68,7 @@ public class QuestPopupUI : PopupUIBase
     public void SettingQuestClear()
     {
         //퀘스트 클리어 시 활성화됨
-        //퀘스트 클리어로 보상을 누르게 되면 골드가 들어옴.
+        QuestManager.Instance.GetQuestReward(quest);
         //버튼 비활성화 및 골드 보여주는 부분 회색표시.
     }
 

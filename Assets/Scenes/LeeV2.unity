@@ -5569,6 +5569,8 @@ MonoBehaviour:
   shotClip: {fileID: 8300000, guid: 522ab1780826bfd46ace04399f6b1ac9, type: 3}
   reloadClip: {fileID: 8300000, guid: 69050768d13d7f341b02d90dde790a6c, type: 3}
   gun: {fileID: 11400000, guid: 4c2fa9e1d94136f4b812253396b4ded8, type: 2}
+  gunPrefab: {fileID: 919132149155446097, guid: b25b4fdb5ee5a8148913778daf8da591,
+    type: 3}
   ammo: 0
 --- !u!1 &354137296
 GameObject:
@@ -6125,7 +6127,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 628730589}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5, z: -0.034}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6392,6 +6394,7 @@ GameObject:
   - component: {fileID: 1331778855}
   - component: {fileID: 1331778854}
   - component: {fileID: 1331778858}
+  - component: {fileID: 1331778859}
   - component: {fileID: 1331778853}
   - component: {fileID: 1331778852}
   - component: {fileID: 1331778851}
@@ -6561,11 +6564,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  crouchMoveSpeed: 0
-  jumpForce: 80
+  crouchMoveSpeed: 2.5
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 55
+  jumpForce: 80
+  jumpSteminaValue: 20
+  runSpeed: 9
+  runSteminaValue: 10
   cameraContainer: {fileID: 628730590}
   minXLook: -60
   maxXLook: 85
@@ -6576,9 +6582,11 @@ MonoBehaviour:
   leftHandMount: {fileID: 949028987}
   rightHandMount: {fileID: 821474447}
   canLook: 1
-  weaponSwapUI: {fileID: 0}
+  playerAnimator: {fileID: 0}
+  weaponSwapUIGO: {fileID: 0}
   SelectPopupPrefab: {fileID: 0}
   inventory: {fileID: 0}
+  playerStat: {fileID: 0}
 --- !u!114 &1331778855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6733,6 +6741,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 9aa8176d-10f9-4d4d-9214-bbe3379f29a4
     m_ActionName: Player/Interaction[/Keyboard/f]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1331778854}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnRunInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 03d4c07a-4e0f-4311-8405-e9d70b770d4a
+    m_ActionName: Player/Run[/Keyboard/leftShift]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -6790,9 +6814,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerGuns:
   - gun: {fileID: 11400000, guid: 4c2fa9e1d94136f4b812253396b4ded8, type: 2}
-    isUnlock: 0
-  - gun: {fileID: 11400000, guid: 4c2fa9e1d94136f4b812253396b4ded8, type: 2}
-    isUnlock: 0
+    gunPrefab: {fileID: 919132149155446097, guid: b25b4fdb5ee5a8148913778daf8da591,
+      type: 3}
+    isUnlock: 1
+  - gun: {fileID: 11400000, guid: 02f1d4efe062c00468984081eb21392f, type: 2}
+    gunPrefab: {fileID: 919132149155446097, guid: 33269b2b610f4c245a712795c1927939,
+      type: 3}
+    isUnlock: 1
+  - gun: {fileID: 11400000, guid: c0474fea2daba4b4186d57e352672942, type: 2}
+    gunPrefab: {fileID: 919132149155446097, guid: 2cf10fa706c7a4d42b5927d8e730f4e2,
+      type: 3}
+    isUnlock: 1
+--- !u!114 &1331778859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331778850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b65787f146154844baf01fd79145bf43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health:
+    curValue: 0
+    maxValue: 100
+    startValue: 100
+    regenRate: 2
+    decayRate: 0
+  stamina:
+    curValue: 0
+    maxValue: 100
+    startValue: 100
+    regenRate: 5
+    decayRate: 0
 --- !u!1 &1406645678
 GameObject:
   m_ObjectHideFlags: 0
@@ -7092,11 +7148,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1195988004533700353, guid: 7be048ccd4e3c0544add54d6a2ed4beb,
-        type: 3}
-      propertyPath: Player
-      value: 
-      objectReference: {fileID: 1331778857}
     - target: {fileID: 5607486964439700856, guid: 7be048ccd4e3c0544add54d6a2ed4beb,
         type: 3}
       propertyPath: m_Name

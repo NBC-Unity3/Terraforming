@@ -37,6 +37,8 @@ public class QuestManager : MonoBehaviour
     //List<QuestInstant> acceptedQuestInstants = new List<QuestInstant>(); //수락한 퀘스트 목록.
     public Dictionary<int, Quest> DicAcceptedQuests = new Dictionary<int, Quest>();
 
+    public PlayerInventory playerInventory;
+
     private void Awake()
     {
         Quests = new Quest[quest_count];
@@ -45,6 +47,7 @@ public class QuestManager : MonoBehaviour
         {
             MakeQuest(i);
         }
+        playerInventory = PlayerController.instance.inventory;
     }
 
     public void MakeQuest(int index)
@@ -62,64 +65,53 @@ public class QuestManager : MonoBehaviour
         Debug.Log(DicAcceptedQuests.ContainsKey(index));
     }
 
-    //수정필요
-    public void RemoveQuest(int index)
-    {
-        DicAcceptedQuests.Remove(index);
-        Quests[index] = null;
-        MakeQuest(index);
-    }
-
-
-
-
     //questState가 clear 상태에서 보상 획득 버튼을 누르게 되면 보상을 획득하고 questState가 Reward가 되도록 설정.
     //UI랑 연결이 되어야함.
-    public void GetQuestReward(int index) //
+    public void GetQuestReward(Quest quest)
     {
-        if (!DicAcceptedQuests.ContainsKey(index)) { return; }//
-        Quest quest = new Quest(index);
-        DicAcceptedQuests.TryGetValue(index, out quest);
-        if(quest.state == QuestClearState.Clear)
-        {
-            //int gold = quest.questInfo.reward; //원래 있던 골드에 추가해줘야함. int gold는 임시.
-        }
+        playerInventory.Gold += quest.questInfoSO.reward;
     }
 
     //몬스터를 처치했을 때 킬 카운트 올라갈 수 있도록 설정해줌
     public void UpdateQuestKillCount()
     {
         if (DicAcceptedQuests.Count == 0) return; //수행 중인 퀘스트가 없으면 패스
-        for(int i = 0; i < DicAcceptedQuests.Count; i++)
+        for(int i = 0; i < quest_count; i++)
         {
-
+            if (DicAcceptedQuests.ContainsKey(i))
+            {
+                DicAcceptedQuests[i].kill_count++;
+                Debug.Log(DicAcceptedQuests[i].kill_count);
+                CheckQuestGoal(i);
+            }
         }
     }
 
-    public void CheckQuestGoal(Quest quest)
+    public void CheckQuestGoal(int index)
     {
         //오히려 이것을 delegate와 event를 이용해야하지 않을까 싶은데 둘다 사용할 수도 있고.
-        if(quest.kill_count == quest.goal_count)
+        if (Quests[index].kill_count == Quests[index].goal_count)
         {
             //questState로 clear 설정을 해버리면 clear가 필요없지 않을까?
-            quest.clear = true;
-            quest.state = QuestClearState.Clear;
+            Quests[index].clear = true;
+            Quests[index].state = QuestClearState.Clear;
+            RemoveQuest(index);
         }
     }
 
-    public void ChangeQuestState()
+    //수정필요
+    public void RemoveQuest(int index)
     {
-        //delegate랑 event이용해서 구독으로 바뀌도록 설정해야할 것 같음.. 추후 생각해보기
+        DicAcceptedQuests.Remove(index);
+        //새로 생성한 것을 UI 연동이 아직 안된 상태이므로 ..
+        //Quests[index] = null;
+        //MakeQuest(index);
     }
 
-    //퀘스트 선택 창에서 퀘스트 선택 후 수락을 누르면 수행 중인 Quest 목록으로 들어갈 수 있게 만들어줘야함.
-    //이건 UI랑 연결되어야하는 부분  
-    
-
-    
 
 
-    
+
+
 
 
 

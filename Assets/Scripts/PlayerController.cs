@@ -9,8 +9,16 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed;
     public float crouchMoveSpeed;
     private Vector2 curMovementInput;
-    public float jumpForce;
     public LayerMask groundLayerMask;
+
+    [Header("Jump")]
+    public float jumpForce;
+    public int jumpSteminaValue;
+
+    [Header("Run")]
+    public float runSpeed;
+    public int runSteminaValue;
+    private bool isRun;
 
     [Header("Look")]
     public Transform cameraContainer;
@@ -32,17 +40,19 @@ public class PlayerController : MonoBehaviour
     public bool canFire = false;
 
     private Rigidbody _rigidbody;
-    private Animator playerAnimator;
+    public Animator playerAnimator;
 
     private bool isCrouch = false;
 
     private float appliedMoveSpeed;
 
-    public GameObject weaponSwapUI;
+    public GameObject weaponSwapUIGO;
+    private UIWeaponSwap weaponSwapPopupUI;
     public GameObject SelectPopupPrefab;
 
     // 일단은 controller가 instance여서 controller에서 inventory에 접근할 수 있게 함. PlayerManager에서 관리하면 좋을 것 같음
     public PlayerInventory inventory;
+    public PlayerStat playerStat;
 
     public static PlayerController instance;
     private void Awake()
@@ -50,6 +60,7 @@ public class PlayerController : MonoBehaviour
         instance = this;
         _rigidbody = GetComponent<Rigidbody>();
         inventory = GetComponent<PlayerInventory>();
+        playerStat = GetComponent<PlayerStat>();
     }
 
     void Start()
@@ -83,6 +94,26 @@ public class PlayerController : MonoBehaviour
     private void Move()
     {
         Vector3 dir = transform.forward * curMovementInput.y + transform.right * curMovementInput.x;
+        if (isRun)
+        {
+            if(!playerStat.UseStemina(runSteminaValue * Time.deltaTime))
+            {
+                isRun = false;
+            }
+            else
+            {
+                appliedMoveSpeed = runSpeed;
+            }
+        }
+        else if (isCrouch)
+        {
+            appliedMoveSpeed = crouchMoveSpeed;
+        }
+        else
+        {
+            appliedMoveSpeed = moveSpeed;
+        }
+
         dir *= appliedMoveSpeed;
         dir.y = _rigidbody.velocity.y;
 
@@ -92,13 +123,12 @@ public class PlayerController : MonoBehaviour
             canLook = false;
             return;
         }
-
-        if (Cursor.lockState == CursorLockMode.None)
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-        }
+        //if (Cursor.lockState == CursorLockMode.None)
+        //{
+        //    Cursor.lockState = CursorLockMode.Locked;
+        //}
         _rigidbody.velocity = dir;
-        canLook = true;
+        //canLook = true;
         playerAnimator.SetFloat("MoveX", curMovementInput.x);
         playerAnimator.SetFloat("MoveY", curMovementInput.y);
     }
@@ -122,10 +152,34 @@ public class PlayerController : MonoBehaviour
         if(context.phase == InputActionPhase.Performed)
         {
             curMovementInput = context.ReadValue<Vector2>();
+
+            if(curMovementInput.y < 0.5)
+            {
+                isRun = false;
+            }
         }
         else if(context.phase == InputActionPhase.Canceled)
         {
+            isRun = false;
             curMovementInput = Vector2.zero;
+        }
+    }
+
+    public void OnRunInput(InputAction.CallbackContext context)
+    {
+        if(context.phase == InputActionPhase.Performed && curMovementInput.y >= 0.5)
+        {
+            isRun = true;
+            if (isCrouch)
+            {
+                isCrouch = !isCrouch;
+                playerAnimator.SetBool("Crouch", isCrouch);
+                cameraContainer.localPosition = new Vector3(cameraContainer.localPosition.x, 1.5f, cameraContainer.localPosition.z);
+            }
+        }
+        else if(context.phase == InputActionPhase.Canceled)
+        {
+            isRun = false;
         }
     }
 
@@ -133,7 +187,7 @@ public class PlayerController : MonoBehaviour
     {
         if(context.phase == InputActionPhase.Started)
         {
-            if (IsGrounded())
+            if (IsGrounded() && playerStat.UseStemina(jumpSteminaValue))
             {
                 _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
                 playerAnimator.SetBool("Jump", true);
@@ -147,30 +201,32 @@ public class PlayerController : MonoBehaviour
         if (context.performed)
         {
             isCrouch = !isCrouch;
-            Debug.Log(isCrouch);
             playerAnimator.SetBool("Crouch", isCrouch);
 
             if(isCrouch)
             {
-                appliedMoveSpeed = crouchMoveSpeed;
+                isRun = false;
+                cameraContainer.localPosition = new Vector3(cameraContainer.localPosition.x, 0.75f, cameraContainer.localPosition.z);
             }
             else
             {
-                appliedMoveSpeed = moveSpeed;
+                cameraContainer.localPosition = new Vector3(cameraContainer.localPosition.x, 1.5f, cameraContainer.localPosition.z);
             }
         }
     }
 
     public void OnShotInput(InputAction.CallbackContext context)
     {
-        Debug.Log("Onshot");
-        if(context.phase == InputActionPhase.Started)
+        if (SelectPopupPrefab == null || !SelectPopupPrefab.activeInHierarchy)
         {
-            canFire = true;
-        }
-        else if(context.phase == InputActionPhase.Canceled)
-        {
-            canFire = false;
+            if(context.phase == InputActionPhase.Started)
+            {
+              canFire = true;
+            }
+            else if(context.phase == InputActionPhase.Canceled)
+            {
+              canFire = false;
+            }
         }
     }
 
@@ -186,16 +242,20 @@ public class PlayerController : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.None;
             canLook = false;
-            UIWeaponSwap popupUI = PopupUIManager.Instance.OpenPopupUI<UIWeaponSwap>();
-            weaponSwapUI = popupUI.gameObject;
-            weaponSwapUI.SetActive(true);
+            if(weaponSwapPopupUI == null)
+            {
+                weaponSwapPopupUI = PopupUIManager.Instance.OpenPopupUI<UIWeaponSwap>();
+                weaponSwapUIGO = weaponSwapPopupUI.gameObject;
+            }
+            weaponSwapUIGO.SetActive(true);
         }
         else if (context.canceled)
         {
             Cursor.lockState = CursorLockMode.Locked;
             canLook = true;
             // 이 부분은 UIManager.ShowUI로 대체해야 함 
-            weaponSwapUI.SetActive(false);
+            playerShooter.SwapWeapon(weaponSwapPopupUI.curSelectedWeapon);
+            weaponSwapUIGO.SetActive(false);
         }
     }
 
