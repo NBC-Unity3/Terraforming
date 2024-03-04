@@ -180,6 +180,14 @@ public class Monster : MonoBehaviour, IDamagable
                     agent.isStopped = false;
                 }
                 break;
+            case AIState.Die:
+                {
+                    agent.speed = 0;
+                    agent.isStopped = true;
+                }
+                break;
+
+
         }
 
         animator.speed = agent.speed / walkSpeed;

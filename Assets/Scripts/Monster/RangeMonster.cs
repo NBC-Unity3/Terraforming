@@ -63,8 +63,8 @@ public class RangeMonster : MonoBehaviour, IDamagable
     {
         playerDistance = Vector3.Distance(transform.position, playerController.transform.position);
 
-        animator.SetBool("Moving", aiState != AIState.Idle);
-
+        animator.SetBool("Moving", aiState != AIState.Idle && aiState != AIState.Die);
+        
         switch (aiState)
         {
             case AIState.Idle: PassiveUpdate(); break;
@@ -183,6 +183,12 @@ public class RangeMonster : MonoBehaviour, IDamagable
                     agent.isStopped = false;
                 }
                 break;
+            case AIState.Die:
+                {
+                    agent.speed = 0;
+                    agent.isStopped = true;
+                }
+                break;
         }
 
         animator.speed = agent.speed / walkSpeed;
@@ -245,20 +251,22 @@ public class RangeMonster : MonoBehaviour, IDamagable
     {
         health -= damageAmount;
         detectDistance = 100f;
+        Debug.Log("hit");
+        animator.SetTrigger("Hit");
         if (health <= 0)
         {
+            Debug.Log("Die");
             //Die();
             SetState(AIState.Die);
             StartCoroutine("Die");
         }
-        animator.SetTrigger("Hit");
         //StartCoroutine(DamageFlash());
     }
     IEnumerator Die()
     {
+        animator.SetTrigger("Die");
         QuestManager.Instance.UpdateQuestKillCount();
         Instantiate(coin, transform.position,Quaternion.identity);
-        animator.SetTrigger("Die");
         yield return new WaitForSeconds(1.0f);
         Destroy(gameObject);
     }
