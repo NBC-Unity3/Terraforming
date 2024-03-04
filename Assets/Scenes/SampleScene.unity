@@ -5634,6 +5634,7 @@ MonoBehaviour:
   shotClip: {fileID: 8300000, guid: 522ab1780826bfd46ace04399f6b1ac9, type: 3}
   reloadClip: {fileID: 8300000, guid: 69050768d13d7f341b02d90dde790a6c, type: 3}
   gun: {fileID: 11400000, guid: 4c2fa9e1d94136f4b812253396b4ded8, type: 2}
+  gunPrefab: {fileID: 0}
   ammo: 0
 --- !u!1 &354137296
 GameObject:
@@ -6456,6 +6457,7 @@ GameObject:
   - component: {fileID: 1331778856}
   - component: {fileID: 1331778855}
   - component: {fileID: 1331778854}
+  - component: {fileID: 1331778858}
   - component: {fileID: 1331778853}
   - component: {fileID: 1331778852}
   - component: {fileID: 1331778851}
@@ -6840,6 +6842,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1331778858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331778850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3acae5b18d67e2d489babb78aec6979f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerGuns: []
+  Gold: 0
 --- !u!1 &1406645678
 GameObject:
   m_ObjectHideFlags: 0

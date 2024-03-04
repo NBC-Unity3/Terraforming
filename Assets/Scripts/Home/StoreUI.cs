@@ -58,6 +58,12 @@ public class StoreUI : PopupUIBase
         SetPlayerGoldText();   
     }
 
+    private void OnEnable()
+    {
+        SetPlayerGoldText();
+    }
+
+
     public void SetInfo(int index)
     {
         StoreItem item = items[index];

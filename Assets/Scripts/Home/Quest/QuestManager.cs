@@ -37,6 +37,8 @@ public class QuestManager : MonoBehaviour
     //List<QuestInstant> acceptedQuestInstants = new List<QuestInstant>(); //수락한 퀘스트 목록.
     public Dictionary<int, Quest> DicAcceptedQuests = new Dictionary<int, Quest>();
 
+    public PlayerInventory playerInventory;
+
     private void Awake()
     {
         Quests = new Quest[quest_count];
@@ -45,6 +47,7 @@ public class QuestManager : MonoBehaviour
         {
             MakeQuest(i);
         }
+        playerInventory = PlayerController.instance.inventory;
     }
 
     public void MakeQuest(int index)
@@ -64,15 +67,9 @@ public class QuestManager : MonoBehaviour
 
     //questState가 clear 상태에서 보상 획득 버튼을 누르게 되면 보상을 획득하고 questState가 Reward가 되도록 설정.
     //UI랑 연결이 되어야함.
-    public void GetQuestReward(int index) //
+    public void GetQuestReward(Quest quest)
     {
-        if (!DicAcceptedQuests.ContainsKey(index)) { return; }//
-        Quest quest = new Quest(index);
-        DicAcceptedQuests.TryGetValue(index, out quest);
-        if(quest.state == QuestClearState.Clear)
-        {
-            //int gold = quest.questInfo.reward; //원래 있던 골드에 추가해줘야함. int gold는 임시.
-        }
+        playerInventory.Gold += quest.questInfoSO.reward;
     }
 
     //몬스터를 처치했을 때 킬 카운트 올라갈 수 있도록 설정해줌
@@ -110,8 +107,6 @@ public class QuestManager : MonoBehaviour
         //Quests[index] = null;
         //MakeQuest(index);
     }
-
-
 
 
 
