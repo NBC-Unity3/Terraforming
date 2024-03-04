@@ -57,6 +57,12 @@ public class SelectPopupUI : PopupUIBase
     public void OffSelectPopup()
     {
         gameObject.SetActive(false);
+
+        if (Cursor.lockState == CursorLockMode.None)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            PlayerController.instance.canLook = true;
+        }
     }
 
     public void OnSelectPopup()
