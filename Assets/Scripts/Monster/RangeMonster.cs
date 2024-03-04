@@ -243,7 +243,7 @@ public class RangeMonster : MonoBehaviour, IDamagable
 
     public void TakePhysicalDamage(int damageAmount)
     {
-        if (health > 0)
+        if (aiState != AIState.Die)
         {
             health -= damageAmount;
             detectDistance = 100f;
