@@ -5407,7 +5407,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 281761890}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.15, y: -0.04, z: 0.2}
+  m_LocalPosition: {x: 0.127, y: -0.04, z: 0.154}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5631,12 +5631,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireTransform: {fileID: 444495097}
+  aimTransform: {fileID: 628730590}
   shotClip: {fileID: 8300000, guid: 522ab1780826bfd46ace04399f6b1ac9, type: 3}
   reloadClip: {fileID: 8300000, guid: 69050768d13d7f341b02d90dde790a6c, type: 3}
   gun: {fileID: 11400000, guid: 1ffbac0c27646534cb976bf1581c51d5, type: 2}
   gunPrefab: {fileID: 919132149155446097, guid: 4df3ce82db8e66645afd54ab1d5b0262,
     type: 3}
   ammo: 0
+  curGun: {fileID: 0}
 --- !u!1 &354137296
 GameObject:
   m_ObjectHideFlags: 0
@@ -6640,6 +6642,9 @@ MonoBehaviour:
   gunPivot: {fileID: 1785488870}
   leftHandMount: {fileID: 949028987}
   rightHandMount: {fileID: 821474447}
+  cameraRotationWhenDie: {x: 70, y: 0, z: 0}
+  cameraPositionWhenDie: {x: 0, y: 10, z: -4}
+  cameraMoveTime: 5
   canLook: 1
   canFire: 0
   playerAnimator: {fileID: 0}
@@ -6916,7 +6921,7 @@ MonoBehaviour:
   health:
     curValue: 0
     maxValue: 100
-    startValue: 100
+    startValue: 10
     regenRate: 2
     decayRate: 0
   stamina:
@@ -7206,8 +7211,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1785488869}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.3}
+  m_LocalRotation: {x: 0, y: -0.056241397, z: 0, w: 0.99841726}
+  m_LocalPosition: {x: 0.005, y: 0, z: 0.245}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

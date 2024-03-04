@@ -45,6 +45,8 @@ public class PlayerStat : MonoBehaviour, IDamagable
         OnDie += Die;
         health.curValue = health.startValue;
         stamina.curValue = stamina.startValue;
+        health.Add(0f);
+        stamina.Add(0f);
     }
 
     private void Update()
@@ -53,6 +55,7 @@ public class PlayerStat : MonoBehaviour, IDamagable
         if(health.curValue <= 0f)
         {
             OnDie?.Invoke();
+            OnDie = null;
         }
     }
 
@@ -82,6 +85,8 @@ public class PlayerStat : MonoBehaviour, IDamagable
 
     private void Die()
     {
+        Destroy(PlayerController.instance.playerShooter.curGun);
+        PlayerController.instance.playerAnimator.SetLayerWeight(1, 0);
         PlayerController.instance.playerAnimator.SetTrigger("Die");
     }
 }

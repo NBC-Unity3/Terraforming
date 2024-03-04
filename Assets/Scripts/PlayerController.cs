@@ -35,6 +35,12 @@ public class PlayerController : MonoBehaviour
     public Transform leftHandMount; // 총의 왼쪽 손잡이, 왼손이 위치할 지점
     public Transform rightHandMount; // 총의 오른쪽 손잡이, 오른손이 위치할 지점
 
+    [Header("Die")]
+    private bool isDie = false;
+    public Vector3 cameraRotationWhenDie;
+    public Vector3 cameraPositionWhenDie;
+    public float cameraMoveTime;
+
     [HideInInspector]
     public bool canLook = true;
     public bool canFire = false;
@@ -55,12 +61,15 @@ public class PlayerController : MonoBehaviour
     public PlayerStat playerStat;
 
     public static PlayerController instance;
+
     private void Awake()
     {
         instance = this;
         _rigidbody = GetComponent<Rigidbody>();
         inventory = GetComponent<PlayerInventory>();
         playerStat = GetComponent<PlayerStat>();
+
+        playerStat.OnDie += Die;
     }
 
     void Start()
@@ -72,7 +81,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if(canFire)
+        if(canFire && !isDie)
         {
             playerShooter.Fire();
         }
@@ -93,6 +102,10 @@ public class PlayerController : MonoBehaviour
     
     private void Move()
     {
+        if (isDie)
+        {
+            return;
+        }
         Vector3 dir = transform.forward * curMovementInput.y + transform.right * curMovementInput.x;
         if (isRun)
         {
@@ -268,6 +281,7 @@ public class PlayerController : MonoBehaviour
                     Cursor.lockState = CursorLockMode.None;
                     canLook = false;
                     SelectPopupUI popupUI = PopupUIManager.Instance.OpenPopupUI<SelectPopupUI>();
+                    popupUI.closeButton.onClick.AddListener(ToggleCursor);
                     SelectPopupPrefab = popupUI.gameObject;
                 }
                 Cursor.lockState = CursorLockMode.None;
@@ -300,6 +314,28 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
+    private void Die()
+    {
+        ToggleCursor();
+        isDie = true;
+        StartCoroutine(CameraMoveWhenDie());
+    }
+
+    IEnumerator CameraMoveWhenDie()
+    {
+        Vector3 startPos = cameraContainer.localPosition;
+        Quaternion startRot = cameraContainer.localRotation;
+        float time = 0f;
+        while (time < cameraMoveTime)
+        {
+            cameraContainer.localPosition = Vector3.Lerp(startPos, cameraPositionWhenDie, time / cameraMoveTime);
+            cameraContainer.localRotation = Quaternion.Lerp(startRot, Quaternion.Euler(cameraRotationWhenDie), time / cameraMoveTime);
+            time += Time.deltaTime;
+            yield return null;
+        }
+        PopupUIManager.Instance.OpenPopupUI<UIGameOver>();
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -309,10 +345,10 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawRay(transform.position + (-transform.right * 0.2f), Vector3.down);
     }
 
-    public void ToggleCursor(bool toggle)
+    public void ToggleCursor()
     {
-        Cursor.lockState = toggle ? CursorLockMode.None : CursorLockMode.Locked;
-        canLook = !toggle;
+        Cursor.lockState = canLook ? CursorLockMode.None : CursorLockMode.Locked;
+        canLook = !canLook;
     }
 
     private void OnAnimatorIK(int layerIndex) {

@@ -17,6 +17,7 @@ public class PlayerShooter : MonoBehaviour {
     public State state { get; private set; }
 
     public Transform fireTransform;
+    public Transform aimTransform;
 
     private LineRenderer bulletLineRenderer;
 
@@ -37,7 +38,7 @@ public class PlayerShooter : MonoBehaviour {
 
     private PlayerInventory inventory;
 
-    GameObject curGun;
+    public GameObject curGun;
 
     private void Awake() {
         gunAudioPlayer = GetComponent<AudioSource>();
@@ -95,7 +96,7 @@ public class PlayerShooter : MonoBehaviour {
         RaycastHit hit;
         Vector3 hitPosition = Vector3.zero;
 
-        if (Physics.Raycast(fireTransform.position, fireTransform.forward, out hit))
+        if (Physics.Raycast(fireTransform.position, aimTransform.forward, out hit))
         {
             //레이가 어떤 물체와 충돌한 경우
             IDamagable target = hit.collider.GetComponent<IDamagable>();

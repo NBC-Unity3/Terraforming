@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,8 @@ public class PlayerInventory : MonoBehaviour
     public int Ammo {  get;  set; }
     public int Gold { get; set; }
 
+    public Action<int> OnAmmoValueChange;
+
     private void Awake()
     {
         Ammo = 1000;
@@ -26,7 +29,7 @@ public class PlayerInventory : MonoBehaviour
     public void AddAmmo(int amount)
     {
         Ammo += amount;
-        Debug.Log(Ammo);
+        OnAmmoValueChange?.Invoke(Ammo);
     }
 
     public int UseAmmo(int amount)
@@ -34,11 +37,13 @@ public class PlayerInventory : MonoBehaviour
         if(Ammo >= amount)
         {
             Ammo -= amount;
+            OnAmmoValueChange?.Invoke(Ammo);
             return amount;
         }
         else
         {
             int remainAmmo = Ammo;
+            OnAmmoValueChange?.Invoke(Ammo);
             Ammo = 0;
             return remainAmmo;
         }
