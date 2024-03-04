@@ -250,6 +250,7 @@ public class Monster : MonoBehaviour, IDamagable
             {
                 //Die();
                 SetState(AIState.Die);
+                agent.SetDestination(transform.position);
                 StartCoroutine("Die");
                 return;
             }
