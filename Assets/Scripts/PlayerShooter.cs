@@ -173,6 +173,10 @@ public class PlayerShooter : MonoBehaviour {
             {
                 state = State.Ready;
             }
+            else if(gun.magazine <= 0)
+            {
+                state = State.Empty;
+            }
         }
     }
 }
