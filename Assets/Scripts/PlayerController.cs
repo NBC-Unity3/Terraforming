@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
 
     [HideInInspector]
     public bool canLook = true;
+    public bool canFire = false;
 
     private Rigidbody _rigidbody;
     private Animator playerAnimator;
@@ -56,6 +57,14 @@ public class PlayerController : MonoBehaviour
         playerAnimator = GetComponent<Animator>();
         Cursor.lockState = CursorLockMode.Locked;
         appliedMoveSpeed = moveSpeed;
+    }
+
+    private void Update()
+    {
+        if(canFire)
+        {
+            playerShooter.Fire();
+        }
     }
 
     private void FixedUpdate()
@@ -152,9 +161,17 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void OnShotInput()
+    public void OnShotInput(InputAction.CallbackContext context)
     {
-        playerShooter.Fire();
+        Debug.Log("Onshot");
+        if(context.phase == InputActionPhase.Started)
+        {
+            canFire = true;
+        }
+        else if(context.phase == InputActionPhase.Canceled)
+        {
+            canFire = false;
+        }
     }
 
     public void OnReloadInput()
