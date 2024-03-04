@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Color = UnityEngine.Color;
@@ -21,6 +22,8 @@ public class SelectPopupUI : PopupUIBase
     public Image blinkImage;
     QuestListPopupUI questListPopup;
     StoreUI storeUI;
+
+    bool check_padeOut = false;
 
     private void Start()
     {
@@ -115,5 +118,35 @@ public class SelectPopupUI : PopupUIBase
         }
         OnSelectPopupchildren();
         OffSelectPopup();
+    }
+
+    IEnumerator PadeIn()
+    {
+        Color color = blinkImage.color;
+        while (blinkImage.color.a >= 0)
+        {
+            color.a -= 1f / 255f;
+            blinkImage.color = color;
+            yield return null;
+            if (blinkImage.color.a == 0)
+            {
+                check_padeOut = false;
+            }
+        }
+    }
+
+    IEnumerator PadeOut()
+    {
+        Color color = blinkImage.color;
+        while (blinkImage.color.a <= 1)
+        {
+            color.a += 3f / 255f;
+            blinkImage.color = color;
+            yield return null;
+            if(blinkImage.color.a == 1)
+            {
+                check_padeOut = true;
+            }
+        }
     }
 }
