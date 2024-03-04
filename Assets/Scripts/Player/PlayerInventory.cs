@@ -54,8 +54,8 @@ public class PlayerInventory : MonoBehaviour
         else
         {
             int remainAmmo = Ammo;
-            OnAmmoValueChange?.Invoke(Ammo);
             Ammo = 0;
+            OnAmmoValueChange?.Invoke(Ammo);
             return remainAmmo;
         }
     }
