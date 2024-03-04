@@ -22,8 +22,8 @@ public class PlayerInventory : MonoBehaviour
 
     private void Awake()
     {
-        Ammo = 1000;
-        Gold = 100000000;
+        Ammo = 100;
+        Gold = 0;
         
     }
 
