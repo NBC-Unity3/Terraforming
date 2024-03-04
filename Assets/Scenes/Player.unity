@@ -641,8 +641,9 @@ MonoBehaviour:
   fireTransform: {fileID: 827258277}
   shotClip: {fileID: 8300000, guid: 522ab1780826bfd46ace04399f6b1ac9, type: 3}
   reloadClip: {fileID: 8300000, guid: 69050768d13d7f341b02d90dde790a6c, type: 3}
-  gun: {fileID: 0}
-  gunPrefab: {fileID: 0}
+  gun: {fileID: 11400000, guid: 02f1d4efe062c00468984081eb21392f, type: 2}
+  gunPrefab: {fileID: 919132149155446097, guid: 33269b2b610f4c245a712795c1927939,
+    type: 3}
   ammo: 0
 --- !u!1 &993911527
 GameObject:
@@ -856,6 +857,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  crouchMoveSpeed: 0
   jumpForce: 80
   groundLayerMask:
     serializedVersion: 2
@@ -870,6 +872,9 @@ MonoBehaviour:
   leftHandMount: {fileID: 993911528}
   rightHandMount: {fileID: 2098780982}
   canLook: 1
+  weaponSwapUI: {fileID: 0}
+  SelectPopupPrefab: {fileID: 0}
+  inventory: {fileID: 0}
 --- !u!114 &1394842775
 MonoBehaviour:
   m_ObjectHideFlags: 0
