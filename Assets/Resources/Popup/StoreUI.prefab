@@ -1339,7 +1339,7 @@ MonoBehaviour:
   buyBtn: {fileID: 1548519879784212190}
   alreadyBuyBtn: {fileID: 8619484782133248289}
   closeBtn: {fileID: 8528941886095278916}
-  ammoSprite: {fileID: 0}
+  ammoSprite: {fileID: 21300000, guid: 5692c1e7e7cfd19478ec38c78d9cff1b, type: 3}
   buyAmmoContainerGO: {fileID: 950630639023669530}
   inputAmount: {fileID: 2920218033937743805}
   totalPriceText: {fileID: 8116068491427247024}
