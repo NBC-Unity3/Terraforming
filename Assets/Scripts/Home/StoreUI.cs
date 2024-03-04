@@ -10,7 +10,6 @@ public class StoreItem
 {
     public Gun gun;
     public int price;
-    public Sprite weaponSprite;
     public bool isSold;
 }
 
@@ -36,6 +35,7 @@ public class StoreUI : PopupUIBase
     public Button closeBtn;
 
     [Header("Buy Ammo UI Components")]
+    public Sprite ammoSprite;
     public GameObject buyAmmoContainerGO;
     public TMP_InputField inputAmount;
     public TextMeshProUGUI totalPriceText;
@@ -74,10 +74,11 @@ public class StoreUI : PopupUIBase
     {
         StoreItem item = items[index];
 
-        if(index == items.Length - 1)
+        if(index == 0)
         {
             buyAmmoContainerGO.SetActive(true);
             abilityContainerGO.SetActive(false);
+            weaponImage.sprite = ammoSprite;
             nameText.text = "Bullet";
             SetTotalAmmoPriceText();
         }
@@ -89,9 +90,9 @@ public class StoreUI : PopupUIBase
             attackValueText.text = item.gun.damage.ToString();
             fireRateValueText.text = item.gun.rpm.ToString();
             capacityValueText.text = item.gun.capacity.ToString();
+            weaponImage.sprite = item.gun.image;
         }
         priceText.text = item.price.ToString();
-        weaponImage.sprite = item.weaponSprite;
 
         SetBuyButton(item.isSold);
     }

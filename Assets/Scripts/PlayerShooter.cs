@@ -72,9 +72,10 @@ public class PlayerShooter : MonoBehaviour {
         state = State.Ready;
         lastFireTime = 0;
         ammo = 100;
-        inventory = PlayerController.instance.inventory;
 
         onSwap?.Invoke(gun);
+
+        inventory = PlayerController.instance.inventory;
     }
 
     public void Fire() {

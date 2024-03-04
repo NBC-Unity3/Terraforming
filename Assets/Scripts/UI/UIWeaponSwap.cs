@@ -6,9 +6,6 @@ using UnityEngine.UI;
 public class UIWeaponSwap : PopupUIBase
 {
     [Header("Wheel")]
-    public Sprite wheelSprite;
-    public Sprite[] weaponSprites;
-    public float wheelSpriteScale;
     public float gapBetweenPiece;
     public GameObject wheelParentGO;
     public GameObject pieceGO;
@@ -17,6 +14,7 @@ public class UIWeaponSwap : PopupUIBase
 
     private PlayerInventory inventory;
 
+    [HideInInspector]
     public int curSelectedWeapon;
 
     private void Awake()
@@ -48,7 +46,7 @@ public class UIWeaponSwap : PopupUIBase
             piece.transform.localRotation = Quaternion.Euler(0, 0, degree / 2f + gapBetweenPiece / 2f - i * degree);
             piece.color = new Color(1f, 1f, 1f, 0.3f);
 
-            icon.sprite = weaponSprites[i];
+            icon.sprite = inventory.playerGuns[i].gun.image;
             icon.transform.localPosition = Quaternion.AngleAxis(-i * degree, Vector3.forward) * Vector3.up * iconDist;
             icon.preserveAspect = true;
         }

@@ -39,7 +39,7 @@ public class UIPlayerGUI : MonoBehaviour
 
     public void SetGunInfo(Gun gun)
     {
-        // 총기 이미지 변경 아직 못함
+        weaponImage.sprite = gun.image;
         curAmmoText.text = gun.magazine.ToString();
         maxAmmoText.text = gun.capacity.ToString();
     }
