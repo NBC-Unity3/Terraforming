@@ -63,7 +63,7 @@ public class RangeMonster : MonoBehaviour, IDamagable
     {
         playerDistance = Vector3.Distance(transform.position, playerController.transform.position);
 
-        animator.SetBool("Moving", aiState != AIState.Idle);
+        animator.SetBool("Moving", aiState != AIState.Idle && aiState != AIState.Die);
 
         switch (aiState)
         {
@@ -243,22 +243,29 @@ public class RangeMonster : MonoBehaviour, IDamagable
 
     public void TakePhysicalDamage(int damageAmount)
     {
-        health -= damageAmount;
-        detectDistance = 100f;
-        if (health <= 0)
+        if (health > 0)
         {
-            //Die();
-            SetState(AIState.Die);
-            StartCoroutine("Die");
+            health -= damageAmount;
+            detectDistance = 100f;
+            animator.speed = 1;
+            if (health <= 0)
+            {
+                //Die();
+                SetState(AIState.Die);
+                agent.SetDestination(transform.position);
+                StartCoroutine("Die");
+                return;
+            }
+            animator.SetBool("Moving", false);
+            animator.SetTrigger("Hit");
+            //StartCoroutine(DamageFlash());
         }
-        animator.SetTrigger("Hit");
-        //StartCoroutine(DamageFlash());
     }
     IEnumerator Die()
     {
-        Instantiate(coin, transform.position + Vector3.up * 2 ,Quaternion.identity);
         animator.SetTrigger("Die");
         yield return new WaitForSeconds(1.0f);
+        Instantiate(coin, transform.position + Vector3.up * 2, Quaternion.identity);
         Destroy(gameObject);
         QuestManager.Instance.UpdateQuestKillCount();
     }
