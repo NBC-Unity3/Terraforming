@@ -12,16 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 515761cae6da58c458b6d16dd2ffc363, type: 3}
   m_Name: MP5
   m_EditorClassIdentifier: 
-  name: 
-  damage: 0
-  range: 0
-  rpm: 0
-  capacity: 0
-  magazine: 0
+  name: H&K MP5
+  damage: 27
+  range: 200
+  rpm: 800
+  capacity: 30
+  magazine: 30
   recoil: 0
-  reload: 0
-  leftHandlePosition: {x: 0, y: 0, z: 0}
-  leftHandleRotation: {x: 0, y: 0, z: 0, w: 0}
-  rightHandlePosition: {x: 0, y: 0, z: 0}
-  rightHandleRotation: {x: 0, y: 0, z: 0, w: 0}
-  firePosition: {x: 0, y: 0, z: 0}
+  reload: 4.8
+  image: {fileID: 21300000, guid: d77edd8559bc4214ea87c685f5370fd8, type: 3}
+  leftHandlePosition: {x: -0.058, y: 0.015, z: 0.027}
+  leftHandleRotation: {x: 0.40324575, y: 0.085172534, z: 0.9108482, w: 0.022225985}
+  rightHandlePosition: {x: 0.043, y: -0.034, z: -0.242}
+  rightHandleRotation: {x: -0.09838086, y: -0.10268073, z: -0.694748, w: 0.7050554}
+  firePosition: {x: 0, y: 0.0775, z: 0.245}

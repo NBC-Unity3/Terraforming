@@ -15,6 +15,8 @@ public class Gun : ScriptableObject
     public float recoil;        // 반동
     public float reload;        // 재장전 시간
 
+    public Sprite image;
+
     public Vector3 leftHandlePosition;
     public Quaternion leftHandleRotation;
     public Vector3 rightHandlePosition;
