@@ -18,7 +18,7 @@ public class PlayerInventory : MonoBehaviour
 
     private void Awake()
     {
-        Ammo = 10;
+        Ammo = 1000;
         Gold = 100000000;
         
     }
@@ -47,5 +47,6 @@ public class PlayerInventory : MonoBehaviour
     public void AddGold(int amount)
     {
         Gold += amount;
+        Debug.Log(Gold);
     }
 }
