@@ -253,10 +253,10 @@ public class RangeMonster : MonoBehaviour, IDamagable
     }
     IEnumerator Die()
     {
-        QuestManager.Instance.UpdateQuestKillCount();
         animator.SetTrigger("Die");
         yield return new WaitForSeconds(1.0f);
         Destroy(gameObject);
+        QuestManager.Instance.UpdateQuestKillCount();
     }
 
     public void UpdateRotation(Vector3 target, float damping)
