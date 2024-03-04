@@ -253,7 +253,7 @@ public class Monster : MonoBehaviour, IDamagable
     }
     IEnumerator Die()
     {
-        Instantiate(coin, transform.position, Quaternion.identity);
+        Instantiate(coin, transform.position + Vector3.up * 2f, Quaternion.identity);
         animator.SetTrigger("Die");
         yield return new WaitForSeconds(1.0f);
         Destroy(gameObject);

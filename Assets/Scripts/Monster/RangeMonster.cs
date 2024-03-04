@@ -256,7 +256,7 @@ public class RangeMonster : MonoBehaviour, IDamagable
     }
     IEnumerator Die()
     {
-        Instantiate(coin, transform.position,Quaternion.identity);
+        Instantiate(coin, transform.position + Vector3.up * 2 ,Quaternion.identity);
         animator.SetTrigger("Die");
         yield return new WaitForSeconds(1.0f);
         Destroy(gameObject);
