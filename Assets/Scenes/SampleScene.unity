@@ -6885,27 +6885,27 @@ MonoBehaviour:
   - gun: {fileID: 11400000, guid: c228beec3a3408043b242a37cb3b1234, type: 2}
     gunPrefab: {fileID: 919132149155446097, guid: 8f9696fb6017be144a307b6586855ac0,
       type: 3}
-    isUnlock: 1
+    isUnlock: 0
   - gun: {fileID: 11400000, guid: c0474fea2daba4b4186d57e352672942, type: 2}
     gunPrefab: {fileID: 919132149155446097, guid: 2cf10fa706c7a4d42b5927d8e730f4e2,
       type: 3}
-    isUnlock: 1
+    isUnlock: 0
   - gun: {fileID: 11400000, guid: 02f1d4efe062c00468984081eb21392f, type: 2}
     gunPrefab: {fileID: 919132149155446097, guid: 33269b2b610f4c245a712795c1927939,
       type: 3}
-    isUnlock: 1
+    isUnlock: 0
   - gun: {fileID: 11400000, guid: 71bb91140f864af4bbd8d1472d2c33dc, type: 2}
     gunPrefab: {fileID: 919132149155446097, guid: e525d5c90c0df01498dca09570cfb5ec,
       type: 3}
-    isUnlock: 1
+    isUnlock: 0
   - gun: {fileID: 11400000, guid: 1775408cd7d39ba4694c154ca9f5a9e8, type: 2}
     gunPrefab: {fileID: 919132149155446097, guid: ffb3f5f9531da764c906b0baf3285c62,
       type: 3}
-    isUnlock: 1
+    isUnlock: 0
   - gun: {fileID: 11400000, guid: 9aab43d845d472e438b392714c402b03, type: 2}
     gunPrefab: {fileID: 919132149155446097, guid: c8573db8e30e916479a705831bd5040c,
       type: 3}
-    isUnlock: 1
+    isUnlock: 0
 --- !u!114 &1331778859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6921,7 +6921,7 @@ MonoBehaviour:
   health:
     curValue: 0
     maxValue: 100
-    startValue: 10
+    startValue: 100
     regenRate: 2
     decayRate: 0
   stamina:
