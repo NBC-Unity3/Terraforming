@@ -286,6 +286,7 @@ public class PlayerController : MonoBehaviour
                     Cursor.lockState = CursorLockMode.None;
                     canLook = false;
                     SelectPopupUI popupUI = PopupUIManager.Instance.OpenPopupUI<SelectPopupUI>();
+                    popupUI.closeButton.onClick.AddListener(ToggleCursor);
                     SelectPopupPrefab = popupUI.gameObject;
                 }
                 Cursor.lockState = CursorLockMode.None;
@@ -320,7 +321,7 @@ public class PlayerController : MonoBehaviour
 
     private void Die()
     {
-        ToggleCursor(true);
+        ToggleCursor();
         isDie = true;
         StartCoroutine(CameraMoveWhenDie());
     }
@@ -349,10 +350,10 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawRay(transform.position + (-transform.right * 0.2f), Vector3.down);
     }
 
-    public void ToggleCursor(bool toggle)
+    public void ToggleCursor()
     {
-        Cursor.lockState = toggle ? CursorLockMode.None : CursorLockMode.Locked;
-        canLook = !toggle;
+        Cursor.lockState = canLook ? CursorLockMode.None : CursorLockMode.Locked;
+        canLook = !canLook;
     }
 
     private void OnAnimatorIK(int layerIndex) {

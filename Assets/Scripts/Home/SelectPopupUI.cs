@@ -117,7 +117,8 @@ public class SelectPopupUI : PopupUIBase
             yield return null;
         }
         OnSelectPopupchildren();
-        OffSelectPopup();
+        //OffSelectPopup();
+        closeButton.onClick.Invoke();
     }
 
     IEnumerator PadeIn()
