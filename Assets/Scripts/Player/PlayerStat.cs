@@ -53,6 +53,7 @@ public class PlayerStat : MonoBehaviour, IDamagable
         if(health.curValue <= 0f)
         {
             OnDie?.Invoke();
+            OnDie = null;
         }
     }
 
@@ -82,6 +83,8 @@ public class PlayerStat : MonoBehaviour, IDamagable
 
     private void Die()
     {
+        Destroy(PlayerController.instance.playerShooter.curGun);
+        PlayerController.instance.playerAnimator.SetLayerWeight(1, 0);
         PlayerController.instance.playerAnimator.SetTrigger("Die");
     }
 }

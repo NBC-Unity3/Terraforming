@@ -35,6 +35,12 @@ public class PlayerController : MonoBehaviour
     public Transform leftHandMount; // 총의 왼쪽 손잡이, 왼손이 위치할 지점
     public Transform rightHandMount; // 총의 오른쪽 손잡이, 오른손이 위치할 지점
 
+    [Header("Die")]
+    private bool isDie = false;
+    public Vector3 cameraRotationWhenDie;
+    public Vector3 cameraPositionWhenDie;
+    public float cameraMoveTime;
+
     [HideInInspector]
     public bool canLook = true;
     public bool canFire = false;
@@ -55,12 +61,15 @@ public class PlayerController : MonoBehaviour
     public PlayerStat playerStat;
 
     public static PlayerController instance;
+
     private void Awake()
     {
         instance = this;
         _rigidbody = GetComponent<Rigidbody>();
         inventory = GetComponent<PlayerInventory>();
         playerStat = GetComponent<PlayerStat>();
+
+        playerStat.OnDie += Die;
     }
 
     void Start()
@@ -93,6 +102,10 @@ public class PlayerController : MonoBehaviour
     
     private void Move()
     {
+        if (isDie)
+        {
+            return;
+        }
         Vector3 dir = transform.forward * curMovementInput.y + transform.right * curMovementInput.x;
         if (isRun)
         {
@@ -123,11 +136,11 @@ public class PlayerController : MonoBehaviour
             canLook = false;
             return;
         }
-        if (Cursor.lockState == CursorLockMode.None)
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            canLook = true;
-        }
+        //if (Cursor.lockState == CursorLockMode.None)
+        //{
+        //    Cursor.lockState = CursorLockMode.Locked;
+        //    canLook = true;
+        //}
         _rigidbody.velocity = dir;
         playerAnimator.SetFloat("MoveX", curMovementInput.x);
         playerAnimator.SetFloat("MoveY", curMovementInput.y);
@@ -303,6 +316,27 @@ public class PlayerController : MonoBehaviour
         Debug.Log("false");
 
         return false;
+    }
+
+    private void Die()
+    {
+        ToggleCursor(true);
+        isDie = true;
+        StartCoroutine(CameraMoveWhenDie());
+    }
+
+    IEnumerator CameraMoveWhenDie()
+    {
+        Vector3 startPos = cameraContainer.localPosition;
+        Quaternion startRot = cameraContainer.localRotation;
+        float time = 0f;
+        while (time < cameraMoveTime)
+        {
+            cameraContainer.localPosition = Vector3.Lerp(startPos, cameraPositionWhenDie, time / cameraMoveTime);
+            cameraContainer.localRotation = Quaternion.Lerp(startRot, Quaternion.Euler(cameraRotationWhenDie), time / cameraMoveTime);
+            time += Time.deltaTime;
+            yield return null;
+        }
     }
 
     private void OnDrawGizmos()

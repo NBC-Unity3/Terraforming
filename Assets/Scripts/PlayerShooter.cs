@@ -37,7 +37,7 @@ public class PlayerShooter : MonoBehaviour {
 
     private PlayerInventory inventory;
 
-    GameObject curGun;
+    public GameObject curGun;
 
     private void Awake() {
         gunAudioPlayer = GetComponent<AudioSource>();
