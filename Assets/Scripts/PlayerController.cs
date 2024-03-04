@@ -81,7 +81,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if(canFire)
+        if(canFire && !isDie)
         {
             playerShooter.Fire();
         }
@@ -337,6 +337,7 @@ public class PlayerController : MonoBehaviour
             time += Time.deltaTime;
             yield return null;
         }
+        PopupUIManager.Instance.OpenPopupUI<UIGameOver>();
     }
 
     private void OnDrawGizmos()

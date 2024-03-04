@@ -20,6 +20,7 @@ public class UIPlayerGUI : MonoBehaviour
     void Start()
     {
         PlayerController.instance.playerShooter.onSwap += SetGunInfo;
+        SetGunInfo(PlayerController.instance.playerShooter.gun);
         SetTotalAmmoText();
         ConncetFuncToCurrentGun();
         ConnectFuncToPlayerStat();
