@@ -4,7 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Monster
+  - RangeSlime
+  - Slime
+  - TurtleShell
   layers:
   - Default
   - TransparentFX
@@ -14,7 +16,7 @@ TagManager:
   - UI
   - Player
   - Monster
-  - 
+  - console
   - 
   - 
   - 

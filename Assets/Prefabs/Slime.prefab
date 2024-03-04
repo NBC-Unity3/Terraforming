@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 703660913189560656}
   m_Layer: 0
   m_Name: Slime
-  m_TagString: Untagged
+  m_TagString: Slime
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -201,6 +201,7 @@ MonoBehaviour:
   attackRate: 1.5
   attackDistance: 3
   fieldOfView: 120
+  coin: {fileID: 5704303752494955240, guid: bdf37085cbe344b4abfdb2433c9a6bfd, type: 3}
 --- !u!136 &703660913189560656
 CapsuleCollider:
   m_ObjectHideFlags: 0

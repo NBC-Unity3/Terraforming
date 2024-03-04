@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -15,6 +17,7 @@ public class PlayerShooter : MonoBehaviour {
     public State state { get; private set; }
 
     public Transform fireTransform;
+    public Transform aimTransform;
 
     private LineRenderer bulletLineRenderer;
 
@@ -22,11 +25,20 @@ public class PlayerShooter : MonoBehaviour {
     public AudioClip shotClip;
     public AudioClip reloadClip;
 
-    public Gun gun;
+    public Gun gun;                 // 장착중인 총기정보
+    public GameObject gunPrefab;    // 장착중인 총기 모델링
 
-    public int ammo;    // 보유중인 탄환수
+    public int ammo;                // 보유중인 총 탄환수
+    private float lastFireTime;     // 연사구현을 위한 param
 
-    private float lastFireTime;
+
+    public Action<int> onFire;
+    public Action onReload;
+    public Action<Gun> onSwap;
+
+    private PlayerInventory inventory;
+
+    public GameObject curGun;
 
     private void Awake() {
         gunAudioPlayer = GetComponent<AudioSource>();
@@ -36,11 +48,43 @@ public class PlayerShooter : MonoBehaviour {
         bulletLineRenderer.enabled = false;
     }
 
+    void OnEnable()
+    {
+        if(curGun != null)
+            Destroy(curGun);
+        curGun = Instantiate(gunPrefab);
+        curGun.name = "Gun";
+        curGun.transform.parent = transform.GetChild(0);
+        curGun.transform.localPosition = Vector3.zero;
+        curGun.transform.localEulerAngles = Vector3.zero;
+
+        transform.GetChild(1).transform.localPosition = gun.leftHandlePosition;
+        transform.GetChild(1).transform.localRotation = gun.leftHandleRotation;
+        transform.GetChild(2).transform.localPosition = gun.rightHandlePosition;
+        transform.GetChild(2).transform.localRotation = gun.rightHandleRotation;
+        transform.GetChild(3).transform.localPosition = gun.firePosition;
+
+        onSwap?.Invoke(gun);
+    }
+
+
     private void Start() {
         // 총 상태 초기화
         state = State.Ready;
         lastFireTime = 0;
         ammo = 100;
+
+        if (gun.magazine != gun.capacity)
+        {
+            gun.magazine = gun.capacity;
+        }
+
+        inventory = PlayerController.instance.inventory;
+    }
+
+    public void Init()
+    {
+        onSwap?.Invoke(gun);
     }
 
     public void Fire() {
@@ -55,14 +99,16 @@ public class PlayerShooter : MonoBehaviour {
         RaycastHit hit;
         Vector3 hitPosition = Vector3.zero;
 
-        if (Physics.Raycast(fireTransform.position, fireTransform.forward, out hit))
+        if (Physics.Raycast(fireTransform.position, aimTransform.forward, out hit))
         {
             //레이가 어떤 물체와 충돌한 경우
-            IDamageable target = hit.collider.GetComponent<IDamageable>();
+            IDamagable target = hit.collider.GetComponent<IDamagable>();
 
             if (target != null)
             {
-                target.OnDamage(gun.damage, hit.point, hit.normal);
+                // IDamagable, IDamageable 인터페이스가 두 개 있어서 둘 중 하나 골라서 사용해야할 것 같습니다.
+                target.TakePhysicalDamage((int)gun.damage);
+                //target.OnDamage(gun.damage, hit.point, hit.normal);
             }
             hitPosition = hit.point;
         }
@@ -74,6 +120,7 @@ public class PlayerShooter : MonoBehaviour {
         StartCoroutine(ShotEffect(hitPosition));
 
         gun.magazine--;
+        onFire?.Invoke(gun.magazine);
         if (gun.magazine <= 0)
         {
             state = State.Empty;
@@ -82,7 +129,7 @@ public class PlayerShooter : MonoBehaviour {
 
     public void Reload()
     {
-        if (state == State.Reloading || ammo <= 0 || gun.magazine >= gun.capacity)
+        if (state == State.Reloading ||  inventory.Ammo <= 0 || gun.magazine >= gun.capacity)
         {
             return;
         }
@@ -113,15 +160,32 @@ public class PlayerShooter : MonoBehaviour {
 
         // 재장전할 탄알 계산
         int ammoToFill = gun.capacity - gun.magazine;
-        if (ammo < ammoToFill)
-        {
-            ammoToFill = ammo;
-        }
+        ammoToFill = inventory.UseAmmo(ammoToFill);
 
         gun.magazine += ammoToFill;
-        ammo -= ammoToFill;
+
+        onFire?.Invoke(gun.magazine);
+        onReload?.Invoke();
 
         state = State.Ready;
     }
 
+    public void SwapWeapon(int index)
+    {
+        if (inventory.playerGuns[index].isUnlock)
+        {
+            gameObject.SetActive(false);
+            gun = inventory.playerGuns[index].gun;
+            gunPrefab = inventory.playerGuns[index].gunPrefab;
+            gameObject.SetActive(true);
+            if(gun.magazine > 0)
+            {
+                state = State.Ready;
+            }
+            else if(gun.magazine <= 0)
+            {
+                state = State.Empty;
+            }
+        }
+    }
 }

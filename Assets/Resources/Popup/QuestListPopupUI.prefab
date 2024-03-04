@@ -62,7 +62,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!114 &8275891629053809842
 MonoBehaviour:
@@ -116,11 +116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 241a84e1bc14fcf4c8dabcfef05cbd6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  questTitleButton:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  quest_count: 0
   closeButton: {fileID: 5604594198828432264}
   questListPosition: {fileID: 7538430170862326194}
   questList:
@@ -128,7 +124,9 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  questPrefab: {fileID: 0}
+  questPrefab:
+  - {fileID: 0}
+  quests: []
 --- !u!1 &1176777262621635142
 GameObject:
   m_ObjectHideFlags: 0

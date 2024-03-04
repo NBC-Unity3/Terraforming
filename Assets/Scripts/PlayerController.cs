@@ -9,8 +9,16 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed;
     public float crouchMoveSpeed;
     private Vector2 curMovementInput;
-    public float jumpForce;
     public LayerMask groundLayerMask;
+
+    [Header("Jump")]
+    public float jumpForce;
+    public int jumpSteminaValue;
+
+    [Header("Run")]
+    public float runSpeed;
+    public int runSteminaValue;
+    private bool isRun;
 
     [Header("Look")]
     public Transform cameraContainer;
@@ -27,23 +35,41 @@ public class PlayerController : MonoBehaviour
     public Transform leftHandMount; // 총의 왼쪽 손잡이, 왼손이 위치할 지점
     public Transform rightHandMount; // 총의 오른쪽 손잡이, 오른손이 위치할 지점
 
+    [Header("Die")]
+    private bool isDie = false;
+    public Vector3 cameraRotationWhenDie;
+    public Vector3 cameraPositionWhenDie;
+    public float cameraMoveTime;
+
     [HideInInspector]
     public bool canLook = true;
+    public bool canFire = false;
 
     private Rigidbody _rigidbody;
-    private Animator playerAnimator;
+    public Animator playerAnimator;
 
     private bool isCrouch = false;
 
     private float appliedMoveSpeed;
 
-    public GameObject weaponSwapUI;
+    public GameObject weaponSwapUIGO;
+    private UIWeaponSwap weaponSwapPopupUI;
+    public GameObject SelectPopupPrefab;
+
+    // 일단은 controller가 instance여서 controller에서 inventory에 접근할 수 있게 함. PlayerManager에서 관리하면 좋을 것 같음
+    public PlayerInventory inventory;
+    public PlayerStat playerStat;
 
     public static PlayerController instance;
+
     private void Awake()
     {
         instance = this;
         _rigidbody = GetComponent<Rigidbody>();
+        inventory = GetComponent<PlayerInventory>();
+        playerStat = GetComponent<PlayerStat>();
+
+        playerStat.OnDie += Die;
     }
 
     void Start()
@@ -51,6 +77,14 @@ public class PlayerController : MonoBehaviour
         playerAnimator = GetComponent<Animator>();
         Cursor.lockState = CursorLockMode.Locked;
         appliedMoveSpeed = moveSpeed;
+    }
+
+    private void Update()
+    {
+        if(canFire && !isDie)
+        {
+            playerShooter.Fire();
+        }
     }
 
     private void FixedUpdate()
@@ -68,12 +102,41 @@ public class PlayerController : MonoBehaviour
     
     private void Move()
     {
+        if (isDie)
+        {
+            return;
+        }
         Vector3 dir = transform.forward * curMovementInput.y + transform.right * curMovementInput.x;
+        if (isRun)
+        {
+            if(!playerStat.UseStemina(runSteminaValue * Time.deltaTime))
+            {
+                isRun = false;
+            }
+            else
+            {
+                appliedMoveSpeed = runSpeed;
+            }
+        }
+        else if (isCrouch)
+        {
+            appliedMoveSpeed = crouchMoveSpeed;
+        }
+        else
+        {
+            appliedMoveSpeed = moveSpeed;
+        }
+
         dir *= appliedMoveSpeed;
         dir.y = _rigidbody.velocity.y;
 
+        if (SelectPopupPrefab != null && SelectPopupPrefab.activeInHierarchy)
+        {
+            _rigidbody.velocity = Vector3.zero;
+            canLook = false;
+            return;
+        }
         _rigidbody.velocity = dir;
-
         playerAnimator.SetFloat("MoveX", curMovementInput.x);
         playerAnimator.SetFloat("MoveY", curMovementInput.y);
     }
@@ -97,10 +160,34 @@ public class PlayerController : MonoBehaviour
         if(context.phase == InputActionPhase.Performed)
         {
             curMovementInput = context.ReadValue<Vector2>();
+
+            if(curMovementInput.y < 0.5)
+            {
+                isRun = false;
+            }
         }
         else if(context.phase == InputActionPhase.Canceled)
         {
+            isRun = false;
             curMovementInput = Vector2.zero;
+        }
+    }
+
+    public void OnRunInput(InputAction.CallbackContext context)
+    {
+        if(context.phase == InputActionPhase.Performed && curMovementInput.y >= 0.5)
+        {
+            isRun = true;
+            if (isCrouch)
+            {
+                isCrouch = !isCrouch;
+                playerAnimator.SetBool("Crouch", isCrouch);
+                cameraContainer.localPosition = new Vector3(cameraContainer.localPosition.x, 1.5f, cameraContainer.localPosition.z);
+            }
+        }
+        else if(context.phase == InputActionPhase.Canceled)
+        {
+            isRun = false;
         }
     }
 
@@ -108,7 +195,7 @@ public class PlayerController : MonoBehaviour
     {
         if(context.phase == InputActionPhase.Started)
         {
-            if (IsGrounded())
+            if (IsGrounded() && playerStat.UseStemina(jumpSteminaValue))
             {
                 _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
                 playerAnimator.SetBool("Jump", true);
@@ -122,23 +209,33 @@ public class PlayerController : MonoBehaviour
         if (context.performed)
         {
             isCrouch = !isCrouch;
-            Debug.Log(isCrouch);
             playerAnimator.SetBool("Crouch", isCrouch);
 
             if(isCrouch)
             {
-                appliedMoveSpeed = crouchMoveSpeed;
+                isRun = false;
+                cameraContainer.localPosition = new Vector3(cameraContainer.localPosition.x, 0.75f, cameraContainer.localPosition.z);
             }
             else
             {
-                appliedMoveSpeed = moveSpeed;
+                cameraContainer.localPosition = new Vector3(cameraContainer.localPosition.x, 1.5f, cameraContainer.localPosition.z);
             }
         }
     }
 
-    public void OnShotInput()
+    public void OnShotInput(InputAction.CallbackContext context)
     {
-        playerShooter.Fire();
+        if (SelectPopupPrefab == null || !SelectPopupPrefab.activeInHierarchy)
+        {
+            if(context.phase == InputActionPhase.Started)
+            {
+              canFire = true;
+            }
+            else if(context.phase == InputActionPhase.Canceled)
+            {
+              canFire = false;
+            }
+        }
     }
 
     public void OnReloadInput()
@@ -153,17 +250,46 @@ public class PlayerController : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.None;
             canLook = false;
-            // 이 부분은 UIManager.ShowUI로 대체해야 함
-            weaponSwapUI.SetActive(true);
+            if(weaponSwapPopupUI == null)
+            {
+                weaponSwapPopupUI = PopupUIManager.Instance.OpenPopupUI<UIWeaponSwap>();
+                weaponSwapUIGO = weaponSwapPopupUI.gameObject;
+            }
+            weaponSwapUIGO.SetActive(true);
         }
         else if (context.canceled)
         {
             Cursor.lockState = CursorLockMode.Locked;
             canLook = true;
             // 이 부분은 UIManager.ShowUI로 대체해야 함 
-            weaponSwapUI.SetActive(false);
+            playerShooter.SwapWeapon(weaponSwapPopupUI.curSelectedWeapon);
+            weaponSwapUIGO.SetActive(false);
         }
     }
+
+    public void OnInteractionInput(InputAction.CallbackContext context) //퀘스트나 회복, 상점 이용을 위한
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        int layerMask = 1 << LayerMask.NameToLayer("console");
+        if (context.phase == InputActionPhase.Started)
+        {
+            if (Physics.Raycast(ray, out hit, 5f, layerMask))
+            {
+                if (SelectPopupPrefab == null) 
+                {
+                    Cursor.lockState = CursorLockMode.None;
+                    canLook = false;
+                    SelectPopupUI popupUI = PopupUIManager.Instance.OpenPopupUI<SelectPopupUI>();
+                    popupUI.closeButton.onClick.AddListener(ToggleCursor);
+                    SelectPopupPrefab = popupUI.gameObject;
+                }
+                Cursor.lockState = CursorLockMode.None;
+                SelectPopupPrefab.SetActive(true);
+            }
+        }
+    }
+
 
     private bool IsGrounded()
     {
@@ -188,6 +314,28 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
+    private void Die()
+    {
+        ToggleCursor();
+        isDie = true;
+        StartCoroutine(CameraMoveWhenDie());
+    }
+
+    IEnumerator CameraMoveWhenDie()
+    {
+        Vector3 startPos = cameraContainer.localPosition;
+        Quaternion startRot = cameraContainer.localRotation;
+        float time = 0f;
+        while (time < cameraMoveTime)
+        {
+            cameraContainer.localPosition = Vector3.Lerp(startPos, cameraPositionWhenDie, time / cameraMoveTime);
+            cameraContainer.localRotation = Quaternion.Lerp(startRot, Quaternion.Euler(cameraRotationWhenDie), time / cameraMoveTime);
+            time += Time.deltaTime;
+            yield return null;
+        }
+        PopupUIManager.Instance.OpenPopupUI<UIGameOver>();
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -197,15 +345,13 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawRay(transform.position + (-transform.right * 0.2f), Vector3.down);
     }
 
-    public void ToggleCursor(bool toggle)
+    public void ToggleCursor()
     {
-        Cursor.lockState = toggle ? CursorLockMode.None : CursorLockMode.Locked;
-        canLook = !toggle;
+        Cursor.lockState = canLook ? CursorLockMode.None : CursorLockMode.Locked;
+        canLook = !canLook;
     }
 
     private void OnAnimatorIK(int layerIndex) {
-
-        gunPivot.position = playerAnimator.GetIKHintPosition(AvatarIKHint.RightElbow);
 
         playerAnimator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1.0f);
         playerAnimator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1.0f);

@@ -37,9 +37,11 @@ public class RangeMonster : MonoBehaviour, IDamagable
 
     public float fieldOfView = 120f;
 
-    public GameObject Mucus;
-    public Transform MucusSpawnPoint;
+    public GameObject mucus;
+    public Transform mucusSpawnPoint;
+    public GameObject coin;
 
+    private PlayerController playerController;
     private NavMeshAgent agent;
     private Animator animator;
     //private SkinnedMeshRenderer[] meshRenderers;
@@ -54,13 +56,14 @@ public class RangeMonster : MonoBehaviour, IDamagable
     private void Start()
     {
         SetState(AIState.Wandering);
+        playerController = PlayerController.instance;
     }
 
     private void Update()
     {
-        playerDistance = Vector3.Distance(transform.position, PlayerController.instance.transform.position);
+        playerDistance = Vector3.Distance(transform.position, playerController.transform.position);
 
-        animator.SetBool("Moving", aiState != AIState.Idle);
+        animator.SetBool("Moving", aiState != AIState.Idle && aiState != AIState.Die);
 
         switch (aiState)
         {
@@ -91,9 +94,9 @@ public class RangeMonster : MonoBehaviour, IDamagable
         {
             agent.isStopped = false;
             NavMeshPath path = new NavMeshPath();
-            if (agent.CalculatePath(PlayerController.instance.transform.position, path))
+            if (agent.CalculatePath(playerController.transform.position, path))
             {
-                agent.SetDestination(PlayerController.instance.transform.position);
+                agent.SetDestination(playerController.transform.position);
             }
             else
             {
@@ -103,15 +106,20 @@ public class RangeMonster : MonoBehaviour, IDamagable
         else
         {
             animator.SetBool("Moving", false);
-            Vector3 directionToPlayer = PlayerController.instance.transform.position - transform.position;
+            //Vector3 directionToPlayer = PlayerController.instance.transform.position - transform.position;
+            Vector3 directionToPlayer = new Vector3
+                //Ä³ï¿½ï¿½ï¿½Ï±ï¿½
+            (playerController.transform.position.x - transform.position.x,
+            playerController.transform.position.y + 1 - transform.position.y,
+            playerController.transform.position.z - transform.position.z);
 
-            // ÇÃ·¹ÀÌ¾î¸¦ ¹Ù¶óº¸µµ·Ï È¸Àü Ã³¸®.
+            // ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ ï¿½Ù¶óº¸µï¿½ï¿½ï¿½ È¸ï¿½ï¿½ Ã³ï¿½ï¿½.
             UpdateRotation(directionToPlayer, 3f);
             agent.isStopped = true;
             if (Time.time - lastAttackTime > attackRate)
             {
                 lastAttackTime = Time.time;
-                Instantiate(Mucus, MucusSpawnPoint);
+                Instantiate(mucus, mucusSpawnPoint.position,mucusSpawnPoint.rotation);
                 //PlayerController.instance.GetComponent<IDamagable>().TakePhysicalDamage(damage);
                 animator.speed = 1;
                 animator.SetTrigger("Attack");
@@ -140,7 +148,7 @@ public class RangeMonster : MonoBehaviour, IDamagable
 
     bool IsPlaterInFireldOfView()
     {
-        Vector3 directionToPlayer = PlayerController.instance.transform.position - transform.position;
+        Vector3 directionToPlayer = playerController.transform.position - transform.position;
         float angle = Vector3.Angle(transform.forward, directionToPlayer);
         return angle < fieldOfView * 0.5f;
     }
@@ -230,45 +238,58 @@ public class RangeMonster : MonoBehaviour, IDamagable
 
     float GetDestinationAngle(Vector3 targetPos)
     {
-        return Vector3.Angle(transform.position - PlayerController.instance.transform.position, transform.position + targetPos);
+        return Vector3.Angle(transform.position - playerController.transform.position, transform.position + targetPos);
     }
 
     public void TakePhysicalDamage(int damageAmount)
     {
-        health -= damageAmount;
-        detectDistance = 100f;
-        if (health <= 0)
+        if (aiState != AIState.Die)
         {
-            //Die();
-            SetState(AIState.Die);
-            StartCoroutine("Die");
+            health -= damageAmount;
+            detectDistance = 100f;
+            animator.speed = 1;
+            if (health <= 0)
+            {
+                //Die();
+                SetState(AIState.Die);
+                agent.SetDestination(transform.position);
+                StartCoroutine("Die");
+                return;
+            }
+            animator.SetBool("Moving", false);
+            animator.SetTrigger("Hit");
+            //StartCoroutine(DamageFlash());
         }
-        animator.SetTrigger("Hit");
-        //StartCoroutine(DamageFlash());
     }
     IEnumerator Die()
     {
         animator.SetTrigger("Die");
         yield return new WaitForSeconds(1.0f);
+        Instantiate(coin, transform.position + Vector3.up * 2, Quaternion.identity);
         Destroy(gameObject);
+        QuestManager.Instance.UpdateQuestKillCount();
     }
 
     public void UpdateRotation(Vector3 target, float damping)
     {
         if (target != Vector3.zero)
         {
-            // Àû AI Ä³¸¯ÅÍ°¡ target ¹æÇâÀ» ¹Ù¶óº¸µµ·Ï È¸Àü ¼³Á¤.
+            // ï¿½ï¿½ AI Ä³ï¿½ï¿½ï¿½Í°ï¿½ target ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¶óº¸µï¿½ï¿½ï¿½ È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
             Quaternion rotation = Quaternion.LookRotation(target);
 
-            // Slerp ÇÔ¼ö¸¦ »ç¿ëÇØ ºÎµå·´°Ô È¸Àü Ã³¸®.
+            // Slerp ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµå·´ï¿½ï¿½ È¸ï¿½ï¿½ Ã³ï¿½ï¿½.
             transform.rotation = Quaternion.Slerp(
                 transform.rotation, rotation, damping * Time.deltaTime
             );
-            rotation = Quaternion.LookRotation(new Vector3(target.x,target.y+1,target.z));
-            //MucusSpawnPointÀÌ targetÀ» Á¶ÁØ ÇÒ¼öÀÖ°Ô È¸Àü ¼³Á¤
-            MucusSpawnPoint.rotation = Quaternion.Slerp(
-                MucusSpawnPoint.rotation, rotation, damping * Time.deltaTime
+            //MucusSpawnPointï¿½ï¿½ targetï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ò¼ï¿½ï¿½Ö°ï¿½ È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            mucusSpawnPoint.rotation = Quaternion.Slerp(
+                mucusSpawnPoint.rotation, rotation, damping * Time.deltaTime
             );
+
+            //Vector3 mucusRot = mucusSpawnPoint.eulerAngles;
+            //mucusRot.x = -Mathf.Atan2(target.y, target.x) * Mathf.Rad2Deg;
+            //mucusSpawnPoint.eulerAngles = mucusRot;
+
             //MucusSpawnPoint.eulerAngles = new Vector3(target.y, 0, 0);
 
         }

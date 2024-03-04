@@ -6,12 +6,12 @@ using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
 public class PopupUIManager
-{ //연결되는 UI 코드 보고 거기에 UI 연결시키고 팝업 생성할 예정
-
-    //매개변수로 받는거 말고는 답이 없는가에 대한 고찰 중...
+{
     //제네릭으로 받아서 popupUI 생성만 UI 버튼 내용은 UI마다 script넣어주기
 
     //UI 프리팹을 로드 -> 제네릭으로 바꿔서 공용으로 사용할 수 있도록 수정
+    //딕셔너리 key 값 이용해서 없으면 생성하고 있으면 새로 만들어서 딕셔너리에 저장
+    public Dictionary<string ,GameObject> popupUI = new Dictionary<string ,GameObject>();
 
     private static PopupUIManager instance;
     public static PopupUIManager Instance
@@ -40,6 +40,10 @@ public class PopupUIManager
 
     public PopupUIBase MakePopupUI(GameObject prefab)
     {
+        if (!popupUI.ContainsKey(prefab.name))
+        {
+            popupUI.Add(prefab.name, prefab);
+        }
         var obj = Object.Instantiate(prefab); //MonoBehaviour없더라도 생성가능하도록
         return GetComponentPopupUI(obj);
     }
