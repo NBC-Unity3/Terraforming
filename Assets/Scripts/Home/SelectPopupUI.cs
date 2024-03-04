@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 using UnityEngine.UI;
+using Color = UnityEngine.Color;
 
 //임시 스크립트, UI 연결하는 스크립트로 이동할 예정
 public class SelectPopupUI : PopupUIBase
@@ -16,6 +18,7 @@ public class SelectPopupUI : PopupUIBase
     [HideInInspector] public GameObject storePrefab;
     [HideInInspector] public GameObject questListPrefab;
     public GameObject selectBackground;
+    public Image blinkImage;
     QuestListPopupUI questListPopup;
     StoreUI storeUI;
 
@@ -82,8 +85,34 @@ public class SelectPopupUI : PopupUIBase
         questListPrefab.SetActive(true);
     }
 
+
+
+    //gameObject.SetActive(true) 상태에서 플레이어가 움직일 수 없으므로 움직임에 대한 부분은 따로 안해도 됨.
     public void OnMoveForHealth()
     {
+        StartCoroutine(OnHealth());
+        OffSelectPopupchildren();
+    }
+
+    //시간 부족..
+    //화면 깜박임만 추가
+    IEnumerator OnHealth()
+    {
+        Color color = blinkImage.color;
+        while (blinkImage.color.a <= 1)
+        {
+            color.a += 3f / 255f;
+            blinkImage.color = color;
+            yield return null;
+        }
+        yield return new WaitForSeconds(1f);
+        while (blinkImage.color.a >= 0)
+        {
+            color.a -= 1f / 255f;
+            blinkImage.color = color;
+            yield return null;
+        }
+        OnSelectPopupchildren();
         OffSelectPopup();
     }
 }
