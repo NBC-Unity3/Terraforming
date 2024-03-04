@@ -16,26 +16,35 @@ public class UIPlayerGUI : MonoBehaviour
     public Image hpBar;
     public Image steminaBar;
 
+    [Header("Player Gold Info UI Components")]
+    public TextMeshProUGUI playerGoldText;
+
     // Start is called before the first frame update
     void Start()
     {
-        PlayerController.instance.playerShooter.onSwap += SetGunInfo;
-        SetGunInfo(PlayerController.instance.playerShooter.gun);
-        SetTotalAmmoText(PlayerController.instance.inventory.Ammo);
         ConncetFuncToCurrentGun();
         ConnectFuncToPlayerStat();
+        ConnectFuncToPlayerInventory();
     }
 
     private void ConncetFuncToCurrentGun()
     {
+        PlayerController.instance.playerShooter.onSwap += SetGunInfo;
         PlayerController.instance.playerShooter.onFire += SetCurAmmoText;
-        PlayerController.instance.inventory.OnAmmoValueChange += SetTotalAmmoText;
+        PlayerController.instance.playerShooter.Init();
     }
 
     private void ConnectFuncToPlayerStat()
     {
         PlayerController.instance.playerStat.health.OnCurValueChange += SetHpBarFillAmount;
         PlayerController.instance.playerStat.stamina.OnCurValueChange += SetSteminaBarFillAmount;
+    }
+
+    private void ConnectFuncToPlayerInventory()
+    {
+        PlayerController.instance.inventory.OnAmmoValueChange += SetTotalAmmoText;
+        PlayerController.instance.inventory.OnGoldValueChange += SetPlayerGoldText;
+        PlayerController.instance.inventory.Init();
     }
 
     public void SetGunInfo(Gun gun)
@@ -63,5 +72,10 @@ public class UIPlayerGUI : MonoBehaviour
     public void SetSteminaBarFillAmount(float value)
     {
         steminaBar.fillAmount = value;
+    }
+
+    public void SetPlayerGoldText(int amount)
+    {
+        playerGoldText.text = amount.ToString();
     }
 }
