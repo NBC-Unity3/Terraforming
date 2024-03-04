@@ -39,7 +39,9 @@ public class RangeMonster : MonoBehaviour, IDamagable
 
     public GameObject mucus;
     public Transform mucusSpawnPoint;
+    public GameObject coin;
 
+    private PlayerController playerController;
     private NavMeshAgent agent;
     private Animator animator;
     //private SkinnedMeshRenderer[] meshRenderers;
@@ -54,11 +56,12 @@ public class RangeMonster : MonoBehaviour, IDamagable
     private void Start()
     {
         SetState(AIState.Wandering);
+        playerController = PlayerController.instance;
     }
 
     private void Update()
     {
-        playerDistance = Vector3.Distance(transform.position, PlayerController.instance.transform.position);
+        playerDistance = Vector3.Distance(transform.position, playerController.transform.position);
 
         animator.SetBool("Moving", aiState != AIState.Idle);
 
@@ -91,9 +94,9 @@ public class RangeMonster : MonoBehaviour, IDamagable
         {
             agent.isStopped = false;
             NavMeshPath path = new NavMeshPath();
-            if (agent.CalculatePath(PlayerController.instance.transform.position, path))
+            if (agent.CalculatePath(playerController.transform.position, path))
             {
-                agent.SetDestination(PlayerController.instance.transform.position);
+                agent.SetDestination(playerController.transform.position);
             }
             else
             {
@@ -105,12 +108,12 @@ public class RangeMonster : MonoBehaviour, IDamagable
             animator.SetBool("Moving", false);
             //Vector3 directionToPlayer = PlayerController.instance.transform.position - transform.position;
             Vector3 directionToPlayer = new Vector3
-                //Ä³½ÌÇÏ±â
-            (PlayerController.instance.transform.position.x - transform.position.x,
-            PlayerController.instance.transform.position.y + 1 - transform.position.y,
-            PlayerController.instance.transform.position.z - transform.position.z);
+                //Ä³ï¿½ï¿½ï¿½Ï±ï¿½
+            (playerController.transform.position.x - transform.position.x,
+            playerController.transform.position.y + 1 - transform.position.y,
+            playerController.transform.position.z - transform.position.z);
 
-            // ÇÃ·¹ÀÌ¾î¸¦ ¹Ù¶óº¸µµ·Ï È¸Àü Ã³¸®.
+            // ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ ï¿½Ù¶óº¸µï¿½ï¿½ï¿½ È¸ï¿½ï¿½ Ã³ï¿½ï¿½.
             UpdateRotation(directionToPlayer, 3f);
             agent.isStopped = true;
             if (Time.time - lastAttackTime > attackRate)
@@ -145,7 +148,7 @@ public class RangeMonster : MonoBehaviour, IDamagable
 
     bool IsPlaterInFireldOfView()
     {
-        Vector3 directionToPlayer = PlayerController.instance.transform.position - transform.position;
+        Vector3 directionToPlayer = playerController.transform.position - transform.position;
         float angle = Vector3.Angle(transform.forward, directionToPlayer);
         return angle < fieldOfView * 0.5f;
     }
@@ -235,7 +238,7 @@ public class RangeMonster : MonoBehaviour, IDamagable
 
     float GetDestinationAngle(Vector3 targetPos)
     {
-        return Vector3.Angle(transform.position - PlayerController.instance.transform.position, transform.position + targetPos);
+        return Vector3.Angle(transform.position - playerController.transform.position, transform.position + targetPos);
     }
 
     public void TakePhysicalDamage(int damageAmount)
@@ -253,6 +256,7 @@ public class RangeMonster : MonoBehaviour, IDamagable
     }
     IEnumerator Die()
     {
+        Instantiate(coin, transform.position,Quaternion.identity);
         animator.SetTrigger("Die");
         yield return new WaitForSeconds(1.0f);
         Destroy(gameObject);
@@ -263,14 +267,14 @@ public class RangeMonster : MonoBehaviour, IDamagable
     {
         if (target != Vector3.zero)
         {
-            // Àû AI Ä³¸¯ÅÍ°¡ target ¹æÇâÀ» ¹Ù¶óº¸µµ·Ï È¸Àü ¼³Á¤.
+            // ï¿½ï¿½ AI Ä³ï¿½ï¿½ï¿½Í°ï¿½ target ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¶óº¸µï¿½ï¿½ï¿½ È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
             Quaternion rotation = Quaternion.LookRotation(target);
 
-            // Slerp ÇÔ¼ö¸¦ »ç¿ëÇØ ºÎµå·´°Ô È¸Àü Ã³¸®.
+            // Slerp ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµå·´ï¿½ï¿½ È¸ï¿½ï¿½ Ã³ï¿½ï¿½.
             transform.rotation = Quaternion.Slerp(
                 transform.rotation, rotation, damping * Time.deltaTime
             );
-            //MucusSpawnPointÀÌ targetÀ» Á¶ÁØ ÇÒ¼öÀÖ°Ô È¸Àü ¼³Á¤
+            //MucusSpawnPointï¿½ï¿½ targetï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ò¼ï¿½ï¿½Ö°ï¿½ È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             mucusSpawnPoint.rotation = Quaternion.Slerp(
                 mucusSpawnPoint.rotation, rotation, damping * Time.deltaTime
             );

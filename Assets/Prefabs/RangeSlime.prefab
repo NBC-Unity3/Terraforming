@@ -324,6 +324,7 @@ MonoBehaviour:
   fieldOfView: 120
   mucus: {fileID: 6120957086494895665, guid: 39d109a4f30bceb4198597d4022e6611, type: 3}
   mucusSpawnPoint: {fileID: 9034297242282722316}
+  coin: {fileID: 5704303752494955240, guid: bdf37085cbe344b4abfdb2433c9a6bfd, type: 3}
 --- !u!95 &3353681305505991004
 Animator:
   serializedVersion: 5
