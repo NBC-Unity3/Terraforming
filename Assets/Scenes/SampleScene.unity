@@ -6641,8 +6641,8 @@ MonoBehaviour:
   gunPivot: {fileID: 1785488870}
   leftHandMount: {fileID: 949028987}
   rightHandMount: {fileID: 821474447}
-  cameraRotationWhenDie: {x: 90, y: 0, z: 0}
-  cameraPositionWhenDie: {x: 0, y: 10, z: 0}
+  cameraRotationWhenDie: {x: 70, y: 0, z: 0}
+  cameraPositionWhenDie: {x: 0, y: 10, z: -4}
   cameraMoveTime: 5
   canLook: 1
   canFire: 0
