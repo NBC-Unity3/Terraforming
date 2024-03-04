@@ -123,12 +123,12 @@ public class PlayerController : MonoBehaviour
             canLook = false;
             return;
         }
-        //if (Cursor.lockState == CursorLockMode.None)
-        //{
-        //    Cursor.lockState = CursorLockMode.Locked;
-        //}
+        if (Cursor.lockState == CursorLockMode.None)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            canLook = true;
+        }
         _rigidbody.velocity = dir;
-        //canLook = true;
         playerAnimator.SetFloat("MoveX", curMovementInput.x);
         playerAnimator.SetFloat("MoveY", curMovementInput.y);
     }
