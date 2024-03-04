@@ -18,12 +18,18 @@ public class PlayerInventory : MonoBehaviour
     public int Gold { get; set; }
 
     public Action<int> OnAmmoValueChange;
+    public Action<int> OnGoldValueChange;
 
     private void Awake()
     {
         Ammo = 1000;
         Gold = 100000000;
         
+    }
+
+    private void Start()
+    {
+        OnGoldValueChange?.Invoke(Gold);
     }
 
     public void AddAmmo(int amount)
@@ -52,6 +58,20 @@ public class PlayerInventory : MonoBehaviour
     public void AddGold(int amount)
     {
         Gold += amount;
-        Debug.Log(Gold);
+        OnGoldValueChange?.Invoke(Gold);
+    }
+
+    public bool UseGold(int amount)
+    {
+        if(Gold >= amount)
+        {
+            Gold -= amount;
+            OnGoldValueChange?.Invoke(Gold);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

@@ -69,7 +69,7 @@ public class QuestManager : MonoBehaviour
     //UI랑 연결이 되어야함.
     public void GetQuestReward(Quest quest)
     {
-        playerInventory.Gold += quest.questInfoSO.reward;
+        playerInventory.AddGold(quest.questInfoSO.reward);
     }
 
     //몬스터를 처치했을 때 킬 카운트 올라갈 수 있도록 설정해줌

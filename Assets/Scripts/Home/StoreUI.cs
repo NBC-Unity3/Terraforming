@@ -149,9 +149,8 @@ public class StoreUI : PopupUIBase
     {
         if(index == 0)
         {
-            if(inventory.Gold >= CalcTotalAmmoPrice())
+            if(inventory.UseGold(CalcTotalAmmoPrice()))
             {
-                inventory.Gold -= CalcTotalAmmoPrice();
                 inventory.AddAmmo(int.Parse(inputAmount.text));
                 SetPlayerGoldText();
                 inputAmount.text = "0";
@@ -159,17 +158,12 @@ public class StoreUI : PopupUIBase
         }
         else
         {
-            if (inventory.Gold >= items[index].price)
+            if (inventory.UseGold(items[index].price))
             {
-                inventory.Gold -= items[index].price;
                 items[index].isSold = true;
                 inventory.playerGuns[index].isUnlock = true;
                 SetPlayerGoldText();
                 SetInfo(index);
-            }
-            else
-            {
-                Debug.Log("자금 부족");
             }
         }
     }
