@@ -117,7 +117,7 @@ public class Monster : MonoBehaviour, IDamagable
             if (Time.time - lastAttackTime > attackRate)
             {
                 lastAttackTime = Time.time;
-                PlayerController.instance.GetComponent<IDamagable>().TakePhysicalDamage(damage);
+                PlayerController.instance.playerStat.TakePhysicalDamage(damage);
                 animator.speed = 1;
                 animator.SetTrigger("Attack");
             }
@@ -261,11 +261,11 @@ public class Monster : MonoBehaviour, IDamagable
     }
     IEnumerator Die()
     {
-        QuestManager.Instance.UpdateQuestKillCount();
-        Instantiate(coin, transform.position, Quaternion.identity);
+        Instantiate(coin, transform.position + Vector3.up * 2f, Quaternion.identity);
         animator.SetTrigger("Die");
         yield return new WaitForSeconds(1.0f);
         Destroy(gameObject);
+        QuestManager.Instance.UpdateQuestKillCount();
     }
 
     //void Die()

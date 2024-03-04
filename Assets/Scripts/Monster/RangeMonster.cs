@@ -63,8 +63,8 @@ public class RangeMonster : MonoBehaviour, IDamagable
     {
         playerDistance = Vector3.Distance(transform.position, playerController.transform.position);
 
-        animator.SetBool("Moving", aiState != AIState.Idle && aiState != AIState.Die);
-        
+        animator.SetBool("Moving", aiState != AIState.Idle);
+
         switch (aiState)
         {
             case AIState.Idle: PassiveUpdate(); break;
@@ -108,12 +108,12 @@ public class RangeMonster : MonoBehaviour, IDamagable
             animator.SetBool("Moving", false);
             //Vector3 directionToPlayer = PlayerController.instance.transform.position - transform.position;
             Vector3 directionToPlayer = new Vector3
-                //Ä³½ÌÇÏ±â
+                //Ä³ï¿½ï¿½ï¿½Ï±ï¿½
             (playerController.transform.position.x - transform.position.x,
             playerController.transform.position.y + 1 - transform.position.y,
             playerController.transform.position.z - transform.position.z);
 
-            // ÇÃ·¹ÀÌ¾î¸¦ ¹Ù¶óº¸µµ·Ï È¸Àü Ã³¸®.
+            // ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ ï¿½Ù¶óº¸µï¿½ï¿½ï¿½ È¸ï¿½ï¿½ Ã³ï¿½ï¿½.
             UpdateRotation(directionToPlayer, 3f);
             agent.isStopped = true;
             if (Time.time - lastAttackTime > attackRate)
@@ -183,12 +183,6 @@ public class RangeMonster : MonoBehaviour, IDamagable
                     agent.isStopped = false;
                 }
                 break;
-            case AIState.Die:
-                {
-                    agent.speed = 0;
-                    agent.isStopped = true;
-                }
-                break;
         }
 
         animator.speed = agent.speed / walkSpeed;
@@ -251,38 +245,36 @@ public class RangeMonster : MonoBehaviour, IDamagable
     {
         health -= damageAmount;
         detectDistance = 100f;
-        Debug.Log("hit");
-        animator.SetTrigger("Hit");
         if (health <= 0)
         {
-            Debug.Log("Die");
             //Die();
             SetState(AIState.Die);
             StartCoroutine("Die");
         }
+        animator.SetTrigger("Hit");
         //StartCoroutine(DamageFlash());
     }
     IEnumerator Die()
     {
+        Instantiate(coin, transform.position + Vector3.up * 2 ,Quaternion.identity);
         animator.SetTrigger("Die");
-        QuestManager.Instance.UpdateQuestKillCount();
-        Instantiate(coin, transform.position,Quaternion.identity);
         yield return new WaitForSeconds(1.0f);
         Destroy(gameObject);
+        QuestManager.Instance.UpdateQuestKillCount();
     }
 
     public void UpdateRotation(Vector3 target, float damping)
     {
         if (target != Vector3.zero)
         {
-            // Àû AI Ä³¸¯ÅÍ°¡ target ¹æÇâÀ» ¹Ù¶óº¸µµ·Ï È¸Àü ¼³Á¤.
+            // ï¿½ï¿½ AI Ä³ï¿½ï¿½ï¿½Í°ï¿½ target ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¶óº¸µï¿½ï¿½ï¿½ È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
             Quaternion rotation = Quaternion.LookRotation(target);
 
-            // Slerp ÇÔ¼ö¸¦ »ç¿ëÇØ ºÎµå·´°Ô È¸Àü Ã³¸®.
+            // Slerp ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµå·´ï¿½ï¿½ È¸ï¿½ï¿½ Ã³ï¿½ï¿½.
             transform.rotation = Quaternion.Slerp(
                 transform.rotation, rotation, damping * Time.deltaTime
             );
-            //MucusSpawnPointÀÌ targetÀ» Á¶ÁØ ÇÒ¼öÀÖ°Ô È¸Àü ¼³Á¤
+            //MucusSpawnPointï¿½ï¿½ targetï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ò¼ï¿½ï¿½Ö°ï¿½ È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             mucusSpawnPoint.rotation = Quaternion.Slerp(
                 mucusSpawnPoint.rotation, rotation, damping * Time.deltaTime
             );

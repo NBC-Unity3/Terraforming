@@ -9,7 +9,7 @@ public class Coin : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             //플레이어 골드 증가
-            PlayerController.instance.inventory.Gold += 1000;
+            collision.gameObject.GetComponent<PlayerInventory>().AddGold(500);
             Destroy(gameObject);
         }
 

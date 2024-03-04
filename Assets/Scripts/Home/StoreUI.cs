@@ -23,6 +23,7 @@ public class StoreUI : PopupUIBase
     public TextMeshProUGUI playerGoldText;
 
     [Header("Ability UI Components")]
+    public GameObject abilityContainerGO;
     public TextMeshProUGUI attackValueText;
     public TextMeshProUGUI fireRateValueText;
     public TextMeshProUGUI capacityValueText;
@@ -33,6 +34,11 @@ public class StoreUI : PopupUIBase
     public Button buyBtn;
     public Button alreadyBuyBtn;
     public Button closeBtn;
+
+    [Header("Buy Ammo UI Components")]
+    public GameObject buyAmmoContainerGO;
+    public TMP_InputField inputAmount;
+    public TextMeshProUGUI totalPriceText;
 
     public StoreItem[] items;
     private int index;
@@ -58,15 +64,33 @@ public class StoreUI : PopupUIBase
         SetPlayerGoldText();   
     }
 
+    private void OnEnable()
+    {
+        SetPlayerGoldText();
+    }
+
+
     public void SetInfo(int index)
     {
         StoreItem item = items[index];
 
-        nameText.text = item.gun.name;
+        if(index == items.Length - 1)
+        {
+            buyAmmoContainerGO.SetActive(true);
+            abilityContainerGO.SetActive(false);
+            nameText.text = "Bullet";
+            SetTotalAmmoPriceText();
+        }
+        else
+        {
+            buyAmmoContainerGO.SetActive(false);
+            abilityContainerGO.SetActive(true);
+            nameText.text = item.gun.name;
+            attackValueText.text = item.gun.damage.ToString();
+            fireRateValueText.text = item.gun.rpm.ToString();
+            capacityValueText.text = item.gun.capacity.ToString();
+        }
         priceText.text = item.price.ToString();
-        attackValueText.text = item.gun.damage.ToString();
-        fireRateValueText.text = item.gun.rpm.ToString();
-        capacityValueText.text = item.gun.capacity.ToString();
         weaponImage.sprite = item.weaponSprite;
 
         SetBuyButton(item.isSold);
@@ -88,6 +112,24 @@ public class StoreUI : PopupUIBase
         playerGoldText.text = inventory.Gold.ToString();
     }
 
+    public void SetTotalAmmoPriceText()
+    {
+        int totalPrice = CalcTotalAmmoPrice();
+        totalPriceText.text = totalPrice.ToString();
+    }
+
+    public int CalcTotalAmmoPrice()
+    {
+        if(int.TryParse(inputAmount.text, out int amount))
+        {
+            return amount * items[items.Length - 1].price;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
     public void OnPreviousBtnClick()
     {
         index = (items.Length + index - 1) % items.Length;
@@ -104,17 +146,30 @@ public class StoreUI : PopupUIBase
 
     public void OnBuyBtnClick()
     {
-        if (inventory.Gold >= items[index].price)
+        if(index == items.Length - 1)
         {
-            inventory.Gold -= items[index].price;
-            items[index].isSold = true;
-            inventory.playerGuns[index].isUnlock = true;
-            SetPlayerGoldText();
-            SetInfo(index);
+            if(inventory.Gold >= CalcTotalAmmoPrice())
+            {
+                inventory.Gold -= CalcTotalAmmoPrice();
+                inventory.AddAmmo(int.Parse(inputAmount.text));
+                SetPlayerGoldText();
+                inputAmount.text = "0";
+            }
         }
         else
         {
-            Debug.Log("자금 부족");
+            if (inventory.Gold >= items[index].price)
+            {
+                inventory.Gold -= items[index].price;
+                items[index].isSold = true;
+                inventory.playerGuns[index].isUnlock = true;
+                SetPlayerGoldText();
+                SetInfo(index);
+            }
+            else
+            {
+                Debug.Log("자금 부족");
+            }
         }
     }
 }

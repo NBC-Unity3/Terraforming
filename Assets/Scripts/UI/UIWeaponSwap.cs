@@ -17,6 +17,8 @@ public class UIWeaponSwap : PopupUIBase
 
     private PlayerInventory inventory;
 
+    public int curSelectedWeapon;
+
     private void Awake()
     {
         inventory = PlayerController.instance.inventory;
@@ -57,18 +59,15 @@ public class UIWeaponSwap : PopupUIBase
     {
         var stepLength = 360f / inventory.playerGuns.Length;
         var mouseAngle = NormalizeAngle(Vector3.SignedAngle(Input.mousePosition - transform.position, Vector3.up, Vector3.forward) + stepLength / 2f);
-        var activeElement = (int)(mouseAngle / stepLength);
+        curSelectedWeapon = (int)(mouseAngle / stepLength);
 
         for(int i = 0; i< inventory.playerGuns.Length; i++)
         {
-            if (i == activeElement && inventory.playerGuns[i].isUnlock)
+            if (i == curSelectedWeapon && inventory.playerGuns[i].isUnlock)
                 pieces[i].GetComponent<Piece>().piece.color = new Color(1f, 1f, 1f, 0.7f);
             else
                 pieces[i].GetComponent<Piece>().piece.color = new Color(1f, 1f, 1f, 0.3f);
         }
-
-        // 클릭 시 해당 무기를 장착하는 기능 추가해야 함 //
-        ///////////////////////////////////////////////////
     }
 
     private float NormalizeAngle(float a) => (a + 360f) % 360f;
