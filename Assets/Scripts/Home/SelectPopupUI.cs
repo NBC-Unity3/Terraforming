@@ -92,6 +92,7 @@ public class SelectPopupUI : PopupUIBase
     {
         StartCoroutine(OnHealth());
         OffSelectPopupchildren();
+        PlayerController.instance.playerStat.AddHp(50f);
     }
 
     //시간 부족..
