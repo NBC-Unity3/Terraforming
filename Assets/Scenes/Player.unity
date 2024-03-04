@@ -858,10 +858,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   crouchMoveSpeed: 0
-  jumpForce: 80
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 55
+  jumpForce: 80
+  jumpSteminaValue: 0
+  runSpeed: 0
+  runSteminaValue: 0
   cameraContainer: {fileID: 1699041613}
   minXLook: -60
   maxXLook: 85
@@ -872,9 +875,12 @@ MonoBehaviour:
   leftHandMount: {fileID: 993911528}
   rightHandMount: {fileID: 2098780982}
   canLook: 1
-  weaponSwapUI: {fileID: 0}
+  canFire: 0
+  playerAnimator: {fileID: 0}
+  weaponSwapUIGO: {fileID: 0}
   SelectPopupPrefab: {fileID: 0}
   inventory: {fileID: 0}
+  playerStat: {fileID: 0}
 --- !u!114 &1394842775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -922,7 +928,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1394842774}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: OnShotInput
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -981,6 +987,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 115fbdcd-974d-417f-8967-b54321b0afe7
     m_ActionName: Player/Look[/Mouse/delta]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ae54336b-0369-4a5f-bf49-49b40c9b700d
+    m_ActionName: Player/Crouch[/Keyboard/ctrl]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 704961ae-5c44-401b-8520-ad04bd6646f7
+    m_ActionName: Player/WeaponSwap[/Keyboard/tab]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9aa8176d-10f9-4d4d-9214-bbe3379f29a4
+    m_ActionName: Player/Interaction[/Keyboard/f]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 03d4c07a-4e0f-4311-8405-e9d70b770d4a
+    m_ActionName: Player/Run[/Keyboard/leftShift]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
