@@ -92,7 +92,7 @@ public class StoreUI : PopupUIBase
             capacityValueText.text = item.gun.capacity.ToString();
             weaponImage.sprite = item.gun.image;
         }
-        priceText.text = item.price.ToString();
+        priceText.text = item.price.ToString() + " G";
 
         SetBuyButton(item.isSold);
     }
@@ -110,20 +110,20 @@ public class StoreUI : PopupUIBase
 
     public void SetPlayerGoldText()
     {
-        playerGoldText.text = inventory.Gold.ToString();
+        playerGoldText.text = inventory.Gold.ToString() + " G";
     }
 
     public void SetTotalAmmoPriceText()
     {
         int totalPrice = CalcTotalAmmoPrice();
-        totalPriceText.text = totalPrice.ToString();
+        totalPriceText.text = totalPrice.ToString() + " G";
     }
 
     public int CalcTotalAmmoPrice()
     {
         if(int.TryParse(inputAmount.text, out int amount))
         {
-            return amount * items[items.Length - 1].price;
+            return amount * items[0].price;
         }
         else
         {
@@ -147,7 +147,7 @@ public class StoreUI : PopupUIBase
 
     public void OnBuyBtnClick()
     {
-        if(index == items.Length - 1)
+        if(index == 0)
         {
             if(inventory.Gold >= CalcTotalAmmoPrice())
             {
