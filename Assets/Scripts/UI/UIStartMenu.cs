@@ -16,6 +16,6 @@ public class UIStartMenu : PopupUIBase
 
     private void OnStartBtnClick()
     {
-        SceneManager.LoadScene("LeeV2");
+        SceneManager.LoadScene("SampleScene");
     }
 }
