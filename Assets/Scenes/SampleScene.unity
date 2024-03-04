@@ -6920,7 +6920,7 @@ MonoBehaviour:
   health:
     curValue: 0
     maxValue: 100
-    startValue: 100
+    startValue: 10
     regenRate: 2
     decayRate: 0
   stamina:
