@@ -45,6 +45,8 @@ public class PlayerStat : MonoBehaviour, IDamagable
         OnDie += Die;
         health.curValue = health.startValue;
         stamina.curValue = stamina.startValue;
+        health.Add(0f);
+        stamina.Add(0f);
     }
 
     private void Update()

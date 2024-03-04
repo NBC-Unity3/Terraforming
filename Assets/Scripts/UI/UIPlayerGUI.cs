@@ -21,7 +21,7 @@ public class UIPlayerGUI : MonoBehaviour
     {
         PlayerController.instance.playerShooter.onSwap += SetGunInfo;
         SetGunInfo(PlayerController.instance.playerShooter.gun);
-        SetTotalAmmoText();
+        SetTotalAmmoText(PlayerController.instance.inventory.Ammo);
         ConncetFuncToCurrentGun();
         ConnectFuncToPlayerStat();
     }
@@ -29,7 +29,7 @@ public class UIPlayerGUI : MonoBehaviour
     private void ConncetFuncToCurrentGun()
     {
         PlayerController.instance.playerShooter.onFire += SetCurAmmoText;
-        PlayerController.instance.playerShooter.onReload += SetTotalAmmoText;
+        PlayerController.instance.inventory.OnAmmoValueChange += SetTotalAmmoText;
     }
 
     private void ConnectFuncToPlayerStat()
@@ -50,9 +50,9 @@ public class UIPlayerGUI : MonoBehaviour
         curAmmoText.text = curAmmo.ToString();
     }
 
-    public void SetTotalAmmoText()
+    public void SetTotalAmmoText(int amount)
     {
-        totalAmmoText.text = PlayerController.instance.inventory.Ammo.ToString();
+        totalAmmoText.text = amount.ToString();
     }
 
     public void SetHpBarFillAmount(float value)
