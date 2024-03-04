@@ -10,6 +10,7 @@ public class UIPlayerGUI : MonoBehaviour
     public Image weaponImage;
     public TextMeshProUGUI curAmmoText;
     public TextMeshProUGUI maxAmmoText;
+    public TextMeshProUGUI totalAmmoText;
 
     [Header("Player Stat UI Components")]
     public Image hpBar;
@@ -18,17 +19,27 @@ public class UIPlayerGUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SetGunInfo(PlayerController.instance.playerShooter.gun);
+        PlayerController.instance.playerShooter.onSwap += SetGunInfo;
+        SetTotalAmmoText();
         ConncetFuncToCurrentGun();
+        ConnectFuncToPlayerStat();
     }
 
     private void ConncetFuncToCurrentGun()
     {
         PlayerController.instance.playerShooter.onFire += SetCurAmmoText;
+        PlayerController.instance.playerShooter.onReload += SetTotalAmmoText;
+    }
+
+    private void ConnectFuncToPlayerStat()
+    {
+        PlayerController.instance.playerStat.health.OnCurValueChange += SetHpBarFillAmount;
+        PlayerController.instance.playerStat.stamina.OnCurValueChange += SetSteminaBarFillAmount;
     }
 
     public void SetGunInfo(Gun gun)
     {
+        // 총기 이미지 변경 아직 못함
         curAmmoText.text = gun.magazine.ToString();
         maxAmmoText.text = gun.capacity.ToString();
     }
@@ -38,8 +49,18 @@ public class UIPlayerGUI : MonoBehaviour
         curAmmoText.text = curAmmo.ToString();
     }
 
-    public void OnSwapGun()
+    public void SetTotalAmmoText()
     {
+        totalAmmoText.text = PlayerController.instance.inventory.Ammo.ToString();
+    }
 
+    public void SetHpBarFillAmount(float value)
+    {
+        hpBar.fillAmount = value;
+    }
+
+    public void SetSteminaBarFillAmount(float value)
+    {
+        steminaBar.fillAmount = value;
     }
 }

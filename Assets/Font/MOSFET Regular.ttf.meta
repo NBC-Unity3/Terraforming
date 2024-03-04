@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: dcc0346fe6ea5bc449efdce5917b13e2
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - MOSFET
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: fb182d32fe350db42b9940e3c4c86035, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

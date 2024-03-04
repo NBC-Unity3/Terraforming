@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerGun
 {
     public Gun gun;
+    public GameObject gunPrefab;
     public bool isUnlock;
 }
 
@@ -15,15 +16,17 @@ public class PlayerInventory : MonoBehaviour
     public int Ammo {  get;  set; }
     public int Gold { get; set; }
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
+        Ammo = 10;
         Gold = 100000000;
+        
     }
 
     public void AddAmmo(int amount)
     {
         Ammo += amount;
+        Debug.Log(Ammo);
     }
 
     public int UseAmmo(int amount)
@@ -37,7 +40,12 @@ public class PlayerInventory : MonoBehaviour
         {
             int remainAmmo = Ammo;
             Ammo = 0;
-            return Ammo;
+            return remainAmmo;
         }
+    }
+
+    public void AddGold(int amount)
+    {
+        Gold += amount;
     }
 }
