@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
     public float moveSpeed;
+    public float crouchMoveSpeed;
     private Vector2 curMovementInput;
     public float jumpForce;
     public LayerMask groundLayerMask;
@@ -32,17 +33,29 @@ public class PlayerController : MonoBehaviour
     private Rigidbody _rigidbody;
     private Animator playerAnimator;
 
+    private bool isCrouch = false;
+
+    private float appliedMoveSpeed;
+
+    public GameObject weaponSwapUI;
+    public GameObject SelectPopupPrefab;
+
+    // 일단은 controller가 instance여서 controller에서 inventory에 접근할 수 있게 함. PlayerManager에서 관리하면 좋을 것 같음
+    public PlayerInventory inventory;
+
     public static PlayerController instance;
     private void Awake()
     {
         instance = this;
         _rigidbody = GetComponent<Rigidbody>();
+        inventory = GetComponent<PlayerInventory>();
     }
 
     void Start()
     {
         playerAnimator = GetComponent<Animator>();
-        Cursor.lockState = CursorLockMode.Locked;        
+        Cursor.lockState = CursorLockMode.Locked;
+        appliedMoveSpeed = moveSpeed;
     }
 
     private void FixedUpdate()
@@ -61,12 +74,24 @@ public class PlayerController : MonoBehaviour
     private void Move()
     {
         Vector3 dir = transform.forward * curMovementInput.y + transform.right * curMovementInput.x;
-        dir *= moveSpeed;
+        dir *= appliedMoveSpeed;
         dir.y = _rigidbody.velocity.y;
 
-        _rigidbody.velocity = dir;
+        if (SelectPopupPrefab != null && SelectPopupPrefab.activeInHierarchy)
+        {
+            _rigidbody.velocity = Vector3.zero;
+            canLook = false;
+            return;
+        }
 
-        playerAnimator.SetFloat("Move", dir.y);
+        if (Cursor.lockState == CursorLockMode.None)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        _rigidbody.velocity = dir;
+        canLook = true;
+        playerAnimator.SetFloat("MoveX", curMovementInput.x);
+        playerAnimator.SetFloat("MoveY", curMovementInput.y);
     }
 
     void CameraLook()
@@ -99,9 +124,31 @@ public class PlayerController : MonoBehaviour
     {
         if(context.phase == InputActionPhase.Started)
         {
-            if(IsGrounded())
-                _rigidbody.AddForce(Vector2.up * jumpForce, ForceMode.Impulse);
+            if (IsGrounded())
+            {
+                _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                playerAnimator.SetBool("Jump", true);
+            }
 
+        }
+    }
+
+    public void OnCrouchInput(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            isCrouch = !isCrouch;
+            Debug.Log(isCrouch);
+            playerAnimator.SetBool("Crouch", isCrouch);
+
+            if(isCrouch)
+            {
+                appliedMoveSpeed = crouchMoveSpeed;
+            }
+            else
+            {
+                appliedMoveSpeed = moveSpeed;
+            }
         }
     }
 
@@ -115,6 +162,48 @@ public class PlayerController : MonoBehaviour
         playerShooter.Reload();
         playerAnimator.SetBool("Reload", true);
     }
+
+    public void OnWeaponSwapInput(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            canLook = false;
+            UIWeaponSwap popupUI = PopupUIManager.Instance.OpenPopupUI<UIWeaponSwap>();
+            weaponSwapUI = popupUI.gameObject;
+            weaponSwapUI.SetActive(true);
+        }
+        else if (context.canceled)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            canLook = true;
+            // 이 부분은 UIManager.ShowUI로 대체해야 함 
+            weaponSwapUI.SetActive(false);
+        }
+    }
+
+    public void OnInteractionInput(InputAction.CallbackContext context) //퀘스트나 회복, 상점 이용을 위한
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        int layerMask = 1 << LayerMask.NameToLayer("console");
+        if (context.phase == InputActionPhase.Started)
+        {
+            if (Physics.Raycast(ray, out hit, 5f, layerMask))
+            {
+                if (SelectPopupPrefab == null) 
+                {
+                    Cursor.lockState = CursorLockMode.None;
+                    canLook = false;
+                    SelectPopupUI popupUI = PopupUIManager.Instance.OpenPopupUI<SelectPopupUI>();
+                    SelectPopupPrefab = popupUI.gameObject;
+                }
+                Cursor.lockState = CursorLockMode.None;
+                SelectPopupPrefab.SetActive(true);
+            }
+        }
+    }
+
 
     private bool IsGrounded()
     {
@@ -130,9 +219,11 @@ public class PlayerController : MonoBehaviour
         {
             if (Physics.Raycast(rays[i], 0.1f, groundLayerMask))
             {
+                Debug.Log("true");
                 return true;
             }
         }
+        Debug.Log("false");
 
         return false;
     }
